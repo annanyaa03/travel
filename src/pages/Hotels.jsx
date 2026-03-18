@@ -1,9 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import './Hotels.css';
 
 const DEFAULT_CITY = 'Paris';
-// Note: OpenTripMap usually requires a key, but we'll try the public demo or a fallback
-const OTM_API_KEY = '5ae2e3f221c38a28845f05b6301389e81b67f10b809fa79245f7f347'; // Common trial/demo key
+const PERKS_LIST = ["Free WiFi", "Pool", "Spa", "Breakfast", "Gym", "Parking", "Restaurant", "Bar", "Room Service", "Airport Shuttle"];
+
+// Simple seeded random to keep values stable across re-renders
+const seededRandom = (seed) => {
+  let x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+};
 
 export default function Hotels() {
   const [city, setCity] = useState(DEFAULT_CITY);
@@ -11,37 +16,82 @@ export default function Hotels() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  const [sortBy, setSortBy] = useState('rating');
+  const [filterStars, setFilterStars] = useState('all');
 
   const searchHotels = useCallback(async (searchCity) => {
     setLoading(true);
     setHotels([]);
     setError(null);
 
-    try {
-      // 1. Get city coordinates via Nominatim
-      const coordUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchCity)}&format=json&limit=1`;
-      const coordRes = await fetch(coordUrl);
-      const coords = await coordRes.json();
-      
-      if (!coords[0]) throw new Error('City not found');
-      
-      const { lat, lon } = coords[0];
+    const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
-      // 2. Get hotels via OpenTripMap
-      // Documentation points to v0.1 for the radius endpoint
-      const hotelsUrl = `https://api.opentripmap.com/0.1/en/places/radius?radius=10000&lon=${lon}&lat=${lat}&kinds=hotels&limit=30&apikey=${OTM_API_KEY}`;
-      const hotelsRes = await fetch(hotelsUrl);
-      const hotelsData = await hotelsRes.json();
+    try {
+      // STEP 1: Get city coordinates using Nominatim
+      const nomUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchCity)}&format=json&limit=1`;
+      const nomRes = await fetch(nomUrl);
+      const coordsData = await nomRes.json();
       
-      if (!hotelsData.features || hotelsData.features.length === 0) {
-        setHotels([]);
-      } else {
-        setHotels(hotelsData.features);
+      if (!coordsData || coordsData.length === 0) {
+        throw new Error('City not found');
       }
+      
+      const { lat, lon } = coordsData[0];
+
+      // STEP 2: Fetch hotels using Geoapify
+      const geoUrl = `https://api.geoapify.com/v2/places?categories=accommodation.hotel&filter=circle:${lon},${lat},10000&limit=20&apiKey=${apiKey}`;
+      const geoRes = await fetch(geoUrl);
+      const geoData = await geoRes.json();
+
+      if (!geoData.features || geoData.features.length === 0) {
+        setHotels([]);
+        setCity(searchCity);
+        setLoading(false);
+        return;
+      }
+
+      // STEP 3: Generate display data
+      const processedHotels = geoData.features
+        .filter(f => f.properties.name) // skip if name is null/undefined
+        .map((feature, index) => {
+          const props = feature.properties;
+          const distKm = (props.distance / 1000).toFixed(1);
+          
+          // Seeded randoms
+          const seed = index + 1;
+          const rating = parseFloat((3.5 + seededRandom(seed) * 1.5).toFixed(1));
+          const price = Math.floor(80 + seededRandom(seed * 2) * 270);
+          const stars = Math.floor(3 + seededRandom(seed * 3) * 3); // 3, 4, or 5
+          
+          // Pick 3 unique random perks
+          const shuffledPerks = [...PERKS_LIST].sort(() => 0.5 - seededRandom(seed * 4));
+          const perks = shuffledPerks.slice(0, 3);
+          
+          let emoji = "🏩"; // 3 stars
+          if (stars === 4) emoji = "🏨";
+          if (stars === 5) emoji = "🏰";
+
+          return {
+            id: props.place_id || index,
+            name: props.name,
+            address: props.formatted,
+            distance: distKm,
+            lat: feature.geometry.coordinates[1],
+            lon: feature.geometry.coordinates[0],
+            rating,
+            price,
+            stars,
+            perks,
+            emoji
+          };
+        });
+
+      setHotels(processedHotels);
       setCity(searchCity);
     } catch (err) {
       console.error(err);
-      setError(true);
+      setError(err.message === 'City not found' ? 'empty' : 'api');
     } finally {
       setLoading(false);
     }
@@ -51,112 +101,212 @@ export default function Hotels() {
     searchHotels(DEFAULT_CITY);
   }, [searchHotels]);
 
-  const handleSearch = (e) => {
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (inputValue.trim()) {
       searchHotels(inputValue.trim());
     }
   };
 
+  const handlePillClick = (cityName) => {
+    setInputValue(cityName);
+    searchHotels(cityName);
+  };
+
+  // FILTER & SORT LOGIC
+  const displayedHotels = useMemo(() => {
+    let result = [...hotels];
+
+    // Filter
+    if (filterStars !== 'all') {
+      const starVal = parseInt(filterStars, 10);
+      result = result.filter(h => h.stars === starVal);
+    }
+
+    // Sort
+    result.sort((a, b) => {
+      if (sortBy === 'price-low') return a.price - b.price;
+      if (sortBy === 'price-high') return b.price - a.price;
+      if (sortBy === 'rating') return b.rating - a.rating;
+      if (sortBy === 'distance') return parseFloat(a.distance) - parseFloat(b.distance);
+      return 0;
+    });
+
+    return result;
+  }, [hotels, sortBy, filterStars]);
+
+  // Star gradient backgrounds
+  const getGradient = (stars) => {
+    if (stars === 5) return 'linear-gradient(135deg, #f59e0b, #d97706)';
+    if (stars === 4) return 'linear-gradient(135deg, #3b82f6, #2563eb)';
+    return 'linear-gradient(135deg, #10b981, #059669)';
+  };
+
+  const quickCities = ["Paris", "Tokyo", "Bali", "New York", "Dubai", "Rome"];
+
   return (
     <div className="hotels-page">
+      {/* ═══════════════════════════════
+          HERO SECTION
+      ═══════════════════════════════ */}
       <section className="hotels-hero">
+        <div className="hotels-hero-overlay"></div>
         <div className="hotels-hero-content">
-          <h1 className="hotels-title">🏨 Find Your Perfect <span>Stay</span></h1>
+          <h1 className="hotels-title">Find Your Perfect <span className="shimmer-text">Stay</span></h1>
           <p className="hotels-subtitle">Search over 1M+ hotels with local insights</p>
           
-          <form className="hotels-search-box" onSubmit={handleSearch}>
+          <form className="hotels-search-box glass-box" onSubmit={handleSearchSubmit}>
             <input 
               type="text" 
               placeholder="Where are you going? (e.g. Paris, Tokyo...)" 
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <button type="submit" disabled={loading}>
-              {loading ? 'Searching...' : 'Search Hotels'}
-            </button>
+            <button type="submit" className="search-btn">Search Hotels</button>
           </form>
+
+          <div className="quick-cities">
+            {quickCities.map(c => (
+              <React.Fragment key={c}>
+                <span className="city-pill" onClick={() => handlePillClick(c)}>{c}</span>
+                {c !== quickCities[quickCities.length - 1] && <span className="city-dot">·</span>}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </section>
 
       <div className="container">
-        <div className="results-toolbar">
-          <div className="results-info">
-            {loading ? (
-              <span>Looking for hotels...</span>
-            ) : (
-              <span>{hotels.length} hotels found near <strong>{city}</strong></span>
-            )}
-          </div>
-          <div className="results-filters">
-            <select className="filter-select">
-              <option>All Ratings</option>
-              <option>⭐ 4+ Stars</option>
-            </select>
-            <select className="filter-select">
-              <option>All Distances</option>
-              <option>Within 2km</option>
-            </select>
-          </div>
-        </div>
+        {/* ═══════════════════════════════
+            RESULTS TOOLBAR
+        ═══════════════════════════════ */}
+        {!error && (
+          <div className="results-toolbar">
+            <div className="results-info">
+              {loading ? (
+                <span>Finding hotels...</span>
+              ) : (
+                <span>{displayedHotels.length} hotels found near <span className="green-text">{city}</span></span>
+              )}
+            </div>
+            
+            <div className="results-filters">
+              <select 
+                className="filter-select" 
+                value={sortBy} 
+                onChange={e => setSortBy(e.target.value)}
+                disabled={loading}
+              >
+                <option value="rating">Sort by: Rating</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="distance">Distance</option>
+              </select>
 
+              <select 
+                className="filter-select" 
+                value={filterStars} 
+                onChange={e => setFilterStars(e.target.value)}
+                disabled={loading}
+              >
+                <option value="all">All Stars</option>
+                <option value="5">5★ Hotels</option>
+                <option value="4">4★ Hotels</option>
+                <option value="3">3★ Hotels</option>
+              </select>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════
+            LOADING STATE
+        ═══════════════════════════════ */}
         {loading && (
-          <div className="hotels-loader">
-            <div className="spinner"></div>
-            <p>Syncing with hotel providers...</p>
+          <div className="loading-state">
+             <div className="green-spinner"></div>
+             <p>Finding the best hotels in {inputValue}...</p>
+             
+             <div className="hotels-grid skeletons-grid">
+               {[1, 2, 3, 4, 5, 6].map(i => (
+                 <div key={i} className="skeleton-card">
+                   <div className="skeleton-img pulse"></div>
+                   <div className="skeleton-body">
+                     <div className="skeleton-title pulse"></div>
+                     <div className="skeleton-text pulse w-70"></div>
+                     <div className="skeleton-text pulse w-50"></div>
+                   </div>
+                 </div>
+               ))}
+             </div>
           </div>
         )}
 
-        {error && (
-          <div className="hotels-error">
-            <h2>😔 No hotels found</h2>
-            <p>We couldn't find any results for "{inputValue}". Try another city.</p>
+        {/* ═══════════════════════════════
+            ERROR / EMPTY STATE
+        ═══════════════════════════════ */}
+        {!loading && (error === 'empty' || (hotels.length === 0 && !error)) && (
+          <div className="empty-state">
+            <div className="empty-icon">🔍</div>
+            <h3>No hotels found in {city}.</h3>
+            <p>Try another city or adjust your search.</p>
           </div>
         )}
 
-        {!loading && !error && hotels.length > 0 && (
+        {!loading && error === 'api' && (
+          <div className="empty-state">
+            <div className="empty-icon">⚠️</div>
+            <h3>Something went wrong.</h3>
+            <p>Please try again later.</p>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════
+            HOTEL CARDS GRID
+        ═══════════════════════════════ */}
+        {!loading && !error && displayedHotels.length > 0 && (
           <div className="hotels-grid">
-            {hotels.map((hotel, i) => {
-              const props = hotel.properties;
-              // OpenTripMap doesn't always provide price/rating in the basic radius call
-              // We'll generate consistent-ish random data for the UI as per the user's snippet
-              const distance = Math.round((props.dist || (i * 500 + 1000)) / 1000);
-              const price = Math.round(Math.random() * 200 + 80);
-              const rating = (props.rate || (Math.random() * (5 - 3.5) + 3.5)).toFixed(1);
+            {displayedHotels.map(hotel => (
+              <div key={hotel.id} className="new-hotel-card">
+                
+                <div className="card-top-colored" style={{ background: getGradient(hotel.stars) }}>
+                  <div className="featured-pill">Featured</div>
+                  <div className="star-badge">{hotel.stars}★</div>
+                  <div className="big-emoji">{hotel.emoji}</div>
+                </div>
 
-              return (
-                <div key={props.xid || i} className="hotel-card">
-                  <div className="hotel-card-img">
-                    <span className="hotel-emoji">🏨</span>
-                    <div className="hotel-tag">Featured</div>
+                <div className="card-body">
+                  <h3 className="new-hotel-name">{hotel.name}</h3>
+                  <div className="rating-row">
+                    <span className="stars-visual">
+                      {"★".repeat(Math.round(hotel.rating))}{"☆".repeat(5 - Math.round(hotel.rating))}
+                    </span>
+                    <span className="rating-num">{hotel.rating.toFixed(1)}</span>
                   </div>
-                  <div className="hotel-card-body">
-                    <div className="hotel-header">
-                      <h3 className="hotel-name">{props.name || `Heritage Stay ${i+1}`}</h3>
-                      <div className="hotel-rating">⭐ {rating}</div>
+
+                  <div className="location-text">
+                    📍 {hotel.address || city}
+                  </div>
+                  <div className="distance-text">
+                    {hotel.distance} km from city center
+                  </div>
+
+                  <div className="perks-row">
+                    {hotel.perks.map((p, idx) => (
+                      <span key={idx} className="perk-pill">{p}</span>
+                    ))}
+                  </div>
+
+                  <div className="card-bottom">
+                    <div className="price-block">
+                      <span className="dollar">$</span>
+                      <span className="price-val">{hotel.price}</span>
+                      <span className="night">/night</span>
                     </div>
-                    <div className="hotel-location">
-                      📍 {distance}km from {city} center
-                    </div>
-                    <div className="hotel-perks">
-                      <span>Free WiFi</span>
-                      <span>Breakfast</span>
-                      <span>Cancellation</span>
-                    </div>
-                    <div className="hotel-footer">
-                      <div className="hotel-price">
-                        <span className="currency">$</span>
-                        <span className="amount">{price}</span>
-                        <span className="period">/night</span>
-                      </div>
-                      <button className="hotel-btn" onClick={() => alert(`Booking ${props.name}...`)}>
-                        Details
-                      </button>
-                    </div>
+                    <button className="view-details-btn">View Details</button>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         )}
       </div>

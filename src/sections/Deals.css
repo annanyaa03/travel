@@ -1,6 +1,6 @@
 .deals-section {
   padding: 100px 0;
-  background: #09101c;
+  background: #ffffff;
 }
 
 .deals-header {
@@ -38,7 +38,7 @@
 
 .deals-tab:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: white;
+  color: #0f172a;
 }
 
 .deals-tab.active {
@@ -79,7 +79,7 @@
   top: 16px;
   right: 16px;
   background: #ef4444;
-  color: white;
+  color: #0f172a;
   padding: 6px 12px;
   border-radius: var(--radius-sm);
   font-weight: 800;
@@ -127,7 +127,7 @@
 
 .deal-content h3 {
   font-size: 1.4rem;
-  color: white;
+  color: #0f172a;
   margin-bottom: 8px;
 }
 
@@ -159,7 +159,7 @@
 .current-price {
   font-size: 1.8rem;
   font-weight: 800;
-  color: white;
+  color: #0f172a;
 }
 
 .deal-cta {

@@ -103,7 +103,7 @@
 
 .hero-text h1 {
   font-size: clamp(3rem, 8vw, 4.5rem);
-  color: white;
+  color: #0f172a;
   margin: 20px 0;
   line-height: 1.1;
 }
@@ -144,7 +144,7 @@
 .search-input input {
   background: transparent;
   border: none;
-  color: white;
+  color: #0f172a;
   width: 100%;
   font-size: 1rem;
 }
@@ -160,7 +160,7 @@
 .search-select {
   background: transparent;
   border: none;
-  color: white;
+  color: #0f172a;
   font-weight: 600;
   cursor: pointer;
   padding-right: 12px;
@@ -178,7 +178,7 @@
 .hero-tags button {
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border-glass);
-  color: white;
+  color: #0f172a;
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   cursor: pointer;
@@ -203,7 +203,7 @@
 .icon-btn {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.2);
-  color: white;
+  color: #0f172a;
   width: 44px; height: 44px;
   border-radius: 50%;
   display: flex;

@@ -1,5 +1,5 @@
 .fd-section {
-  background: #0b1120;
+  background: #ffffff;
   padding: 64px 0 72px;
   overflow: hidden;
 }
@@ -13,7 +13,7 @@
 .fd-title {
   font-size: clamp(28px, 4vw, 38px);
   font-weight: 800;
-  color: white;
+  color: #0f172a;
   margin: 0 0 10px;
 }
 .fd-title span { color: #10b981; }
@@ -110,7 +110,7 @@
 .fd-card-name {
   font-size: 22px;
   font-weight: 800;
-  color: white;
+  color: #0f172a;
   margin: 0 0 4px;
   text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
@@ -132,7 +132,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #0f172a;
   font-size: 13px;
   transition: all 0.25s ease;
 }
@@ -176,7 +176,7 @@
 .fd-detail-name {
   font-size: 19px;
   font-weight: 800;
-  color: white;
+  color: #0f172a;
 }
 .fd-detail-rating {
   font-size: 12px;

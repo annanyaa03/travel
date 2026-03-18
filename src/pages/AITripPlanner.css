@@ -49,7 +49,7 @@
 .planner-form-card h2 {
   font-size: 1.4rem;
   margin-bottom: 24px;
-  color: white;
+  color: #0f172a;
   border-bottom: 1px solid var(--border-glass);
   padding-bottom: 16px;
 }
@@ -103,7 +103,7 @@
   border: 1px solid var(--border-glass);
 }
 .empty-state h3 {
-  color: white;
+  color: #0f172a;
   font-size: 1.5rem;
   margin-bottom: 12px;
 }
@@ -165,7 +165,7 @@
 .markdown-content h2:first-child { margin-top: 0; }
 .markdown-content h3 {
   font-size: 1.3rem;
-  color: white;
+  color: #0f172a;
   margin: 24px 0 12px;
 }
 .markdown-content p {
@@ -180,7 +180,7 @@
   margin-left: 24px;
 }
 .md-bold {
-  color: white;
+  color: #0f172a;
   font-weight: 600;
 }
 

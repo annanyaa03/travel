@@ -30,22 +30,22 @@
   font-size: 0.85rem; font-weight: 500; cursor: pointer; margin-bottom: 28px;
   backdrop-filter: blur(10px); font-family: var(--font-sans); transition: all 0.2s;
 }
-.back-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+.back-btn:hover { background: rgba(255,255,255,0.2); color: #0f172a; }
 .detail-location { color: var(--coral); font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
 .detail-title { font-family: var(--font-serif); font-size: clamp(2.4rem, 5vw, 4rem);
-  color: white; font-weight: 900; margin-bottom: 12px; }
+  color: #0f172a; font-weight: 900; margin-bottom: 12px; }
 .detail-tagline { color: rgba(255,255,255,0.75); font-size: 1.1rem; margin-bottom: 20px; }
 .detail-meta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .detail-rating-row { display: flex; align-items: center; gap: 8px; }
 .stars { display: flex; gap: 3px; }
 .stars .filled { color: var(--gold-dark); }
 .stars .fa-star:not(.filled) { color: rgba(255,255,255,0.3); }
-.detail-rating-num { color: white; font-weight: 700; font-size: 1rem; }
+.detail-rating-num { color: #0f172a; font-weight: 700; font-size: 1rem; }
 .detail-reviews { color: rgba(255,255,255,0.55); font-size: 0.88rem; }
 .detail-cat-pill {
   background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.25); color: white;
+  border: 1px solid rgba(255,255,255,0.25); color: #0f172a;
   font-size: 0.8rem; font-weight: 600; padding: 6px 16px; border-radius: 50px;
 }
 

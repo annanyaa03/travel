@@ -20,7 +20,7 @@
 .about-title {
   font-family: var(--font-serif);
   font-size: clamp(2.4rem, 5vw, 4.2rem);
-  color: white; font-weight: 900; margin-bottom: 20px; line-height: 1.1;
+  color: #0f172a; font-weight: 900; margin-bottom: 20px; line-height: 1.1;
 }
 .about-title span { background: var(--grad-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .about-hero-sub { color: rgba(255,255,255,0.72); font-size: 1.1rem; max-width: 540px; line-height: 1.7; margin-bottom: 36px; }
@@ -92,7 +92,7 @@
   background-blend-mode: multiply;
 }
 .about-cta-inner { position: relative; z-index: 1; }
-.about-cta h2 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); color: white; margin-bottom: 12px; }
+.about-cta h2 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); color: #0f172a; margin-bottom: 12px; }
 .about-cta p { color: rgba(255,255,255,0.7); margin-bottom: 36px; font-size: 1.05rem; }
 
 @media (max-width: 1024px) {

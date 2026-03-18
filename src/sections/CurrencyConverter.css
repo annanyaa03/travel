@@ -17,7 +17,7 @@
 }
 .widget-header h3 {
   font-size: 1.1rem;
-  color: white;
+  color: #0f172a;
 }
 
 .currency-loading {
@@ -74,7 +74,7 @@
 }
 .swap-btn:hover {
   background: var(--brand-grad);
-  color: white;
+  color: #0f172a;
   border-color: transparent;
   transform: rotate(180deg);
 }
@@ -97,7 +97,7 @@
   font-family: var(--font-heading);
   font-size: 2rem;
   font-weight: 700;
-  color: white;
+  color: #0f172a;
 }
 .result-value span {
   font-size: 1.2rem;
