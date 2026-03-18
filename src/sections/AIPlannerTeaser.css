@@ -31,7 +31,7 @@
 .pl-title {
   font-size: 36px;
   font-weight: 900;
-  color: white;
+  color: #0f172a;
   letter-spacing: -0.5px;
 }
 .pl-ai-badge {
@@ -137,7 +137,7 @@
   transition: color 0.3s ease;
 }
 .pl-dest-name.filled {
-  color: white;
+  color: #0f172a;
 }
 .pl-dest-sub {
   font-size: 9px;
@@ -401,7 +401,7 @@
 .ai-card-title {
   font-size: 14px;
   font-weight: 700;
-  color: white;
+  color: #0f172a;
   margin-bottom: 3px;
 }
 .ai-card-status {
@@ -482,7 +482,7 @@
 .ai-day-title {
   font-size: 12px;
   font-weight: 600;
-  color: white;
+  color: #0f172a;
   margin-bottom: 2px;
 }
 .ai-day-desc {
@@ -546,7 +546,7 @@
 .ai-stat-num {
   font-size: 17px;
   font-weight: 800;
-  color: white;
+  color: #0f172a;
 }
 .ai-stat-num.green { color: #10b981; }
 .ai-stat-label {
@@ -637,7 +637,7 @@
 .ai-share-btn:hover,
 .ai-pdf-btn:hover {
   background: rgba(255,255,255,0.08);
-  color: white;
+  color: #0f172a;
 }
 
 @media (max-width: 992px) {

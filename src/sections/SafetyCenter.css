@@ -25,7 +25,7 @@
 }
 .safety-legend h4 {
   font-size: 1rem;
-  color: white;
+  color: #0f172a;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--border-glass);
   padding-bottom: 12px;
@@ -44,7 +44,7 @@
   color: var(--text-muted);
 }
 .safety-legend li strong {
-  color: white;
+  color: #0f172a;
   min-width: 60px;
 }
 .dot {
@@ -58,7 +58,7 @@
 }
 .safety-search-box h3 {
   font-size: 1.4rem;
-  color: white;
+  color: #0f172a;
   margin-bottom: 24px;
 }
 
@@ -103,7 +103,7 @@
   font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 700;
-  color: white;
+  color: #0f172a;
   letter-spacing: 0.05em;
 }
 .result-badge {

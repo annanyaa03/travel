@@ -38,7 +38,7 @@
 
 .dest-hero-content h2 {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
-  color: white;
+  color: #0f172a;
   margin-bottom: 12px;
 }
 .dest-hero-content h2 span { color: var(--brand-main); }
@@ -70,7 +70,7 @@
   background: transparent;
   border: none;
   font-size: 1.1rem;
-  color: white;
+  color: #0f172a;
 }
 .search-bar input:focus { outline: none; }
 
@@ -96,13 +96,13 @@
 
 .filter-pill:hover, .filter-tag:hover {
   background: rgba(255,255,255,0.1);
-  color: white;
+  color: #0f172a;
 }
 
 .filter-pill.active, .filter-tag.active {
   background: var(--brand-grad);
   border-color: transparent;
-  color: white;
+  color: #0f172a;
   box-shadow: 0 4px 15px var(--brand-glow);
 }
 
@@ -115,7 +115,7 @@
   border-top: 1px solid var(--border-glass);
 }
 
-.results-count { color: white; font-weight: 600; }
+.results-count { color: #0f172a; font-weight: 600; }
 .btn-clear { background: transparent; border: none; color: #ef4444; font-weight: 600; cursor: pointer; }
 .btn-clear:hover { text-decoration: underline; }
 
@@ -127,7 +127,7 @@
   padding: 80px 0;
   color: var(--text-muted);
 }
-.no-results h3 { color: white; font-size: 1.5rem; margin-bottom: 12px; }
+.no-results h3 { color: #0f172a; font-size: 1.5rem; margin-bottom: 12px; }
 .no-results button { margin-top: 24px; }
 
 .load-more-section {

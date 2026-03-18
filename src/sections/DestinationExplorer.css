@@ -65,7 +65,7 @@
 .ps-flag { font-size:22px;margin-bottom:5px; }
 .ps-name {
   font-size:15px;font-weight:900;
-  color:white;letter-spacing:2px;
+  color: #0f172a;letter-spacing:2px;
   text-transform:uppercase;
 }
 .ps-country {
@@ -125,7 +125,7 @@
 }
 .ptt-title {
   font-size:14px;font-weight:700;
-  color:white;margin-bottom:5px;
+  color: #0f172a;margin-bottom:5px;
 }
 .ptt-desc {
   font-size:11px;color:#94a3b8;

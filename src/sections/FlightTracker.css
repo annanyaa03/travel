@@ -72,7 +72,7 @@
 .popular-flights button {
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border-glass);
-  color: white;
+  color: #0f172a;
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   cursor: pointer;
@@ -111,7 +111,7 @@
 }
 .airport h4 {
   font-size: 1.1rem;
-  color: white;
+  color: #0f172a;
   margin-bottom: 4px;
 }
 .airport span {
@@ -152,7 +152,7 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: #0f172a;
   font-size: 1.5rem;
   filter: drop-shadow(0 0 5px rgba(249,115,22,0.8));
 }
@@ -193,7 +193,7 @@
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 600;
-  color: white;
+  color: #0f172a;
 }
 
 @media (max-width: 768px) {

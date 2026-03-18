@@ -1,15 +1,15 @@
 :root {
   /* Colors */
-  --bg-dark: #0f172a;
-  --bg-deep: #020617;
-  --bg-card: #1e293b;
-  --bg-glass: rgba(15, 23, 42, 0.7);
-  --border-glass: rgba(255, 255, 255, 0.1);
+  --bg-dark: #ffffff;
+  --bg-deep: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --border-glass: rgba(0, 0, 0, 0.1);
   --brand-main: #10B981;
   --brand-grad: linear-gradient(90deg, #10B981 0%, #059669 100%);
   --brand-glow: rgba(16, 185, 129, 0.3);
-  --text-main: #ffffff;
-  --text-muted: #94a3b8;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
   
   /* Layout */
   --nav-height: 80px;

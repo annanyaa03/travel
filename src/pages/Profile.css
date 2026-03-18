@@ -40,12 +40,12 @@
 .user-photo img {
   width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
 }
-.user-card h3 { color: white; margin-bottom: 4px; }
+.user-card h3 { color: #0f172a; margin-bottom: 4px; }
 .user-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
 .user-badge-pill {
   display: inline-block;
   background: var(--brand-grad);
-  color: white;
+  color: #0f172a;
   padding: 4px 16px;
   border-radius: var(--radius-pill);
   font-size: 0.75rem;
@@ -62,7 +62,7 @@
 }
 .stat-item { text-align: center; }
 .stat-item:first-child { border-right: 1px solid var(--border-glass); }
-.stat-val { display: block; font-size: 1.8rem; font-weight: 800; color: white; line-height: 1; margin-bottom: 4px; }
+.stat-val { display: block; font-size: 1.8rem; font-weight: 800; color: #0f172a; line-height: 1; margin-bottom: 4px; }
 .stat-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* Main Content */
@@ -80,7 +80,7 @@
   margin-bottom: 40px;
 }
 .card-icon { font-size: 2.4rem; color: var(--brand-main); }
-.card-header h3 { font-size: 1.6rem; color: white; }
+.card-header h3 { font-size: 1.6rem; color: #0f172a; }
 .card-header p { color: var(--text-muted); font-size: 0.95rem; }
 
 .stamps-grid {
@@ -131,7 +131,7 @@
 }
 
 .activity-card { padding: 40px; }
-.activity-card h3 { font-size: 1.3rem; color: white; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+.activity-card h3 { font-size: 1.3rem; color: #0f172a; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
 .empty-text { color: var(--text-muted); font-style: italic; font-size: 0.9rem; }
 
 .activity-list { display: flex; flex-direction: column; gap: 20px; }
@@ -143,7 +143,7 @@
 }
 .activity-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand-main); }
 .activity-info { flex-grow: 1; display: flex; flex-direction: column; }
-.activity-info strong { font-size: 0.95rem; color: white; }
+.activity-info strong { font-size: 0.95rem; color: #0f172a; }
 .activity-info span { font-size: 0.8rem; color: var(--text-muted); }
 .activity-date { font-size: 0.8rem; color: var(--text-muted); }
 
