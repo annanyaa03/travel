@@ -1,0 +1,152 @@
+.profile-page {
+  padding-top: calc(var(--nav-height) + 60px);
+  padding-bottom: 100px;
+  min-height: 80vh;
+}
+
+.login-prompt {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 60px;
+  text-align: center;
+}
+.login-prompt h2 { margin-bottom: 16px; font-size: 2rem; }
+.login-prompt p { color: var(--text-muted); margin-bottom: 32px; }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Sidebar */
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.user-card {
+  padding: 40px 24px;
+  text-align: center;
+}
+.user-photo {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  border: 3px solid var(--brand-main);
+  padding: 4px;
+}
+.user-photo img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+}
+.user-card h3 { color: white; margin-bottom: 4px; }
+.user-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
+.user-badge-pill {
+  display: inline-block;
+  background: var(--brand-grad);
+  color: white;
+  padding: 4px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.btn-logout { width: 100%; font-size: 0.85rem; }
+
+.stats-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 24px;
+}
+.stat-item { text-align: center; }
+.stat-item:first-child { border-right: 1px solid var(--border-glass); }
+.stat-val { display: block; font-size: 1.8rem; font-weight: 800; color: white; line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Main Content */
+.profile-main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.passport-card { padding: 40px; }
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.card-icon { font-size: 2.4rem; color: var(--brand-main); }
+.card-header h3 { font-size: 1.6rem; color: white; }
+.card-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+.stamps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.stamp-slot {
+  height: 80px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.1);
+  font-weight: 800;
+}
+.stamp-slot.stamped {
+  border: none;
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--brand-main);
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
+  transform: rotate(-10deg);
+}
+
+.badge-progress {
+  padding-top: 32px;
+  border-top: 1px solid var(--border-glass);
+}
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.progress-bar {
+  height: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--brand-grad);
+  border-radius: 5px;
+  box-shadow: 0 0 10px var(--brand-glow);
+}
+
+.activity-card { padding: 40px; }
+.activity-card h3 { font-size: 1.3rem; color: white; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+.empty-text { color: var(--text-muted); font-style: italic; font-size: 0.9rem; }
+
+.activity-list { display: flex; flex-direction: column; gap: 20px; }
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+}
+.activity-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand-main); }
+.activity-info { flex-grow: 1; display: flex; flex-direction: column; }
+.activity-info strong { font-size: 0.95rem; color: white; }
+.activity-info span { font-size: 0.8rem; color: var(--text-muted); }
+.activity-date { font-size: 0.8rem; color: var(--text-muted); }
+
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; }
+}

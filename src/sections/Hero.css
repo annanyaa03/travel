@@ -1,0 +1,260 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 90px 0 0;
+}
+
+.hero-slides {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  transform: scale(1);
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+/* Effect 1: Zoom in + drift left */
+.hero-slide.active.fx-zoom-left {
+  animation: fxZoomLeft 4s ease-out forwards;
+}
+@keyframes fxZoomLeft {
+  0%   { transform: scale(1)    translateX(0); }
+  100% { transform: scale(1.1) translateX(-20px); }
+}
+
+/* Effect 2: Zoom in + drift right */
+.hero-slide.active.fx-zoom-right {
+  animation: fxZoomRight 4s ease-out forwards;
+}
+@keyframes fxZoomRight {
+  0%   { transform: scale(1)    translateX(0); }
+  100% { transform: scale(1.1) translateX(20px); }
+}
+
+/* Effect 3: Slow zoom out */
+.hero-slide.active.fx-zoom-out {
+  animation: fxZoomOut 4s ease-out forwards;
+}
+@keyframes fxZoomOut {
+  0%   { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* Effect 4: Pan right (lateral sweep) */
+.hero-slide.active.fx-pan-right {
+  animation: fxPanRight 4s linear forwards;
+}
+@keyframes fxPanRight {
+  0%   { transform: scale(1.08) translateX(-20px); }
+  100% { transform: scale(1.08) translateX(20px); }
+}
+
+/* Effect 5: Diagonal drift (top-left → bottom-right) */
+.hero-slide.active.fx-diagonal {
+  animation: fxDiagonal 4s ease-in-out forwards;
+}
+@keyframes fxDiagonal {
+  0%   { transform: scale(1)    translateX(-10px) translateY(-10px); }
+  100% { transform: scale(1.1) translateX(10px)  translateY(10px); }
+}
+
+/* Effect 6: Slow tilt up */
+.hero-slide.active.fx-tilt-up {
+  animation: fxTiltUp 4s ease-out forwards;
+}
+@keyframes fxTiltUp {
+  0%   { transform: scale(1.05) translateY(18px); }
+  100% { transform: scale(1.08) translateY(0px); }
+}
+
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%),
+              linear-gradient(to bottom, rgba(11, 17, 32, 0.6) 0%, rgba(11, 17, 32, 0.2) 100%);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+.hero-text h1 {
+  font-size: clamp(3rem, 8vw, 4.5rem);
+  color: white;
+  margin: 20px 0;
+  line-height: 1.1;
+}
+
+.brand-gradient {
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: italic;
+}
+
+.hero-subtext {
+  font-size: 1.25rem;
+  color: #e2e8f0;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+/* Hero Search */
+.hero-search {
+  display: flex;
+  align-items: center;
+  padding: 8px 8px 8px 24px;
+  border-radius: 100px;
+  width: 100%;
+  max-width: 700px;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+.search-input input {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 1rem;
+}
+.search-input input:focus { outline: none; }
+.search-input svg { color: var(--brand-main); font-size: 1.2rem; }
+
+.search-divider {
+  width: 1px;
+  height: 30px;
+  background: rgba(255,255,255,0.1);
+}
+
+.search-select {
+  background: transparent;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding-right: 12px;
+}
+.search-select option { background: var(--bg-dark); }
+
+/* Popular Tags */
+.hero-tags {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.hero-tags button {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-glass);
+  color: white;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.hero-tags button:hover {
+  background: var(--brand-main);
+  border-color: var(--brand-main);
+}
+
+/* Controls */
+.hero-controls {
+  position: absolute;
+  bottom: 80px;
+  right: 5%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.icon-btn:hover { border-color: var(--brand-main); color: var(--brand-main); }
+
+.hero-dots {
+  display: flex;
+  gap: 8px;
+}
+.hero-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.hero-dot.active { background: var(--brand-main); width: 24px; border-radius: 4px; }
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+.mouse {
+  width: 24px; height: 40px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  display: flex; justify-content: center;
+}
+.wheel {
+  width: 4px; height: 8px;
+  background: white;
+  border-radius: 2px;
+  margin-top: 6px;
+  animation: wheelScroll 2s infinite;
+}
+
+@keyframes wheelScroll {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(15px); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .hero-search { flex-direction: column; border-radius: 24px; padding: 24px; }
+  .search-divider { display: none; }
+  .search-btn { width: 100%; }
+}

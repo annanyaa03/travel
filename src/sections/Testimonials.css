@@ -1,0 +1,103 @@
+.testimonials {
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.testimonials-wrapper {
+  margin-top: 40px;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.testimonials-track {
+  display: flex;
+  gap: 32px;
+  animation: scrollTestimonials 15s linear infinite;
+  padding: 40px 0;
+}
+
+.testimonials-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollTestimonials {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-350px * 6 - 32px * 6)); }
+}
+
+.testimonial-card {
+  min-width: 350px;
+  max-width: 350px;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.quote-icon {
+  color: var(--brand-main);
+  font-size: 2rem;
+  margin-bottom: 24px;
+}
+
+.review-text {
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: #e2e8f0;
+}
+
+.star-rating {
+  margin-bottom: 24px;
+  display: flex;
+  gap: 4px;
+  color: var(--brand-main);
+}
+
+.traveler-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.traveler-info img {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--brand-main);
+}
+
+.traveler-name {
+  color: white;
+  font-size: 1rem;
+}
+
+.traveler-loc {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.carousel-nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid var(--border-glass);
+  color: white;
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover {
+  border-color: var(--brand-main);
+  color: var(--brand-main);
+}
