@@ -1,0 +1,193 @@
+.login-page {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6%;
+}
+
+/* 4K Video Background */
+.login-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #1a1510; /* Dark warm brown fallback */
+}
+.video-content {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.video-overlay-dim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(34, 34, 34, 0.2) 0%, rgba(34, 34, 34, 0.45) 100%);
+  z-index: 2;
+}
+
+.login-content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: center; /* Centered since left panel is removed */
+  align-items: center;
+  gap: 40px;
+}
+
+/* Glass Panels Base */
+.form-glass-container {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+  flex: 0 0 380px;
+  padding: 40px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.form-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+.form-header h3 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: white;
+  letter-spacing: 1px;
+}
+.form-header p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* Form Elements */
+.login-form-element {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-inner-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-field-icon {
+  position: absolute;
+  left: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+.input-inner-wrap input {
+  width: 100%;
+  padding: 13px 16px 13px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.03);
+  color: white;
+  transition: all 0.4s var(--ease);
+}
+.input-inner-wrap input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+.input-inner-wrap input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+.forgot-pass-link {
+  align-self: flex-end;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  margin-top: 6px;
+  transition: color 0.3s;
+}
+.forgot-pass-link:hover { color: var(--brand-main); }
+
+/* Buttons */
+.login-submit-btn {
+  background: #3b82f6;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+  margin-top: 10px;
+}
+.login-submit-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.35);
+}
+
+/* Google Button */
+.google-login-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 13px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+}
+.google-login-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.google-brand-icon {
+  font-size: 1rem;
+}
+
+/* Footer Link */
+.login-footer-text {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.3px;
+}
+.login-footer-text a {
+  color: var(--brand-main);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+}
+.login-footer-text a:hover { text-decoration: underline; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-glass-container { flex: 0 0 92%; padding: 30px 20px; }
+  .form-header h3 { font-size: 1.8rem; }
+}
+

@@ -1,6 +1,7 @@
 .testimonials {
-  background: var(--bg-dark);
+  background: var(--bg-primary);
   overflow: hidden;
+  padding: 80px 0;
 }
 
 .testimonials-wrapper {
@@ -29,6 +30,9 @@
   min-width: 350px;
   max-width: 350px;
   padding: 40px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-deep);
   border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
@@ -41,11 +45,12 @@
 }
 
 .review-text {
+  font-family: var(--font-body);
   font-style: italic;
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 24px;
-  color: #e2e8f0;
+  color: var(--text-body);
 }
 
 .star-rating {
@@ -69,8 +74,10 @@
 }
 
 .traveler-name {
-  color: #0f172a;
-  font-size: 1rem;
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .traveler-loc {
@@ -86,18 +93,19 @@
 }
 
 .nav-btn {
-  background: transparent;
-  border: 1px solid var(--border-glass);
-  color: #0f172a;
+  background: var(--btn-primary-bg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--brand-main);
   width: 50px; height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center; justify-content: center;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s var(--ease);
 }
 
 .nav-btn:hover {
+  background: #2a1f12;
   border-color: var(--brand-main);
-  color: var(--brand-main);
+  box-shadow: var(--shadow-gold);
 }

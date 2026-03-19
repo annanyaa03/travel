@@ -2,108 +2,86 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
-export default function Navbar({ onLoginClick }) {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+const CompassIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="lux-compass-svg">
+    {/* Outer Circle */}
+    <circle cx="18" cy="18" r="17.5" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
+    {/* Inner Ring */}
+    <circle cx="18" cy="18" r="14" stroke="rgba(255, 255, 255, 0.20)" strokeWidth="0.5"/>
+    
+    {/* Cardinal Ticks */}
+    <line x1="18" y1="0.5" x2="18" y2="4.5" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1"/>
+    <line x1="18" y1="31.5" x2="18" y2="35.5" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
+    <line x1="31.5" y1="18" x2="35.5" y2="18" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
+    <line x1="0.5" y1="18" x2="4.5" y2="18" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
+    
+    {/* South Needle (Gold) */}
+    <path d="M18,29.5 L16.9,19.2 L18,18.6 L19.1,19.2 Z" fill="#c9a84c" fillOpacity="0.85"/>
+    {/* North Needle (White) */}
+    <path d="M18,6.5 L19.1,16.8 L18,17.4 L16.9,16.8 Z" fill="white"/>
+    
+    <circle cx="18" cy="18" r="1.8" fill="white"/>
+    <circle cx="18" cy="18" r="0.8" fill="#c9a84c"/>
+  </svg>
+);
+
+const UserIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+  </svg>
+);
+
+export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (!e.target.closest('#nav-login-wrap')) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
   }, []);
 
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav id="main-nav" className={scrolled ? 'scrolled' : ''}>
-      <div className="nav-inner">
-
-        <div className="nav-logo" onClick={() => navigate('/')}>
-          <div className="nav-logo-icon">🧭</div>
-          <span className="nav-logo-text">Compass &amp; Co.</span>
+    <nav className={`lux-navbar ${scrolled ? 'lux-scrolled' : ''}`} id="lux-transparent-nav">
+      <div className="lux-nav-container">
+        
+        {/* Left Section: Brand */}
+        <div className="lux-nav-left" onClick={() => navigate('/')}>
+          <CompassIcon />
+          <span className="lux-brand-name">
+            Compass <span className="lux-ampersand">&amp;</span> Co.
+          </span>
         </div>
 
-        <div className="nav-links">
-          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
-          <Link to="/destinations" className={`nav-link ${isActive('/destinations') ? 'active' : ''}`}>Destinations</Link>
-          <Link to="/hotels" className={`nav-link ${isActive('/hotels') ? 'active' : ''}`}>Hotels</Link>
-          <Link to="/experiences" className={`nav-link ${isActive('/experiences') ? 'active' : ''}`}>Experiences</Link>
-          <Link to="/blog" className={`nav-link ${isActive('/blog') ? 'active' : ''}`}>Blog</Link>
+        {/* Center Section: Links */}
+        <div className="lux-nav-center">
+          <Link to="/" className={`lux-nav-link ${isActive('/') ? 'lux-active' : ''}`}>Home</Link>
+          <Link to="/destinations" className={`lux-nav-link ${isActive('/destinations') ? 'lux-active' : ''}`}>Destinations</Link>
+          <Link to="/hotels" className={`lux-nav-link ${isActive('/hotels') ? 'lux-active' : ''}`}>Hotels</Link>
+          <Link to="/experiences" className={`lux-nav-link ${isActive('/experiences') ? 'lux-active' : ''}`}>Experiences</Link>
+          <Link to="/blog" className={`lux-nav-link ${isActive('/blog') ? 'lux-active' : ''}`}>Blog</Link>
         </div>
 
-        <div className="nav-actions">
-          <div className="nav-login-wrap" id="nav-login-wrap">
-            <div
-              className={`nav-login-btn ${dropdownOpen ? 'open' : ''}`}
-              id="nav-login-btn"
-              onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen); }}
-            >
-              <div className="nav-avatar">👤</div>
-              <span className="nav-login-text">Login</span>
-              <span className="nav-chevron">▾</span>
+        {/* Right Section: Actions */}
+        <div className="lux-nav-right">
+          <button className="lux-login-btn" onClick={() => navigate('/login')}>
+            <div className="lux-avatar-circle">
+              <UserIcon />
             </div>
-            <div className={`nav-dropdown ${dropdownOpen ? 'open' : ''}`} id="nav-dropdown">
-              <div className="dropdown-header">
-                <div className="dropdown-icon">🧭</div>
-                <div>
-                  <div className="dropdown-title">Welcome back</div>
-                  <div className="dropdown-sub">Sign in to your account</div>
-                </div>
-              </div>
-              <div className="dropdown-divider"></div>
-              <button className="dropdown-option google">
-                <div className="google-icon">G</div>
-                <span>Continue with Google</span>
-              </button>
-              <button className="dropdown-option email">
-                <span className="option-icon">✉️</span>
-                <span>Continue with Email</span>
-              </button>
-              <div className="dropdown-divider"></div>
-              <div className="dropdown-signup">
-                Don't have an account?
-                <span className="signup-link">Sign Up Free</span>
-              </div>
-            </div>
-          </div>
-          <Link to="/plan" className="nav-cta">Plan a Trip ✈</Link>
+            <span>Login</span>
+          </button>
+          
+          <Link to="/concierge-plan" className="lux-cta-pill">
+            <span>Plan a trip</span>
+            <span className="lux-cta-arrow">→</span>
+          </Link>
         </div>
 
-        <button
-          className="nav-hamburger"
-          id="nav-hamburger"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-      </div>
-
-      <div className={`nav-mobile-menu ${mobileOpen ? 'open' : ''}`} id="nav-mobile-menu">
-        <Link to="/" className={`mobile-link ${isActive('/') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Home</Link>
-        <Link to="/destinations" className={`mobile-link ${isActive('/destinations') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Destinations</Link>
-        <Link to="/hotels" className={`mobile-link ${isActive('/hotels') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Hotels</Link>
-        <Link to="/experiences" className={`mobile-link ${isActive('/experiences') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Experiences</Link>
-        <Link to="/blog" className={`mobile-link ${isActive('/blog') ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>Blog</Link>
-        <div className="mobile-divider"></div>
-        <button className="mobile-google"><span>G</span> Continue with Google</button>
-        <button className="mobile-email">✉️ Continue with Email</button>
-        <Link to="/plan" className="mobile-cta" onClick={() => setMobileOpen(false)}>Plan a Trip ✈</Link>
       </div>
     </nav>
   );

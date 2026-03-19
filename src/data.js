@@ -482,3 +482,10 @@ export const testimonials = [
     avatar: "https://i.pravatar.cc/150?u=ahmed_k"
   }
 ];
+
+export const stats = [
+  { value: '25K+', label: 'Happy Travelers' },
+  { value: '150+', label: 'Destinations' },
+  { value: '4.9/5', label: 'Average Rating' },
+  { value: '24/7', label: 'Global Support' }
+];

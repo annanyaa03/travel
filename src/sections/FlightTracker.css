@@ -1,6 +1,6 @@
 .flight-tracker-section {
   padding: 80px 0;
-  background: var(--bg-dark);
+  background: var(--bg-primary);
 }
 
 .flight-header {
@@ -20,6 +20,10 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 40px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-deep);
+  border-radius: var(--radius-lg);
 }
 
 .flight-search {
@@ -37,8 +41,15 @@
   width: 100%;
   padding: 16px 20px 16px 48px;
   font-size: 1.05rem;
-  background: rgba(0,0,0,0.2);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
   border-radius: var(--radius-pill);
+}
+.flight-input-wrap input:focus {
+  outline: none;
+  border-color: var(--brand-main);
+  box-shadow: var(--shadow-gold);
 }
 .input-icon {
   position: absolute;
@@ -70,25 +81,27 @@
   font-size: 0.85rem;
 }
 .popular-flights button {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border-glass);
-  color: #0f172a;
+  background: var(--btn-primary-bg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--brand-main);
   padding: 4px 12px;
   border-radius: var(--radius-pill);
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 .popular-flights button:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.3);
+  background: #2a1f12;
+  border-color: var(--brand-main);
+  box-shadow: var(--shadow-gold);
 }
 
 /* Results */
 .flight-results {
-  background: rgba(0,0,0,0.2);
+  background: var(--bg-primary);
   border-radius: var(--radius-lg);
   padding: 32px;
-  border: 1px solid var(--border-glass);
+  border: 1px solid var(--border-light);
 }
 
 .flight-route {
@@ -110,8 +123,9 @@
   margin-bottom: 12px;
 }
 .airport h4 {
+  font-family: var(--font-heading);
   font-size: 1.1rem;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 .airport span {
@@ -152,9 +166,9 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: #0f172a;
+  color: var(--brand-main);
   font-size: 1.5rem;
-  filter: drop-shadow(0 0 5px rgba(249,115,22,0.8));
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
 }
 
 .route-times {
@@ -176,8 +190,9 @@
   padding-top: 24px;
 }
 .stat-box {
-  background: rgba(255,255,255,0.03);
+  background: #ffffff;
   padding: 16px;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   text-align: center;
 }
@@ -192,8 +207,8 @@
 .stat-box span {
   font-family: var(--font-heading);
   font-size: 1.1rem;
-  font-weight: 600;
-  color: #0f172a;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {

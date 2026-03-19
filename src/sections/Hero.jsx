@@ -1,49 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaMapMarkerAlt, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Hero.css';
 
-const images = [
-  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1483347756197-71ef80e95f73?w=1920&h=1080&fit=crop'
-];
-
-const fxClasses = [
-  'fx-zoom-left',
-  'fx-zoom-right',
-  'fx-zoom-out',
-  'fx-pan-right',
-  'fx-diagonal',
-  'fx-tilt-up',
-];
-
 export default function Hero() {
-  const [activeSlide, setActiveSlide] = useState(0);
+  const videoRef = useRef(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide(prev => (prev + 1) % images.length);
-    }, 4000);
-    return () => clearInterval(timer);
+    if (videoRef.current) {
+      videoRef.current.play().catch(err => console.log("Video autoplay blocked:", err));
+    }
   }, []);
-
-  const nextSlide = () => setActiveSlide(prev => (prev + 1) % images.length);
-  const prevSlide = () => setActiveSlide(prev => (prev === 0 ? images.length - 1 : prev - 1));
 
   return (
     <section className="hero">
-      {/* Slideshow */}
-      <div className="hero-slides">
-        {images.map((img, idx) => (
-          <div 
-            key={idx} 
-            className={`hero-slide ${idx === activeSlide ? `active ${fxClasses[idx % fxClasses.length]}` : ''}`}
-            style={{backgroundImage: `url(${img})`}}
-          />
-        ))}
+      {/* Background Video */}
+      <div className="hero-video-container">
+        <video 
+          ref={videoRef}
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="hero-video"
+          onEnded={() => {
+            if (videoRef.current) {
+              videoRef.current.currentTime = 0;
+              videoRef.current.play();
+            }
+          }}
+          poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop"
+        >
+          <source src="https://videos.pexels.com/video-files/33862542/14370083_2560_1440_25fps.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         <div className="hero-overlay"></div>
       </div>
 
@@ -82,21 +71,6 @@ export default function Hero() {
             <button>Morocco</button>
           </div>
         </div>
-      </div>
-
-      {/* Controls */}
-      <div className="hero-controls">
-        <button onClick={prevSlide} className="icon-btn"><FaChevronLeft /></button>
-        <div className="hero-dots">
-          {images.map((_, idx) => (
-            <div 
-              key={idx} 
-              className={`hero-dot ${idx === activeSlide ? 'active' : ''}`}
-              onClick={() => setActiveSlide(idx)}
-            />
-          ))}
-        </div>
-        <button onClick={nextSlide} className="icon-btn"><FaChevronRight /></button>
       </div>
 
       {/* Scroll Indicator */}

@@ -44,7 +44,7 @@
 }
 
 .header-left .title-main {
-  color: #1a1209;
+  color: var(--text-primary);
 }
 
 .header-left .title-accent {
@@ -56,7 +56,7 @@
 }
 
 .header-left .subtitle {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.95rem;
 }
 
@@ -104,9 +104,10 @@
 }
 
 .tab-btn.active {
-  background: var(--brand-main);
+  background: var(--btn-primary-bg);
   border-color: var(--brand-main);
-  color: #fff;
+  color: var(--brand-main);
+  box-shadow: var(--shadow-gold);
 }
 
 /* LIST CONTENT */
@@ -249,7 +250,7 @@
 
 .article-title {
   font-family: var(--font-heading);
-  color: #1a1209;
+  color: var(--text-primary);
   font-size: 1.3rem;
   font-weight: 600;
   transition: color 0.3s;
@@ -354,7 +355,7 @@
 }
 
 .load-more-btn {
-  background: transparent;
+  background: var(--btn-primary-bg);
   border: 1px solid var(--brand-main);
   color: var(--brand-main);
   padding: 10px 32px;
@@ -362,13 +363,13 @@
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s var(--ease);
 }
 
 .load-more-btn:hover {
-  background: var(--brand-main);
+  background: #2a1f12;
   color: #fff;
-  box-shadow: 0 0 20px var(--brand-glow);
+  box-shadow: var(--shadow-gold);
 }
 
 @media (max-width: 768px) {

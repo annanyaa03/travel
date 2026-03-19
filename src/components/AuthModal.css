@@ -1,7 +1,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(26, 18, 9, 0.85);
+  background: var(--overlay-bg);
   backdrop-filter: blur(8px);
   z-index: 3000;
   display: flex;
@@ -17,8 +17,8 @@
   padding: 40px;
   border-radius: var(--radius-lg);
   position: relative;
-  border: 1px solid var(--border-main);
-  box-shadow: 0 30px 60px rgba(26, 18, 9, 0.2);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 30px 60px rgba(62, 47, 28, 0.15);
 }
 
 .close-modal {
@@ -131,7 +131,7 @@
 .auth-form input:focus {
   outline: none;
   border-color: var(--brand-main);
-  box-shadow: 0 0 0 2px var(--brand-glow);
+  box-shadow: var(--shadow-gold);
 }
 
 .form-options {
@@ -159,8 +159,17 @@
   width: 100%;
   padding: 14px;
   font-family: var(--font-body);
-  background: var(--brand-main);
-  color: #fff;
+  background: var(--btn-primary-bg);
+  color: var(--brand-main);
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+}
+.auth-submit:hover {
+  background: #2a1f12;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-gold);
 }
 
 .auth-footer {
