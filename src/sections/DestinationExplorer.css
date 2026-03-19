@@ -50,7 +50,7 @@
 }
 .ps-circle span {
   font-size:7px;
-  color:#10b981;
+  color:var(--brand-main);
   font-weight:700;
   letter-spacing:0.5px;
   text-align:center;
@@ -69,7 +69,7 @@
   text-transform:uppercase;
 }
 .ps-country {
-  font-size:8px;color:#10b981;
+  font-size:8px;color:var(--brand-main);
   letter-spacing:4px;
   text-transform:uppercase;
   margin-top:3px;
@@ -87,7 +87,7 @@
   transform:rotate(0deg) translateY(-16px) scale(1.06) !important;
   box-shadow:0 24px 60px rgba(0,0,0,0.7),
              0 0 40px rgba(16,185,129,0.25);
-  border-color:#10b981;
+  border-color:var(--brand-main);
   z-index:10;
 }
 .pstamp:hover .ps-circle {
@@ -144,11 +144,11 @@
   font-size:9px;
   background:rgba(16,185,129,0.1);
   border:1px solid rgba(16,185,129,0.25);
-  color:#10b981;
+  color:var(--brand-main);
   padding:2px 7px;border-radius:20px;
 }
 .ptt-btn {
-  width:100%;background:#10b981;
+  width:100%;background:var(--brand-main);
   color:black;border:none;
   border-radius:20px;padding:7px;
   font-size:11px;font-weight:700;

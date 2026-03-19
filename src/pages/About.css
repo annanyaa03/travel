@@ -18,7 +18,7 @@
   animation: fadeUp 0.8s var(--ease) both;
 }
 .about-title {
-  font-family: var(--font-serif);
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 5vw, 4.2rem);
   color: #0f172a; font-weight: 900; margin-bottom: 20px; line-height: 1.1;
 }
@@ -31,7 +31,7 @@
 .about-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; }
 .about-stat { padding: 20px; border-right: 1px solid rgba(255,255,255,0.08); }
 .about-stat:last-child { border-right: none; }
-.about-stat-value { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; background: var(--grad-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+.about-stat-value { font-family: var(--font-heading); font-size: 2.2rem; font-weight: 700; background: var(--grad-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
 .about-stat-label { font-size: 0.82rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em; }
 
 /* Mission */
@@ -66,7 +66,7 @@
 }
 .value-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
 .value-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-.value-title { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--navy); }
+.value-title { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--navy); }
 .value-desc { font-size: 0.88rem; color: var(--text-mid); line-height: 1.65; }
 
 /* Team */
@@ -78,7 +78,7 @@
 .team-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.5s; }
 .team-card:hover .team-img-wrap img { transform: scale(1.05); }
 .team-body { padding: 24px; }
-.team-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.team-name { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
 .team-role { font-size: 0.8rem; font-weight: 600; color: var(--coral); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
 .team-bio { font-size: 0.85rem; color: var(--text-mid); line-height: 1.6; }
 
@@ -92,7 +92,7 @@
   background-blend-mode: multiply;
 }
 .about-cta-inner { position: relative; z-index: 1; }
-.about-cta h2 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem); color: #0f172a; margin-bottom: 12px; }
+.about-cta h2 { font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3.2rem); color: #0f172a; margin-bottom: 12px; }
 .about-cta p { color: rgba(255,255,255,0.7); margin-bottom: 36px; font-size: 1.05rem; }
 
 @media (max-width: 1024px) {

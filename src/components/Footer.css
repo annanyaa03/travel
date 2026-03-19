@@ -1,8 +1,8 @@
 .footer-area {
-  background: #020617; /* Darker navy */
-  border-top: 1px solid var(--brand-main);
+  background: #1a1209;
+  border-top: 2px solid var(--brand-main);
   padding: 80px 0 0 0;
-  color: white;
+  color: var(--bg-primary);
 }
 
 .footer-grid {
@@ -16,9 +16,10 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: white;
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--bg-primary);
   text-decoration: none;
   margin-bottom: 20px;
 }
@@ -29,7 +30,7 @@
 }
 
 .brand-desc {
-  color: var(--text-muted);
+  color: var(--text-light);
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 24px;
@@ -43,12 +44,12 @@
 
 .social-row a {
   width: 40px; height: 40px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-glass);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #3a2a1a;
   border-radius: 50%;
   display: flex;
   align-items: center; justify-content: center;
-  color: white;
+  color: var(--text-light);
   transition: all 0.3s;
 }
 
@@ -59,9 +60,10 @@
 }
 
 .footer-link-col h4 {
-  font-size: 1.1rem;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
   margin-bottom: 24px;
-  color: white;
+  color: var(--bg-primary);
 }
 
 .footer-link-col ul {
@@ -73,7 +75,7 @@
 
 .footer-link-col a {
   text-decoration: none;
-  color: var(--text-muted);
+  color: var(--text-light);
   font-size: 0.95rem;
   transition: color 0.3s;
 }
@@ -83,7 +85,7 @@
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255,255,255,0.05);
   padding: 24px 0;
 }
 
@@ -106,16 +108,16 @@
 }
 
 .setting-group select {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border-glass);
-  color: white;
+  background: #2a1a09;
+  border: 1px solid #3a2a1a;
+  color: var(--text-light);
   padding: 8px 16px;
   border-radius: var(--radius-pill);
   font-size: 0.85rem;
   cursor: pointer;
 }
 
-.setting-group select option { background: var(--bg-deep); }
+.setting-group select option { background: #1a1209; }
 
 @media (max-width: 992px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }

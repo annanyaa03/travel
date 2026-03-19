@@ -52,8 +52,8 @@ export default function Hero() {
         <div className="hero-text animate-slide-up">
           <div className="badge-ai">⭐ #1 Rated Travel Experience Platform</div>
           <h1>
-            Discover the World's<br />
-            <span className="brand-gradient">Breathtaking Wonders</span>
+            <span style={{ color: '#f6d8b0', fontWeight: 300 }}>Discover the World's</span><br />
+            <span style={{ color: '#c8962a', fontWeight: 600, fontStyle: 'italic' }}>Breathtaking Wonders</span>
           </h1>
           <p className="hero-subtext">Curated journeys to the planet's most extraordinary destinations</p>
           

@@ -139,7 +139,7 @@ export default function Hotels() {
   const getGradient = (stars) => {
     if (stars === 5) return 'linear-gradient(135deg, #f59e0b, #d97706)';
     if (stars === 4) return 'linear-gradient(135deg, #3b82f6, #2563eb)';
-    return 'linear-gradient(135deg, #10b981, #059669)';
+    return 'var(--brand-grad)';
   };
 
   const quickCities = ["Paris", "Tokyo", "Bali", "New York", "Dubai", "Rome"];

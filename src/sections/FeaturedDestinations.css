@@ -1,5 +1,5 @@
 .fd-section {
-  background: #ffffff;
+  background: var(--bg-primary);
   padding: 64px 0 72px;
   overflow: hidden;
 }
@@ -11,14 +11,15 @@
   text-align: center;
 }
 .fd-title {
-  font-size: clamp(28px, 4vw, 38px);
-  font-weight: 800;
-  color: #0f172a;
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0 0 10px;
 }
-.fd-title span { color: #10b981; }
+.fd-title span { color: var(--brand-main); }
 .fd-sub {
-  font-size: 15px;
+  font-size: 18px;
   color: #64748b;
   margin: 0;
 }
@@ -67,13 +68,15 @@
   overflow: hidden;
   flex-shrink: 0;
   cursor: pointer;
+  border: 1px solid var(--border-main);
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
               box-shadow 0.35s ease;
 }
 .fd-card:hover {
   transform: scale(1.04) translateY(-8px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6),
-              0 0 24px rgba(16,185,129,0.15);
+  border-color: var(--brand-main);
+  box-shadow: 0 20px 50px rgba(26, 18, 9, 0.2),
+              0 0 24px var(--brand-glow);
 }
 
 .fd-card-img {
@@ -108,15 +111,16 @@
   padding: 20px 20px 22px;
 }
 .fd-card-name {
-  font-size: 22px;
-  font-weight: 800;
-  color: #0f172a;
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 700;
+  color: #fafaf8;
   margin: 0 0 4px;
   text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 .fd-card-country {
-  font-size: 12px;
-  color: #10b981;
+  font-size: 13px;
+  color: var(--brand-main);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -137,9 +141,9 @@
   transition: all 0.25s ease;
 }
 .fd-card:hover .fd-card-arrow {
-  background: #10b981;
-  border-color: #10b981;
-  color: black;
+  background: var(--brand-main);
+  border-color: var(--brand-main);
+  color: #fff;
 }
 
 /* ─── HOVER DETAIL PANEL ─── */
@@ -148,9 +152,9 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(5, 10, 25, 0.97) 0%,
-    rgba(5, 10, 25, 0.85) 60%,
-    rgba(5, 10, 25, 0.4) 100%
+    rgba(26, 18, 9, 0.97) 0%,
+    rgba(26, 18, 9, 0.85) 60%,
+    rgba(26, 18, 9, 0.4) 100%
   );
   display: flex;
   flex-direction: column;
@@ -174,22 +178,23 @@
   margin-bottom: 8px;
 }
 .fd-detail-name {
-  font-size: 19px;
-  font-weight: 800;
-  color: #0f172a;
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 700;
+  color: #fafaf8;
 }
 .fd-detail-rating {
   font-size: 12px;
   font-weight: 700;
-  color: #f59e0b;
-  background: rgba(245,158,11,0.12);
-  border: 1px solid rgba(245,158,11,0.25);
+  color: var(--brand-main);
+  background: rgba(200,150,42,0.12);
+  border: 1px solid var(--brand-glow);
   padding: 3px 8px;
   border-radius: 20px;
 }
 .fd-detail-desc {
   font-size: 12px;
-  color: #94a3b8;
+  color: #9d8f77;
   line-height: 1.5;
   margin: 0 0 12px;
 }
@@ -201,34 +206,34 @@
 }
 .fd-detail-tag {
   font-size: 10px;
-  background: rgba(16,185,129,0.1);
-  border: 1px solid rgba(16,185,129,0.25);
-  color: #10b981;
+  background: #fef9ee;
+  border: 1px solid #f6d8b0;
+  color: #92400e;
   padding: 3px 9px;
   border-radius: 20px;
   font-weight: 600;
 }
 .fd-detail-btn {
   width: 100%;
-  background: #10b981;
-  color: black;
+  background: var(--brand-main);
+  color: #fff;
   border: none;
   border-radius: 10px;
   padding: 10px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 .fd-detail-btn:hover {
-  background: #059669;
+  background: #b45309;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .fd-header { padding: 0 20px; }
   .fd-card { width: 220px; height: 290px; }
-  .fd-card-name { font-size: 17px; }
+  .fd-card-name { font-size: 22px; }
   @keyframes fdScroll {
     0%   { transform: translateX(0); }
     100% { transform: translateX(calc(-220px * 7 - 20px * 7)); }

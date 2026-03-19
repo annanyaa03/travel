@@ -11,7 +11,7 @@ export default function SafetyCenter() {
   // We map standard travel advisory levels to our color theme
   const getLevelInfo = (level) => {
     switch(level) {
-      case 1: return { color: '#10b981', label: 'Exercise Normal Precautions', icon: <FaCheckCircle /> };
+      case 1: return { color: 'var(--brand-main)', label: 'Exercise Normal Precautions', icon: <FaCheckCircle /> };
       case 2: return { color: '#fbbf24', label: 'Exercise Increased Caution', icon: <FaExclamationTriangle /> };
       case 3: return { color: '#f97316', label: 'Reconsider Travel', icon: <FaExclamationTriangle /> };
       case 4: return { color: '#ef4444', label: 'Do Not Travel', icon: <FaShieldAlt /> };
@@ -61,7 +61,7 @@ export default function SafetyCenter() {
           {/* Left: Info */}
           <div className="safety-info">
             <div className="section-title-wrap">
-              <FaShieldAlt className="title-icon" style={{color: '#10b981'}} />
+              <FaShieldAlt className="title-icon" style={{color: 'var(--brand-main)'}} />
               <h2>Travel <span>Safety Center</span></h2>
             </div>
             <p className="safety-desc">Check official travel advisories, safety levels, and critical information for your destination before you book.</p>
@@ -69,7 +69,7 @@ export default function SafetyCenter() {
             <div className="safety-legend glass-panel">
               <h4>Safety Levels Explained</h4>
               <ul>
-                <li><span className="dot" style={{background: '#10b981'}}></span> <strong>Level 1:</strong> Normal Precautions</li>
+                <li><span className="dot" style={{background: 'var(--brand-main)'}}></span> <strong>Level 1:</strong> Normal Precautions</li>
                 <li><span className="dot" style={{background: '#fbbf24'}}></span> <strong>Level 2:</strong> Increased Caution</li>
                 <li><span className="dot" style={{background: '#f97316'}}></span> <strong>Level 3:</strong> Reconsider Travel</li>
                 <li><span className="dot" style={{background: '#ef4444'}}></span> <strong>Level 4:</strong> Do Not Travel</li>

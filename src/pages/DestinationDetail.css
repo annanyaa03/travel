@@ -28,12 +28,12 @@
   background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
   color: rgba(255,255,255,0.8); border-radius: 50px; padding: 8px 18px;
   font-size: 0.85rem; font-weight: 500; cursor: pointer; margin-bottom: 28px;
-  backdrop-filter: blur(10px); font-family: var(--font-sans); transition: all 0.2s;
+  backdrop-filter: blur(10px); font-family: var(--font-body); transition: all 0.2s;
 }
 .back-btn:hover { background: rgba(255,255,255,0.2); color: #0f172a; }
 .detail-location { color: var(--coral); font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
-.detail-title { font-family: var(--font-serif); font-size: clamp(2.4rem, 5vw, 4rem);
+.detail-title { font-family: var(--font-heading); font-size: clamp(2.4rem, 5vw, 4rem);
   color: #0f172a; font-weight: 900; margin-bottom: 12px; }
 .detail-tagline { color: rgba(255,255,255,0.75); font-size: 1.1rem; margin-bottom: 20px; }
 .detail-meta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
@@ -60,7 +60,7 @@
   box-shadow: var(--shadow-sm);
 }
 .detail-card h2 {
-  font-family: var(--font-serif); font-size: 1.6rem; color: var(--navy); margin-bottom: 20px;
+  font-family: var(--font-heading); font-size: 1.6rem; color: var(--navy); margin-bottom: 20px;
 }
 .detail-card p {
   font-size: 0.95rem; color: var(--text-mid); line-height: 1.8; margin-bottom: 16px;
@@ -84,7 +84,7 @@
 }
 .booking-price { margin-bottom: 28px; }
 .bp-from { font-size: 0.85rem; color: var(--text-light); margin-right: 6px; }
-.bp-amount { font-family: var(--font-serif); font-size: 2.4rem; font-weight: 700; color: var(--coral); }
+.bp-amount { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 700; color: var(--coral); }
 .bp-per { font-size: 0.85rem; color: var(--text-light); margin-left: 6px; }
 
 .booking-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 28px; }
@@ -101,14 +101,14 @@
 .bf-field label { font-size: 0.8rem; font-weight: 600; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.06em; }
 .bf-field input, .bf-field select {
   border: 1px solid var(--light-grey); border-radius: 12px; padding: 12px 16px;
-  font-family: var(--font-sans); font-size: 0.92rem; color: var(--text-dark);
+  font-family: var(--font-body); font-size: 0.92rem; color: var(--text-dark);
   background: var(--off-white); outline: none; transition: border-color 0.2s;
 }
 .bf-field input:focus, .bf-field select:focus { border-color: var(--coral); }
 .booking-cta { width: 100%; justify-content: center; margin-top: 6px; }
 .btn-wishlist {
   width: 100%; text-align: center; border: 1px solid var(--light-grey);
-  border-radius: 50px; padding: 13px; font-family: var(--font-sans); font-size: 0.92rem;
+  border-radius: 50px; padding: 13px; font-family: var(--font-body); font-size: 0.92rem;
   font-weight: 600; color: var(--text-mid); background: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   transition: all 0.2s;
@@ -130,7 +130,7 @@
 .related-card:hover .rc-img-wrap img { transform: scale(1.06); }
 .rc-body { padding: 20px; display: flex; flex-direction: column; gap: 6px; }
 .rc-location { font-size: 0.75rem; font-weight: 600; color: var(--coral); text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 4px; }
-.rc-name { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+.rc-name { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--navy); }
 .rc-price { font-size: 0.85rem; color: var(--text-light); }
 .rc-price strong { color: var(--coral); }
 

@@ -5,23 +5,23 @@ export default function DestinationExplorer() {
   const navigate = useNavigate();
 
   return (
-    <section style={{padding:'80px 40px',background:'#0f172a',
+    <section style={{padding:'80px 40px',background:'var(--bg-primary)',
       position:'relative',overflow:'hidden',textAlign:'center'}}>
 
       <div style={{position:'absolute',top:'50%',left:'50%',
         transform:'translate(-50%,-50%) rotate(45deg)',
         fontSize:'200px',fontWeight:'900',
-        color:'rgba(255,255,255,0.015)',
+        color:'rgba(26,18,9,0.03)',
         whiteSpace:'nowrap',pointerEvents:'none',
         letterSpacing:'20px',zIndex:'0'}}>PASSPORT</div>
 
       <h2 style={{fontSize:'42px',fontWeight:'800',
-        color:'white',marginBottom:'12px',position:'relative',
+        color:'var(--text-primary)',marginBottom:'12px',position:'relative',
         zIndex:'1'}}>Stamp Your{' '}
-        <span style={{color:'#10b981'}}>Passport</span>
+        <span style={{color:'var(--brand-main)'}}>Passport</span>
       </h2>
 
-      <p style={{color:'#64748b',fontSize:'16px',
+      <p style={{color:'var(--text-muted)',fontSize:'16px',
         marginBottom:'60px',position:'relative',zIndex:'1'}}>
         Explore our handpicked destinations worldwide
       </p>
@@ -153,7 +153,7 @@ export default function DestinationExplorer() {
         {/* STAMP 5 */}
         <div className="pstamp" style={{transform:'rotate(-3deg)'}}>
           <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&h=480&fit=crop" alt="Patagonia"/>
-          <div className="ps-tint" style={{background:'rgba(16,185,129,0.25)'}}></div>
+          <div className="ps-tint" style={{background:'var(--brand-glow)'}}></div>
           <div className="ps-overlay"></div>
           <div className="ps-border"></div>
           <div className="ps-circle"><span>APPROVED</span></div>
@@ -213,13 +213,13 @@ export default function DestinationExplorer() {
       </div>
 
       <div style={{marginTop:'60px',position:'relative',zIndex:'1'}}>
-        <p style={{color:'#475569',fontSize:'13px',marginBottom:'16px'}}>
+        <p style={{color:'var(--text-muted)',fontSize:'13px',marginBottom:'16px'}}>
           Showing 6 of 30+ destinations
         </p>
         <button
           onClick={() => navigate('/destinations')}
           style={{display:'inline-block',
-            background:'linear-gradient(135deg,#10b981,#059669)',
+            background:'var(--brand-grad)',
             color:'white',fontSize:'14px',fontWeight:'700',
             padding:'14px 36px',borderRadius:'30px',
             border:'none',cursor:'pointer',textDecoration:'none'}}>

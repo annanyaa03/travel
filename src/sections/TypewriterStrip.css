@@ -1,13 +1,13 @@
 .typewriter-strip {
-  background: #ffffff;
+  background: var(--bg-primary);
   padding: 32px 60px;
-  border-top: 1px solid rgba(16,185,129,0.1);
-  border-bottom: 1px solid rgba(16,185,129,0.1);
+  border-top: 1px solid var(--border-main);
+  border-bottom: 1px solid var(--border-main);
   position: relative;
   overflow: hidden;
 }
 
-/* Subtle green glow behind text */
+/* Subtle gold glow behind text */
 .typewriter-strip::before {
   content: '';
   position: absolute;
@@ -16,7 +16,7 @@
   transform: translate(-50%, -50%);
   width: 400px;
   height: 80px;
-  background: rgba(16,185,129,0.04);
+  background: var(--brand-glow);
   border-radius: 50%;
   filter: blur(40px);
   pointer-events: none;
@@ -40,8 +40,8 @@
 .tw-prefix {
   font-size: 26px;
   font-weight: 300;
-  color: #64748b;
-  font-family: 'Poppins', sans-serif;
+  color: var(--text-muted);
+  font-family: var(--font-body);
   white-space: nowrap;
 }
 
@@ -55,8 +55,8 @@
 .tw-changing {
   font-size: 26px;
   font-weight: 800;
-  color: #10b981;
-  font-family: 'Poppins', sans-serif;
+  color: var(--brand-main);
+  font-family: var(--font-body);
   white-space: nowrap;
 }
 
@@ -64,12 +64,12 @@
   display: inline-block;
   width: 2.5px;
   height: 28px;
-  background: #10b981;
+  background: var(--brand-main);
   margin-left: 3px;
   vertical-align: middle;
   border-radius: 2px;
   animation: tw-blink 0.75s step-end infinite;
-  box-shadow: 0 0 8px rgba(16,185,129,0.6);
+  box-shadow: 0 0 8px var(--brand-glow);
 }
 
 @keyframes tw-blink {
