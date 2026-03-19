@@ -3,7 +3,7 @@
   width: 200px;
   height: 260px;
   border-radius: 8px;
-  border: 2.5px solid rgba(16,185,129,0.45);
+  border: 1px solid rgba(212, 175, 55, 0.35);
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
   flex-shrink: 0;
@@ -32,7 +32,7 @@
 }
 .ps-border {
   inset:8px;
-  border:1.5px dashed rgba(16,185,129,0.35);
+  border:1.5px dashed rgba(212, 175, 55, 0.3);
   border-radius:4px;
   z-index:3;
 }
@@ -40,7 +40,7 @@
   position:absolute;
   top:12px;right:12px;
   width:54px;height:54px;
-  border:2px solid rgba(16,185,129,0.7);
+  border:2px solid rgba(212, 175, 55, 0.6);
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -64,9 +64,11 @@
 }
 .ps-flag { font-size:22px;margin-bottom:5px; }
 .ps-name {
+  font-family: var(--font-heading);
   font-size:15px;font-weight:900;
-  color: #0f172a;letter-spacing:2px;
+  color: #ffffff;letter-spacing:2px;
   text-transform:uppercase;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 .ps-country {
   font-size:8px;color:var(--brand-main);
@@ -75,7 +77,7 @@
   margin-top:3px;
 }
 .ps-stars {
-  font-size:9px;color:#f59e0b;
+  font-size:9px;color: var(--brand-main);
   margin-top:4px;letter-spacing:2px;
 }
 .ps-year {
@@ -86,7 +88,7 @@
 .pstamp:hover {
   transform:rotate(0deg) translateY(-16px) scale(1.06) !important;
   box-shadow:0 24px 60px rgba(0,0,0,0.7),
-             0 0 40px rgba(16,185,129,0.25);
+             var(--shadow-gold);
   border-color:var(--brand-main);
   z-index:10;
 }
@@ -104,8 +106,8 @@
   left:50%;
   transform:translateX(-50%) translateY(8px);
   width:220px;
-  background:rgba(10,20,40,0.97);
-  border:1px solid rgba(16,185,129,0.3);
+  background:#ffffff;
+  border:1px solid var(--border-light);
   border-radius:12px;
   padding:16px;
   opacity:0;
@@ -121,11 +123,12 @@
   top:100%;left:50%;
   transform:translateX(-50%);
   border:7px solid transparent;
-  border-top-color:rgba(16,185,129,0.3);
+  border-top-color:var(--border-light);
 }
 .ptt-title {
+  font-family: var(--font-heading);
   font-size:14px;font-weight:700;
-  color: #0f172a;margin-bottom:5px;
+  color: var(--text-primary);margin-bottom:5px;
 }
 .ptt-desc {
   font-size:11px;color:#94a3b8;
@@ -142,14 +145,14 @@
 }
 .ptt-tags span {
   font-size:9px;
-  background:rgba(16,185,129,0.1);
-  border:1px solid rgba(16,185,129,0.25);
+  background:var(--bg-primary);
+  border:1px solid var(--border-light);
   color:var(--brand-main);
   padding:2px 7px;border-radius:20px;
 }
 .ptt-btn {
-  width:100%;background:var(--brand-main);
-  color:black;border:none;
+  width:100%;background:var(--btn-primary-bg);
+  color:var(--brand-main);border:1px solid rgba(212, 175, 55, 0.2);
   border-radius:20px;padding:7px;
   font-size:11px;font-weight:700;
   cursor:pointer;

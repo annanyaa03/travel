@@ -17,7 +17,7 @@
 .hotels-hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(26, 18, 9, 0.6);
+  background: linear-gradient(to bottom, rgba(62, 47, 28, 0.7) 0%, rgba(62, 47, 28, 0.45) 100%);
   z-index: 1;
 }
 
@@ -34,7 +34,7 @@
   font-weight: 700;
   margin-bottom: 16px;
   letter-spacing: -1px;
-  color: #fafaf8;
+  color: #ffffff;
 }
 
 .shimmer-text {
@@ -61,9 +61,9 @@
 /* SEARCH BOX */
 .hotels-search-box {
   display: flex;
-  background: rgba(250, 235, 215, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1px solid #e8d5bf;
+  background: rgba(34, 34, 34, 0.3);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 8px;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -85,21 +85,21 @@
 }
 
 .search-btn {
-  background: #c8962a;
-  color: #fff;
-  border: none;
+  background: var(--btn-primary-bg);
+  color: var(--brand-main);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   padding: 0 32px;
   border-radius: 12px;
   font-weight: 800;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s var(--ease);
 }
 
 .search-btn:hover {
-  background: #b45309;
+  background: #2a1f12;
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(200, 150, 42, 0.3);
+  box-shadow: var(--shadow-gold);
 }
 
 /* POPULAR CITIES PILLS */
@@ -187,18 +187,18 @@
 .new-hotel-card {
   background: #ffffff;
   border-radius: 20px;
-  border: 1px solid #e8d5bf;
+  border: 1px solid var(--border-light);
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 20px rgba(26, 18, 9, 0.08);
+  box-shadow: var(--shadow-deep);
 }
 
 .new-hotel-card:hover {
   transform: translateY(-8px);
-  border-color: #c8962a;
-  box-shadow: 0 20px 40px rgba(200, 150, 42, 0.2);
+  border-color: var(--brand-main);
+  box-shadow: var(--shadow-gold), 0 20px 40px rgba(62, 47, 28, 0.15);
 }
 
 .card-top-colored {
@@ -207,6 +207,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  background: var(--bg-secondary);
 }
 
 .featured-pill {
@@ -214,7 +215,7 @@
   top: 16px;
   left: 16px;
   background: var(--brand-main);
-  color: #0f172a;
+  color: var(--btn-primary-bg);
   padding: 4px 12px;
   font-size: 10px;
   font-weight: 900;
@@ -226,9 +227,9 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(34, 34, 34, 0.4);
   backdrop-filter: blur(4px);
-  color: #0f172a;
+  color: var(--brand-main);
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 800;
@@ -251,7 +252,7 @@
   font-family: var(--font-heading);
   font-size: 1.3rem;
   font-weight: 600;
-  color: #1a1209;
+  color: var(--text-primary);
   margin-bottom: 8px;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -309,9 +310,9 @@
 .perk-pill {
   font-size: 10px;
   font-weight: 600;
-  color: #6b6047;
-  background: #fef9ee;
-  border: 1px solid #e8d5bf;
+  color: var(--text-body);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
   padding: 4px 10px;
   border-radius: 6px;
 }
@@ -340,7 +341,7 @@
   font-family: var(--font-heading);
   font-size: 2rem;
   font-weight: 700;
-  color: #c8962a;
+  color: var(--brand-main);
 }
 
 .night {
@@ -350,20 +351,21 @@
 }
 
 .view-details-btn {
-  background: transparent;
-  border: 1.5px solid #c8962a;
-  color: #c8962a;
+  background: var(--btn-primary-bg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--brand-main);
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s var(--ease);
 }
 
 .view-details-btn:hover {
-  background: #c8962a;
+  background: #2a1f12;
   color: #fff;
+  box-shadow: var(--shadow-gold);
 }
 
 /* LOADING STATE */
@@ -375,8 +377,8 @@
 .green-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(200, 150, 42, 0.2);
-  border-top-color: #c8962a;
+  border: 3px solid var(--border-light);
+  border-top-color: var(--brand-main);
   border-radius: 50%;
   margin: 0 auto 20px;
   animation: spin 1s linear infinite;

@@ -1,6 +1,6 @@
 .footer-area {
-  background: #1a1209;
-  border-top: 2px solid var(--brand-main);
+  background: #2a1f12;
+  border-top: 1px solid var(--brand-main);
   padding: 80px 0 0 0;
   color: var(--bg-primary);
 }
@@ -19,7 +19,7 @@
   font-family: var(--font-heading);
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--bg-primary);
+  color: #ffffff;
   text-decoration: none;
   margin-bottom: 20px;
 }
@@ -30,7 +30,7 @@
 }
 
 .brand-desc {
-  color: var(--text-light);
+  color: #A69F96;
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 24px;
@@ -44,12 +44,12 @@
 
 .social-row a {
   width: 40px; height: 40px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid #3a2a1a;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 50%;
   display: flex;
   align-items: center; justify-content: center;
-  color: var(--text-light);
+  color: #A69F96;
   transition: all 0.3s;
 }
 
@@ -63,7 +63,7 @@
   font-family: var(--font-heading);
   font-size: 1.25rem;
   margin-bottom: 24px;
-  color: var(--bg-primary);
+  color: #ffffff;
 }
 
 .footer-link-col ul {
@@ -75,7 +75,7 @@
 
 .footer-link-col a {
   text-decoration: none;
-  color: var(--text-light);
+  color: #A69F96;
   font-size: 0.95rem;
   transition: color 0.3s;
 }
@@ -108,9 +108,9 @@
 }
 
 .setting-group select {
-  background: #2a1a09;
-  border: 1px solid #3a2a1a;
-  color: var(--text-light);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  color: #A69F96;
   padding: 8px 16px;
   border-radius: var(--radius-pill);
   font-size: 0.85rem;

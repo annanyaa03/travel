@@ -1,34 +1,37 @@
 :root {
-  /* Colors - Obsidian & Gold Palette */
-  --bg-primary: #fafaf8;
-  --bg-secondary: #f5f0e8;
+  /* Colors - Ivory & Deep Brown Palette */
+  --bg-primary: #F9F5F0;
+  --bg-secondary: #f2ede6;
   --bg-card: #ffffff;
-  --bg-input: #faebd7;
-  --bg-badge: #fef9ee;
+  --bg-input: #ffffff;
+  --bg-badge: #ffffff;
   
-  --brand-main: #c8962a;
-  --brand-grad: linear-gradient(90deg, #c8962a 0%, #b45309 100%);
-  --brand-glow: rgba(200, 150, 42, 0.25);
+  --brand-main: #D4AF37;
+  --brand-grad: linear-gradient(90deg, #D4AF37 0%, #B8860B 100%);
+  --brand-glow: rgba(212, 175, 55, 0.35);
   
-  --text-primary: #1a1209;
-  --text-body: #4a3728;
-  --text-muted: #6b6047;
-  --text-light: #9d8f77;
+  --text-primary: #222222;
+  --text-body: #3E2F1C;
+  --text-muted: #A69F96;
+  --text-light: #A69F96;
   
-  --border-main: #e8d5bf;
-  --border-light: #f0e6d3;
-  --border-badge: #f6d8b0;
+  --border-main: #3E2F1C;
+  --border-light: rgba(62, 47, 28, 0.1);
+  --border-badge: #D4AF37;
   
-  --nav-bg: #fafaf8;
-  --nav-border: #f0e6d3;
+  --nav-bg: #F9F5F0;
+  --nav-border: rgba(62, 47, 28, 0.1);
   
-  --btn-primary-bg: #1a1209;
-  --btn-primary-text: #fafaf8;
-  --btn-accent-bg: #c8962a;
-  --btn-accent-text: #ffffff;
+  --btn-primary-bg: #3E2F1C;
+  --btn-primary-text: #D4AF37;
+  --btn-accent-bg: #D4AF37;
+  --btn-accent-text: #3E2F1C;
   
-  --section-alt-bg: #f5f0e8;
-  --overlay-bg: rgba(26, 18, 9, 0.85);
+  --section-alt-bg: #f2ede6;
+  --overlay-bg: rgba(62, 47, 28, 0.85);
+
+  --shadow-gold: 0 0 15px rgba(212, 175, 55, 0.4);
+  --shadow-deep: 0 4px 20px rgba(62, 47, 28, 0.15);
 
   /* Layout */
   --nav-height: 80px;

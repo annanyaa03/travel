@@ -1,6 +1,8 @@
 .stats-section {
-  background: var(--navy);
+  background: #2a1f12;
   padding: 52px 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
   position: relative;
   z-index: 1;
 }
@@ -12,7 +14,7 @@
 }
 .stat-item {
   padding: 24px 16px;
-  border-right: 1px solid rgba(255,255,255,0.08);
+  border-right: 1px solid rgba(212, 175, 55, 0.1);
   transition: transform 0.3s;
 }
 .stat-item:last-child { border-right: none; }
@@ -22,16 +24,13 @@
   font-family: var(--font-heading);
   font-size: 2.4rem;
   font-weight: 700;
-  background: var(--grad-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--brand-main);
   margin-bottom: 8px;
 }
 .stat-label {
   font-size: 0.88rem;
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
+  color: #A69F96;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }

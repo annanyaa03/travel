@@ -1,6 +1,6 @@
 .map-section {
   padding: 80px 0;
-  background: var(--bg-dark);
+  background: var(--bg-primary);
 }
 
 .map-header {
@@ -21,14 +21,12 @@
   color: var(--brand-main);
 }
 .map-header h2 {
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 3vw, 2.5rem);
-  color: #0f172a;
+  color: var(--text-primary);
 }
 .map-header h2 span {
-  background: var(--brand-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--brand-main);
 }
 
 .map-filters {
@@ -37,10 +35,11 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #ffffff;
   padding: 8px 16px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border-glass);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-deep);
 }
 .filter-icon {
   color: var(--text-muted);
@@ -58,11 +57,11 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-.filter-btn:hover { color: #0f172a; }
+.filter-btn:hover { color: var(--text-primary); }
 .filter-btn.active {
-  background: var(--brand-grad);
-  color: #0f172a;
-  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+  background: var(--btn-primary-bg);
+  color: var(--brand-main);
+  box-shadow: var(--shadow-gold);
 }
 
 /* Map Wrapper */
@@ -126,23 +125,24 @@
 .popup-badge {
   position: absolute;
   top: 12px; left: 12px;
-  background: rgba(0,0,0,0.6);
+  background: var(--btn-primary-bg);
   backdrop-filter: blur(4px);
-  color: #0f172a;
+  color: var(--brand-main);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 .popup-body {
   padding: 16px;
 }
 .popup-body h4 {
+  font-family: var(--font-heading);
   font-size: 1.1rem;
-  color: #0f172a;
+  color: var(--text-primary);
   margin: 0 0 4px 0;
 }
 .popup-country {
@@ -154,19 +154,27 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #0f172a;
+  color: var(--text-primary);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 16px;
 }
 .popup-rating svg {
-  color: #fbbf24;
+  color: var(--brand-main);
 }
 .popup-btn {
   width: 100%;
   padding: 8px;
   font-size: 0.85rem;
+  background: var(--btn-primary-bg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--brand-main);
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
 }
+.popup-btn:hover { background: #2a1f12; color: #ffffff; box-shadow: var(--shadow-gold); }
 
 /* Leaflet Dark mode overrides */
 .leaflet-control-zoom a {

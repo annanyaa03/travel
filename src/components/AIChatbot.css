@@ -4,14 +4,14 @@
   right: 30px;
   width: 60px;
   height: 60px;
-  background: linear-gradient(#c8962a, #b45309);
-  color: white;
+  background: var(--btn-primary-bg);
+  color: var(--brand-main);
   border-radius: 50%;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
   z-index: 2000;
-  box-shadow: 0 10px 30px rgba(200, 150, 42, 0.4);
+  box-shadow: var(--shadow-gold), 0 10px 30px rgba(62, 47, 28, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,10 +110,11 @@
 }
 
 .msg-bubble.user {
-  background: linear-gradient(#c8962a, #b45309);
-  color: white;
+  background: var(--btn-primary-bg);
+  color: var(--brand-main);
   align-self: flex-end;
   border-bottom-right-radius: 2px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .msg-bubble.typing {
@@ -189,12 +190,17 @@
 .send-btn {
   width: 36px; height: 36px;
   background: var(--brand-main);
-  color: white;
+  color: var(--btn-primary-bg);
   border-radius: 50%;
   border: none;
   display: flex;
   align-items: center; justify-content: center;
   cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.send-btn:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-gold);
 }
 
 @media (max-width: 480px) {
