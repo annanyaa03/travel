@@ -43,8 +43,8 @@
   --section-padding: 100px;
   
   /* Fonts */
-  --font-heading: 'Cormorant Garamond', serif;
-  --font-body: 'Manrope', sans-serif;
+  --font-heading: 'Gilda Display', serif;
+  --font-body: 'Lato', sans-serif;
   --font-main: var(--font-body);
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }

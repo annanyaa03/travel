@@ -110,7 +110,7 @@
 .search-select {
   background: transparent;
   border: none;
-  color: #0f172a;
+  color: #ffffff;
   font-weight: 600;
   cursor: pointer;
   padding-right: 12px;
@@ -122,13 +122,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
 }
 .hero-tags button {
   background: rgba(34, 34, 34, 0.4);
   border: 1px solid rgba(212, 175, 55, 0.3);
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   cursor: pointer;

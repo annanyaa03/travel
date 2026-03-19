@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaMapMarkerAlt, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Hero.css';
 
 export default function Hero() {
+  const [searchVal, setSearchVal] = useState('');
+  const [category, setCategory] = useState('All Categories');
+  const navigate = useNavigate();
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -10,6 +14,17 @@ export default function Hero() {
       videoRef.current.play().catch(err => console.log("Video autoplay blocked:", err));
     }
   }, []);
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchVal) params.set('search', searchVal);
+    if (category !== 'All Categories') params.set('category', category);
+    navigate(`/destinations?${params.toString()}`);
+  };
+
+  const handleQuickSearch = (place) => {
+    navigate(`/destinations?search=${place}`);
+  };
 
   return (
     <section className="hero">
@@ -41,34 +56,44 @@ export default function Hero() {
         <div className="hero-text animate-slide-up">
           <div className="badge-ai">⭐ #1 Rated Travel Experience Platform</div>
           <h1>
-            <span style={{ color: '#f6d8b0', fontWeight: 300 }}>Discover the World's</span><br />
-            <span style={{ color: '#c8962a', fontWeight: 600, fontStyle: 'italic' }}>Breathtaking Wonders</span>
+            <span style={{ color: '#ffffff', fontWeight: 300 }}>Discover the World's</span><br />
+            <span style={{ color: '#ffffff', fontWeight: 600, fontStyle: 'italic' }}>Breathtaking Wonders</span>
           </h1>
           <p className="hero-subtext">Curated journeys to the planet's most extraordinary destinations</p>
           
           <div className="hero-search glass-panel">
             <div className="search-input">
               <FaMapMarkerAlt />
-              <input type="text" placeholder="Where do you want to go?" />
+              <input 
+                type="text" 
+                placeholder="Where do you want to go?" 
+                value={searchVal}
+                onChange={(e) => setSearchVal(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              />
             </div>
             <div className="search-divider"></div>
-            <select className="search-select">
+            <select 
+              className="search-select"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
               <option>All Categories</option>
               <option>Beach</option>
               <option>Mountain</option>
               <option>Cultural</option>
               <option>Adventure</option>
             </select>
-            <button className="btn btn-primary search-btn">Search</button>
+            <button className="btn btn-primary search-btn" onClick={handleSearch}>Search</button>
           </div>
 
           <div className="hero-tags">
             <span>Popular:</span>
-            <button>Santorini</button>
-            <button>Maldives</button>
-            <button>Kyoto</button>
-            <button>Patagonia</button>
-            <button>Morocco</button>
+            <button onClick={() => handleQuickSearch('Santorini')}>Santorini</button>
+            <button onClick={() => handleQuickSearch('Maldives')}>Maldives</button>
+            <button onClick={() => handleQuickSearch('Kyoto')}>Kyoto</button>
+            <button onClick={() => handleQuickSearch('Patagonia')}>Patagonia</button>
+            <button onClick={() => handleQuickSearch('Morocco')}>Morocco</button>
           </div>
         </div>
       </div>

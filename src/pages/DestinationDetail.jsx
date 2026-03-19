@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { FaArrowLeft, FaMapMarkerAlt, FaStar, FaCheckCircle, FaClock, FaCalendarAlt, FaCloudSun, FaShieldAlt, FaUndo, FaHeadset, FaPaperPlane, FaHeart, FaGlobe, FaUsers, FaCoins, FaInfoCircle, FaTemperatureHigh } from 'react-icons/fa';
 import { destinations } from '../data';
 import './DestinationDetail.css';
 
@@ -6,7 +8,7 @@ function Stars({ rating }) {
   return (
     <div className="stars">
       {Array.from({ length: 5 }).map((_, i) => (
-        <i key={i} className={`fas fa-star ${i < Math.round(rating) ? 'filled' : ''}`}></i>
+        <FaStar key={i} className={`star-icon ${i < Math.round(rating) ? 'filled' : ''}`} />
       ))}
     </div>
   );
@@ -15,7 +17,50 @@ function Stars({ rating }) {
 export default function DestinationDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [liveData, setLiveData] = useState(null);
+  const [wikiData, setWikiData] = useState(null);
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const dest = destinations.find(d => d.id === id);
+
+  useEffect(() => {
+    if (!dest) return;
+    
+    setLoading(true);
+    
+    // Fetch Country Info (REST Countries)
+    const fetchCountry = fetch(`https://restcountries.com/v3.1/name/${dest.country}?fullText=true`)
+      .then(res => res.json())
+      .then(data => data[0])
+      .catch(() => null);
+
+    // Fetch Wiki Summary
+    const citySlug = dest.name.replace(/\s+/g, '_');
+    const fetchWiki = fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${citySlug}`)
+      .then(res => res.json())
+      .catch(() => null);
+
+    // Fetch Geolocation & Weather (Nominatim + Open-Meteo)
+    const fetchWeather = fetch(`https://nominatim.openstreetmap.org/search?q=${dest.name}&format=json&limit=1`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0) {
+          const { lat, lon } = data[0];
+          return fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
+            .then(res => res.json());
+        }
+        return null;
+      })
+      .catch(() => null);
+
+    Promise.all([fetchCountry, fetchWiki, fetchWeather]).then(([country, wiki, weatherData]) => {
+      setLiveData(country);
+      setWikiData(wiki);
+      setWeather(weatherData);
+      setLoading(false);
+    });
+  }, [dest]);
 
   if (!dest) {
     return (
@@ -35,10 +80,10 @@ export default function DestinationDetail() {
         <div className="detail-hero-overlay" />
         <div className="container detail-hero-content">
           <button onClick={() => navigate(-1)} className="back-btn">
-            <i className="fas fa-arrow-left"></i> Back
+            <FaArrowLeft /> Back
           </button>
           <div className="detail-location">
-            <i className="fas fa-map-marker-alt"></i> {dest.country}
+            <FaMapMarkerAlt /> {dest.country}
           </div>
           <h1 className="detail-title">{dest.name}</h1>
           <p className="detail-tagline">{dest.tagline}</p>
@@ -60,9 +105,50 @@ export default function DestinationDetail() {
           <div className="detail-left">
             <div className="detail-card">
               <h2>About {dest.name}</h2>
-              {dest.longDescription.split('\n\n').map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
+              {loading ? (
+                <div className="skeleton-text">
+                  <div className="skeleton-line" style={{ width: '100%' }}></div>
+                  <div className="skeleton-line" style={{ width: '90%' }}></div>
+                  <div className="skeleton-line" style={{ width: '95%' }}></div>
+                </div>
+              ) : (
+                <>
+                  <p className="wiki-desc">
+                    {wikiData?.extract || dest.longDescription.split('\n\n')[0]}
+                  </p>
+                  {dest.longDescription.split('\n\n').slice(1).map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </>
+              )}
+            </div>
+
+            {/* Live Insights */}
+            <div className="detail-card live-insights">
+              <h2><FaGlobe /> Traveler Insights</h2>
+              <div className="insights-grid">
+                <div className="insight-stat">
+                  <FaTemperatureHigh />
+                  <div>
+                    <span>Live Temp</span>
+                    <strong>{weather?.current_weather?.temperature || '...'}°C</strong>
+                  </div>
+                </div>
+                <div className="insight-stat">
+                  <FaUsers />
+                  <div>
+                    <span>Population</span>
+                    <strong>{liveData ? (liveData.population / 1000000).toFixed(1) + 'M' : '...'}</strong>
+                  </div>
+                </div>
+                <div className="insight-stat">
+                  <FaCoins />
+                  <div>
+                    <span>Currency</span>
+                    <strong>{liveData ? `${Object.values(liveData.currencies)[0].name} (${Object.values(liveData.currencies)[0].symbol})` : '...'}</strong>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Highlights */}
@@ -71,7 +157,7 @@ export default function DestinationDetail() {
               <div className="highlights-grid">
                 {dest.highlights.map(h => (
                   <div key={h} className="highlight-item">
-                    <i className="fas fa-check-circle"></i>
+                    <FaCheckCircle />
                     <span>{h}</span>
                   </div>
                 ))}
@@ -102,30 +188,30 @@ export default function DestinationDetail() {
                 <span className="bp-per">per person</span>
               </div>
 
-              <div className="booking-info-grid">
+               <div className="booking-info-grid">
                 <div className="bi-item">
-                  <i className="far fa-clock"></i>
+                  <FaClock />
                   <div>
                     <div className="bi-label">Duration</div>
                     <div className="bi-val">{dest.duration}</div>
                   </div>
                 </div>
                 <div className="bi-item">
-                  <i className="fas fa-calendar-alt"></i>
+                  <FaCalendarAlt />
                   <div>
                     <div className="bi-label">Best Time</div>
                     <div className="bi-val">{dest.bestTime}</div>
                   </div>
                 </div>
                 <div className="bi-item">
-                  <i className="fas fa-cloud-sun"></i>
+                  <FaCloudSun />
                   <div>
                     <div className="bi-label">Weather</div>
-                    <div className="bi-val">{dest.weather}</div>
+                    <div className="bi-val">{weather?.current_weather ? (weather.current_weather.temperature > 20 ? '☀️ Sunny' : '⛅ Mild') : dest.weather}</div>
                   </div>
                 </div>
                 <div className="bi-item">
-                  <i className="fas fa-star"></i>
+                  <FaStar />
                   <div>
                     <div className="bi-label">Rating</div>
                     <div className="bi-val">{dest.rating} / 5.0</div>
@@ -147,18 +233,18 @@ export default function DestinationDetail() {
                     <option>4+ Travellers</option>
                   </select>
                 </div>
-                <button type="submit" className="btn btn-primary booking-cta">
-                  <i className="fas fa-paper-plane"></i> Book This Trip
+                 <button type="submit" className="btn btn-primary booking-cta">
+                  <FaPaperPlane /> Book This Trip
                 </button>
                 <button type="button" className="btn-wishlist">
-                  <i className="far fa-heart"></i> Add to Wishlist
+                  <FaHeart /> Add to Wishlist
                 </button>
               </form>
 
               <div className="booking-trust">
-                <div className="trust-item"><i className="fas fa-shield-alt"></i> Secure booking</div>
-                <div className="trust-item"><i className="fas fa-undo"></i> Free cancellation</div>
-                <div className="trust-item"><i className="fas fa-headset"></i> 24/7 support</div>
+                <div className="trust-item"><FaShieldAlt /> Secure booking</div>
+                <div className="trust-item"><FaUndo /> Free cancellation</div>
+                <div className="trust-item"><FaHeadset /> 24/7 support</div>
               </div>
             </div>
           </div>
@@ -174,7 +260,7 @@ export default function DestinationDetail() {
                   <img src={d.image} alt={d.name} loading="lazy" />
                 </div>
                 <div className="rc-body">
-                  <div className="rc-location"><i className="fas fa-map-marker-alt"></i>{d.country}</div>
+                  <div className="rc-location"><FaMapMarkerAlt />{d.country}</div>
                   <div className="rc-name">{d.name}</div>
                   <div className="rc-price">from <strong>${d.price.toLocaleString()}</strong></div>
                 </div>

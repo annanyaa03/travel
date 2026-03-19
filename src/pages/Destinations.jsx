@@ -1,13 +1,23 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { FaSearch, FaClock, FaDollarSign, FaArrowRight } from 'react-icons/fa';
 import { destinations } from '../data';
 import './Destinations.css';
 
 export default function Destinations() {
-  const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get('search') || '');
   const [continent, setContinent] = useState('All');
-  const [vibeFilters, setVibeFilters] = useState([]);
+  const [vibeFilters, setVibeFilters] = useState(searchParams.get('category') ? [searchParams.get('category')] : []);
   const [visibleCount, setVisibleCount] = useState(9);
+
+  // Sync state if URL params change externally
+  useEffect(() => {
+    const s = searchParams.get('search');
+    const c = searchParams.get('category');
+    if (s !== null) setSearch(s);
+    if (c !== null) setVibeFilters([c]);
+  }, [searchParams]);
 
   const toggleVibe = (vibe) => {
     setVibeFilters(prev => 
@@ -20,6 +30,7 @@ export default function Destinations() {
     setContinent('All');
     setVibeFilters([]);
     setVisibleCount(9);
+    setSearchParams({}); // Clear URL too
   };
 
   const filteredDests = useMemo(() => {
@@ -59,33 +70,6 @@ export default function Destinations() {
           />
         </div>
 
-        <div className="filter-row">
-          <div className="filter-group">
-            {['All', 'Europe', 'Asia', 'Americas', 'Africa', 'Oceania', 'Middle East'].map(c => (
-              <button 
-                key={c}
-                className={`filter-pill ${continent === c ? 'active' : ''}`}
-                onClick={() => setContinent(c)}
-              >
-                {c === 'All' ? 'All' : c === 'Europe' ? '🌍 Europe' : c === 'Asia' ? '🌏 Asia' : c === 'Americas' ? '🌎 Americas' : c === 'Africa' ? '🌍 Africa' : c === 'Oceania' ? '🌊 Oceania' : '🕌 Middle East'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="filter-row">
-          <div className="filter-group vibes">
-            {['Beach', 'Mountain', 'Cultural', 'City', 'Nature', 'Luxury', 'Budget', 'Food', 'Nightlife', 'Adventure'].map(v => (
-              <button 
-                key={v}
-                className={`filter-tag ${vibeFilters.includes(v) ? 'active' : ''}`}
-                onClick={() => toggleVibe(v)}
-              >
-                {v === 'Beach' ? '🏖️ Beach' : v === 'Mountain' ? '🏔️ Mountain' : v === 'Cultural' ? '🏛️ Cultural' : v === 'City' ? '🌆 City' : v === 'Nature' ? '🌿 Nature' : v === 'Luxury' ? '💎 Luxury' : v === 'Budget' ? '💰 Budget' : v === 'Food' ? '🍜 Food' : v === 'Nightlife' ? '🎭 Nightlife' : '🏄 Adventure'}
-              </button>
-            ))}
-          </div>
-        </div>
 
         <div className="results-bar">
           <span className="results-count">Showing {filteredDests.length} destinations</span>
