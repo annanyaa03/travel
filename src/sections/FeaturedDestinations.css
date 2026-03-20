@@ -50,9 +50,6 @@
   width: max-content;
   animation: fdScroll 32s linear infinite;
 }
-.fd-track:hover {
-  animation-play-state: paused;
-}
 
 @keyframes fdScroll {
   0%   { transform: translateX(0); }
