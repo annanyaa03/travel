@@ -138,9 +138,9 @@ export default function AITripPlanner() {
         {/* LEFT PANEL: CONCIERGE INPUTS */}
         <aside className="editorial-left-panel">
           <div className="editorial-header-dark">
-            <span className="label-sm">Compass & Co. AI</span>
-            <h2>Trip Planner</h2>
-            <p className="subtext">Bespoke Intelligence by Gemini AI</p>
+            <span className="cp-eyebrow">Compass & Co. AI</span>
+            <h2 className="cp-title">Trip Planner</h2>
+            <p className="cp-subtitle">Bespoke itineraries curated by Gemini AI</p>
           </div>
 
           <form className="editorial-form" onSubmit={handleGenerate}>
@@ -149,11 +149,16 @@ export default function AITripPlanner() {
               <label className="input-label-sm">Destination</label>
               <input 
                 className="editorial-input" 
-                placeholder="Where do you want to wander?" 
+                placeholder="Where to wander?" 
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
                 required
               />
+              <div className="suggestion-pills">
+                {["Kyoto", "Maldives", "Santorini", "Bali"].map(p => (
+                  <span key={p} className="cp-pill" onClick={() => setDestination(p)}>{p}</span>
+                ))}
+              </div>
             </div>
 
             {/* Duration */}
@@ -227,7 +232,7 @@ export default function AITripPlanner() {
                 <span className="value">~${Math.round(budget * 0.6)}</span>
               </div>
               <button type="submit" className="editorial-cta" disabled={isGenerating}>
-                {isGenerating ? "Synthesizing..." : "Generate my trip \u2192"}
+                {isGenerating ? "Synthesizing..." : "GENERATE MY TRIP"}
               </button>
             </div>
           </form>
@@ -236,8 +241,8 @@ export default function AITripPlanner() {
         {/* RIGHT PANEL: EDITORIAL RESULTS */}
         <main className="editorial-right-panel">
           <div className="results-header">
-            <span className="label-sm">Your Itinerary</span>
-            <h1 className={showResults ? "typewriter-cursor" : ""}>
+            <span className="label-sm">✦ INTELLIGENCE</span>
+            <h1 className={showResults ? "typewriter-cursor cp-result-title" : "cp-result-title"}>
               {typedTitle}
             </h1>
           </div>
@@ -251,8 +256,8 @@ export default function AITripPlanner() {
                   <span className="value">{DUMMY_PLAN.stats.days}</span>
                 </div>
                 <div className="stat-col">
-                  <span className="label">Est. Cost</span>
-                  <span className="value gold">{DUMMY_PLAN.stats.cost}</span>
+                  <span className="label">ESTIMATED COST</span>
+                  <span className="value gold cp-cost-val">{DUMMY_PLAN.stats.cost}</span>
                 </div>
                 <div className="stat-col">
                   <span className="label">Activities</span>
@@ -321,7 +326,7 @@ export default function AITripPlanner() {
                   <a href="#" className="footer-link">Recommended Flights</a>
                   <a href="#" className="footer-link">Selected Hotels</a>
                 </div>
-                <button className="save-btn">Save plan</button>
+                <button className="save-btn">VIEW FULL PLAN</button>
               </footer>
             </div>
           )}

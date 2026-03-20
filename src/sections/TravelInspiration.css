@@ -1,0 +1,242 @@
+/* TravelInspiration.css */
+
+.ti-section {
+  background-color: #F5F0E8; /* Warm Cream */
+  padding: 80px 0;
+  font-family: 'DM Sans', sans-serif;
+  color: #1a1a18;
+}
+
+.ti-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* HEADER ROW */
+.ti-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  padding-bottom: 24px;
+}
+
+.ti-title-box h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.ti-title-main {
+  color: #1a1a18;
+}
+
+.ti-title-accent {
+  color: #B8883A;
+  font-style: italic;
+  margin-left: 12px;
+}
+
+.ti-subtitle {
+  color: #7a7768;
+  font-size: 16px;
+  margin: 8px 0 16px;
+}
+
+.ti-title-line {
+  width: 40px;
+  height: 2px;
+  background-color: #B8883A;
+}
+
+.ti-view-all {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #B8883A;
+  text-decoration: underline;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+.ti-view-all:hover {
+  opacity: 0.7;
+}
+
+/* FILTER PILLS */
+.ti-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 56px;
+}
+
+.ti-filter-pill {
+  padding: 8px 20px;
+  border: 1px solid #1a1a18;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: transparent;
+  color: #1a1a18;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.ti-filter-pill:hover {
+  border-color: #B8883A;
+  color: #B8883A;
+}
+
+.ti-filter-pill.active {
+  background-color: #1a1a18;
+  color: #F5F0E8;
+  border-color: #1a1a18;
+}
+
+/* ARTICLE ROWS */
+.ti-article-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.10);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.ti-article-row:hover {
+  background-color: rgba(184, 136, 58, 0.05); /* Warm gold tint wash */
+}
+
+/* Number Column */
+.ti-number-col {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  color: rgba(0,0,0,0.10);
+  transition: color 0.25s ease;
+}
+
+.ti-article-row:hover .ti-number-col {
+  color: rgba(184, 136, 58, 0.35);
+}
+
+/* Content Column */
+.ti-content-col {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.ti-thumb-box {
+  width: 72px;
+  height: 54px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ti-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.ti-article-row:hover .ti-thumb-box img {
+  transform: scale(1.04);
+}
+
+.ti-text-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.ti-category {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #B8883A;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.ti-article-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: #1a1a18;
+  margin: 0 0 4px;
+}
+
+.ti-excerpt {
+  font-size: 12px;
+  color: #7a7768;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, margin-top 0.25s ease;
+  line-height: 1.5;
+}
+
+.ti-article-row:hover .ti-excerpt {
+  max-height: 60px;
+  margin-top: 8px;
+}
+
+.ti-byline {
+  font-size: 11px;
+  color: #7a7768;
+  margin-top: 4px;
+}
+
+/* Stats Column */
+.ti-stats-col {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.ti-stats-info {
+  display: flex;
+  gap: 16px;
+  color: #7a7768;
+  font-size: 11px;
+}
+
+.ti-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ti-arrow-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.ti-article-row:hover .ti-arrow-btn {
+  background-color: #1a1a18;
+  border-color: #1a1a18;
+  color: #F5F0E8; /* Cream arrow */
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .ti-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .ti-article-row { grid-template-columns: 40px 1fr; gap: 12px; }
+  .ti-stats-col { display: none; }
+  .ti-content-col { gap: 16px; }
+  .ti-article-title { font-size: 16px; }
+}

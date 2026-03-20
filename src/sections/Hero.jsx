@@ -54,14 +54,17 @@ export default function Hero() {
       {/* Content */}
       <div className="container hero-content">
         <div className="hero-text animate-slide-up">
-          <div className="badge-ai">⭐ #1 Rated Travel Experience Platform</div>
+          <div className="badge-ai">
+            <span className="badge-dot"></span>
+            #1 Rated Travel Experience Platform
+          </div>
           <h1>
-            <span style={{ color: '#ffffff', fontWeight: 300 }}>Discover the World's</span><br />
-            <span style={{ color: '#ffffff', fontWeight: 600, fontStyle: 'italic' }}>Breathtaking Wonders</span>
+            <span>Discover the World's</span><br />
+            <span className="italic">Breathtaking Wonders</span>
           </h1>
           <p className="hero-subtext">Curated journeys to the planet's most extraordinary destinations</p>
           
-          <div className="hero-search glass-panel">
+          <div className="hero-search">
             <div className="search-input">
               <FaMapMarkerAlt />
               <input 
@@ -91,7 +94,7 @@ export default function Hero() {
             <span>Popular:</span>
             <button onClick={() => handleQuickSearch('Santorini')}>Santorini</button>
             <button onClick={() => handleQuickSearch('Maldives')}>Maldives</button>
-            <button onClick={() => handleQuickSearch('Kyoto')}>Kyoto</button>
+            <button onClick={() => handleQuickSearch('Dubai')}>Dubai</button>
             <button onClick={() => handleQuickSearch('Patagonia')}>Patagonia</button>
             <button onClick={() => handleQuickSearch('Morocco')}>Morocco</button>
           </div>

@@ -3,7 +3,7 @@ import TypewriterStrip from '../sections/TypewriterStrip';
 import FeaturedDestinations from '../sections/FeaturedDestinations';
 import AIPlannerTeaser from '../sections/AIPlannerTeaser';
 import HotDeals from '../sections/HotDeals';
-import TravelBlog from '../sections/TravelBlog';
+import TravelInspiration from '../sections/TravelInspiration';
 import Testimonials from '../sections/Testimonials';
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
       <FeaturedDestinations />
       <AIPlannerTeaser />
       <HotDeals />
-      <TravelBlog />
+      <TravelInspiration />
       <Testimonials />
     </main>
   );

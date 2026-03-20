@@ -11,16 +11,21 @@
   text-align: center;
 }
 .fd-title {
-  font-family: var(--font-heading);
+  font-family: 'Playfair Display', serif;
   font-size: clamp(40px, 5vw, 60px);
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 400;
+  color: #1a1a18;
   margin: 0 0 10px;
 }
-.fd-title span { color: var(--brand-main); }
+.fd-title span { 
+  font-style: italic;
+  color: #B8883A; 
+}
 .fd-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
   font-size: 18px;
-  color: #64748b;
+  color: #7a7768;
   margin: 0;
 }
 
@@ -107,19 +112,23 @@
   right: 0;
   padding: 20px 20px 22px;
 }
+
 .fd-card-name {
-  font-family: var(--font-heading);
-  font-size: 32px;
-  font-weight: 700;
-  color: #fafaf8;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #ffffff;
   margin: 0 0 4px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  line-height: 1.1;
+  letter-spacing: -0.1px;
 }
 .fd-card-country {
-  font-size: 13px;
-  color: var(--brand-main);
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  color: #B8883A;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 .fd-card-arrow {
   position: absolute;
@@ -175,14 +184,15 @@
   margin-bottom: 8px;
 }
 .fd-detail-name {
-  font-family: var(--font-heading);
+  font-family: 'Playfair Display', serif;
   font-size: 26px;
-  font-weight: 700;
+  font-weight: 400;
   color: #fafaf8;
 }
 .fd-detail-rating {
+  font-family: 'DM Sans', sans-serif;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--brand-main);
   background: rgba(212, 175, 55, 0.12);
   border: 1px solid rgba(212, 175, 55, 0.2);
@@ -190,6 +200,8 @@
   border-radius: 20px;
 }
 .fd-detail-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
   font-size: 12px;
   color: #9d8f77;
   line-height: 1.5;
@@ -202,23 +214,25 @@
   margin-bottom: 14px;
 }
 .fd-detail-tag {
+  font-family: 'DM Sans', sans-serif;
   font-size: 10px;
   background: var(--bg-primary);
   border: 1px solid var(--border-light);
   color: var(--text-body);
   padding: 3px 9px;
   border-radius: 20px;
-  font-weight: 600;
+  font-weight: 500;
 }
 .fd-detail-btn {
   width: 100%;
+  font-family: 'DM Sans', sans-serif;
   background: var(--btn-primary-bg);
   color: var(--brand-main);
   border: 1px solid rgba(212, 175, 55, 0.2);
   border-radius: 10px;
   padding: 10px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s var(--ease);
 }

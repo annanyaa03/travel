@@ -99,18 +99,6 @@ export const destinations = [
 
   // ASIA (8)
   {
-    id: 'kyoto',
-    name: 'Kyoto',
-    country: 'Japan',
-    continent: 'Asia',
-    type: ['Cultural', 'Nature'],
-    image: 'https://images.pexels.com/photos/161401/fushimi-inari-shrine-kyoto-japan-161401.jpeg?auto=compress&cs=tinysrgb&w=1200&q=80',
-    bestTime: 'Mar-May',
-    budget: '$$',
-    tags: ['Fushimi Inari', 'Kinkaku-ji', 'Arashiyama'],
-    description: 'Cultural heart of Japan filled with temples and tea houses'
-  },
-  {
     id: 'bali',
     name: 'Bali',
     country: 'Indonesia',
@@ -411,7 +399,7 @@ export const articles = [
     title: '10 Hidden Gems in Southeast Asia',
     category: 'Destinations',
     excerpt: 'Explore the off-the-beaten-path locations you need to visit this year.',
-    image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=400&h=200&fit=crop',
+    image: 'https://images.pexels.com/photos/1007657/pexels-photo-1007657.jpeg?auto=compress&cs=tinysrgb&w=800',
     author: 'Sarah Jenkins',
     authorAvatar: 'https://i.pravatar.cc/150?u=sarah',
     date: 'Mar 12, 2026'
@@ -421,7 +409,7 @@ export const articles = [
     title: 'The Ultimate Bali Packing Guide',
     category: 'Tips',
     excerpt: 'Everything you need to pack for a perfect tropical getaway.',
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&h=200&fit=crop',
+    image: 'https://images.pexels.com/photos/164333/pexels-photo-164333.jpeg?auto=compress&cs=tinysrgb&w=800',
     author: 'Marcus Chen',
     authorAvatar: 'https://i.pravatar.cc/150?u=marcus',
     date: 'Mar 10, 2026'
@@ -431,7 +419,7 @@ export const articles = [
     title: 'Street Food Guide: Tokyo to Marrakesh',
     category: 'Food',
     excerpt: 'A culinary journey through the worlds most ikonik street food markets.',
-    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=200&fit=crop',
+    image: 'https://images.pexels.com/photos/92330/pexels-photo-92330.jpeg?auto=compress&cs=tinysrgb&w=800',
     author: 'Aria Thorne',
     authorAvatar: 'https://i.pravatar.cc/150?u=aria',
     date: 'Mar 08, 2026'
