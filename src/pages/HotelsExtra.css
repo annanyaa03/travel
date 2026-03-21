@@ -1,0 +1,325 @@
+/* ── Hotels UI Refinement (7 Fixes) ────────────────────────── */
+
+/* Fix 1: Search Bar Padding & Heading (Accounts for Navbar) */
+.hotels-dark-bar {
+  padding-top: 72px !important;
+  padding-bottom: 40px !important;
+  padding-left: 56px !important;
+  padding-right: 56px !important;
+}
+.hdb-heading {
+  font-size: 32px !important;
+}
+
+/* Fix 2: Hotel Row Spacing and Borders (Option A) */
+.hotel-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.hotel-row:last-child {
+  border-bottom: none !important;
+}
+
+.hr-photo { 
+  padding: 20px 0 20px 20px !important; 
+} 
+.hr-info { 
+  padding: 20px 22px !important; 
+}
+.hr-price-cta { 
+  padding: 20px 18px !important; 
+}
+.hr-img {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+}
+
+/* Adjust absolutely positioned elements to account for new padding */
+.hr-badge {
+  top: 30px !important;
+  left: 30px !important;
+}
+.hr-heart {
+  top: 30px !important;
+}
+
+/* Fix 6: CTA Button Hover Gold */
+.hr-view-btn {
+  transition: background 0.2s ease;
+}
+.hr-view-btn:hover {
+  background: #B8883A !important;
+}
+
+/* Fix 7: Price Range Slider Styling (Dual Slider Fixes) */
+.price-slider-wrap input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  background: #d4c4a8;
+  border-radius: 2px;
+  outline: none;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  pointer-events: none;
+}
+
+.price-slider-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1a1a18;
+  cursor: pointer;
+  border: 2px solid #B8883A;
+  margin-top: -6px;
+  pointer-events: auto;
+}
+
+.price-slider-wrap input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1a1a18;
+  cursor: pointer;
+  border: 2px solid #B8883A;
+  pointer-events: auto;
+}
+
+/* ── Modal (Dark Luxury) ───────────────────────────────────────── */
+.hotel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 12, 8, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  animation: fadeInBackdrop 0.35s ease forwards;
+}
+
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hotel-modal-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hotel-modal-card {
+  background: #111010;
+  border-radius: 18px;
+  overflow: hidden;
+  width: 680px;
+  max-width: 92vw;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  pointer-events: all;
+  animation: fadeInModal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes fadeInModal {
+  from { 
+    transform: translateY(40px) scale(0.95);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hm-top {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 400px;
+}
+
+.hm-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.hm-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hm-photo-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.hm-region {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #B8883A;
+  letter-spacing: 0.1em;
+  display: block;
+}
+
+.hm-city {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #fff;
+}
+
+.hm-city em {
+  font-style: italic;
+  color: #F5C842;
+}
+
+.hm-info {
+  padding: 32px;
+  background: #111010;
+  overflow-y: auto;
+}
+
+.hm-stars {
+  color: #B8883A;
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+
+.hm-country {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 16px;
+}
+
+.hm-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.hm-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.hm-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: #fff;
+}
+
+.hm-stat-lbl {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+.hm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hm-chip {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.hm-chip-lbl {
+  font-size: 7px;
+  text-transform: uppercase;
+  color: #B8883A;
+}
+
+.hm-chip-val {
+  font-size: 11px;
+  color: #fff;
+}
+
+.hm-bottom {
+  padding: 24px 32px;
+  background: #181717;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.hm-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #fff;
+}
+
+.hm-night {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.hm-cta {
+  background: #fff;
+  color: #111010;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.hm-cta:hover {
+  transform: translateY(-2px);
+}
+
+/* ── Hover Preview ──────────────────────────────────────────────── */
+.hover-preview {
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  animation: fadeInHover 0.2s ease-out forwards;
+}
+
+@keyframes fadeInHover {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.hover-preview img {
+  width: 180px;
+  height: 120px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  object-fit: cover;
+}

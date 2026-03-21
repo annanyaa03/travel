@@ -13,6 +13,8 @@ import ConciergePlanner from './pages/ConciergePlanner';
 import About from './pages/About';
 import Profile from './pages/Profile';
 import Wishlist from './pages/Wishlist';
+import Experiences from './pages/Experiences';
+import Blog from './pages/Blog';
 
 function App() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -32,6 +34,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/experiences" element={<Experiences />} />
+          <Route path="/blog" element={<Blog />} />
         </Routes>
 
         <Footer />

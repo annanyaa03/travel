@@ -172,7 +172,7 @@
   margin-left: 2px;
 }
 
-/* SCROLLED STATE */
+/* SCROLLED & DARK THEME STATE */
 .lux-navbar.lux-scrolled {
   background: rgba(249, 245, 240, 0.98);
   backdrop-filter: blur(20px);
@@ -182,74 +182,90 @@
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
 }
 
-.lux-navbar.lux-scrolled .lux-brand-name {
+.lux-navbar.lux-scrolled .lux-brand-name,
+.lux-navbar.lux-theme-dark .lux-brand-name {
   color: #1a1a18;
 }
 
-.lux-navbar.lux-scrolled .lux-ampersand {
+.lux-navbar.lux-scrolled .lux-ampersand,
+.lux-navbar.lux-theme-dark .lux-ampersand {
   color: #c9a84c;
 }
 
-.lux-navbar.lux-scrolled .lux-nav-link {
+.lux-navbar.lux-scrolled .lux-nav-link,
+.lux-navbar.lux-theme-dark .lux-nav-link {
   color: rgba(26, 26, 24, 0.6);
 }
 
-.lux-navbar.lux-scrolled .lux-nav-link:hover {
+.lux-navbar.lux-scrolled .lux-nav-link:hover,
+.lux-navbar.lux-theme-dark .lux-nav-link:hover {
   color: #1a1a18;
 }
 
-.lux-navbar.lux-scrolled .lux-nav-link.lux-active {
+.lux-navbar.lux-scrolled .lux-nav-link.lux-active,
+.lux-navbar.lux-theme-dark .lux-nav-link.lux-active {
   color: #1a1a18;
 }
 
-.lux-navbar.lux-scrolled .lux-nav-link.lux-active::after {
+.lux-navbar.lux-scrolled .lux-nav-link.lux-active::after,
+.lux-navbar.lux-theme-dark .lux-nav-link.lux-active::after {
   background-color: #c9a84c;
 }
 
-.lux-navbar.lux-scrolled .lux-login-btn {
+.lux-navbar.lux-scrolled .lux-login-btn,
+.lux-navbar.lux-theme-dark .lux-login-btn {
   color: #1a1a18;
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.08);
 }
 
-.lux-navbar.lux-scrolled .lux-login-btn:hover {
+.lux-navbar.lux-scrolled .lux-login-btn:hover,
+.lux-navbar.lux-theme-dark .lux-login-btn:hover {
   background: rgba(0, 0, 0, 0.06);
   border-color: #c9a84c;
 }
 
-.lux-navbar.lux-scrolled .lux-avatar-circle {
+.lux-navbar.lux-scrolled .lux-avatar-circle,
+.lux-navbar.lux-theme-dark .lux-avatar-circle {
   border-color: rgba(0, 0, 0, 0.15);
   background: rgba(0, 0, 0, 0.02);
   color: #1a1a18;
 }
 
-.lux-navbar.lux-scrolled .lux-login-btn:hover .lux-avatar-circle {
+.lux-navbar.lux-scrolled .lux-login-btn:hover .lux-avatar-circle,
+.lux-navbar.lux-theme-dark .lux-login-btn:hover .lux-avatar-circle {
   background: #1a1a18;
   border-color: #1a1a18;
   color: #ffffff;
 }
 
-.lux-navbar.lux-scrolled .lux-cta-pill {
+.lux-navbar.lux-scrolled .lux-cta-pill,
+.lux-navbar.lux-theme-dark .lux-cta-pill {
   background-color: #1a1a18;
   color: #ffffff;
 }
 
-.lux-navbar.lux-scrolled .lux-cta-pill:hover {
+.lux-navbar.lux-scrolled .lux-cta-pill:hover,
+.lux-navbar.lux-theme-dark .lux-cta-pill:hover {
   background-color: #2a2a28;
 }
 
-/* Compass SVG Scrolled */
-.lux-navbar.lux-scrolled .lux-compass-svg circle:first-child {
+/* Compass SVG Scrolled/Dark */
+.lux-navbar.lux-scrolled .lux-compass-svg circle:first-child,
+.lux-navbar.lux-theme-dark .lux-compass-svg circle:first-child {
   fill: rgba(0, 0, 0, 0.03);
   stroke: rgba(0, 0, 0, 0.1);
 }
-.lux-navbar.lux-scrolled .lux-compass-svg circle:nth-child(2) {
+.lux-navbar.lux-scrolled .lux-compass-svg circle:nth-child(2),
+.lux-navbar.lux-theme-dark .lux-compass-svg circle:nth-child(2) {
   stroke: rgba(0, 0, 0, 0.05);
 }
-.lux-navbar.lux-scrolled .lux-compass-svg line {
+.lux-navbar.lux-scrolled .lux-compass-svg line,
+.lux-navbar.lux-theme-dark .lux-compass-svg line {
   stroke: rgba(0, 0, 0, 0.2);
 }
-.lux-navbar.lux-scrolled .lux-compass-svg path[fill="white"] {
+.lux-navbar.lux-scrolled .lux-compass-svg path[fill="white"],
+.lux-navbar.lux-theme-dark .lux-compass-svg path[fill="white"] {
   fill: #1a1a18;
 }
 

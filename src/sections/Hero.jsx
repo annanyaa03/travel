@@ -43,7 +43,6 @@ export default function Hero() {
               videoRef.current.play();
             }
           }}
-          poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop"
         >
           <source src="https://videos.pexels.com/video-files/33862542/14370083_2560_1440_25fps.mp4" type="video/mp4" />
           Your browser does not support the video tag.
