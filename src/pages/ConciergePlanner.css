@@ -266,6 +266,21 @@
   flex-direction: column;
   min-height: 700px;
   box-shadow: 0 30px 60px rgba(0,0,0,0.03);
+  overflow: hidden; /* Ensure header doesn't bleed */
+}
+
+.results-header {
+  margin: -32px -36px 36px -36px;
+  padding: 60px 40px;
+  background-color: var(--panel-dark);
+  color: var(--text-dark-panel);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .results-header .label-sm {
@@ -285,9 +300,10 @@
   font-weight: 400 !important;
   line-height: 1.1;
   letter-spacing: -0.3px;
-  color: #1a1a18 !important;
-  margin-bottom: 32px;
+  color: #fff !important;
+  margin-bottom: 0;
   max-width: 100%;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 /* STATS ROW */
