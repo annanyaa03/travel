@@ -7,9 +7,14 @@ import {
   HiOutlineCalendar,
   HiOutlineCamera,
   HiOutlineHeart,
-  HiOutlineMap
+  HiOutlineMap,
+  HiOutlinePhotograph
 } from 'react-icons/hi';
 import './ConciergePlanner.css';
+
+// API Configuration
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const UNSPLASH_ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
 const STATUS_MESSAGES = [
   "Consulting the archives of global transit...",
@@ -19,40 +24,20 @@ const STATUS_MESSAGES = [
   "Finalising your bespoke editorial plan..."
 ];
 
+const DEFAULT_PLAN = {
+  title: "Awaiting Your Destination",
+  stats: { days: "0", cost: "$0", activities: "0", rating: "0" },
+  overview: [],
+  days: [{ id: 1, items: [] }]
+};
+
 const CATEGORIES = {
   Food: 'cat-food',
   Art: 'cat-art',
   Nightlife: 'cat-nightlife',
-  Fashion: 'cat-fashion'
-};
-
-const DUMMY_PLAN = {
-  title: "The Kyoto & Osaka Narrative: 7 Days of Refinement",
-  stats: {
-    days: "7",
-    cost: "$2.4K",
-    activities: "18",
-    rating: "4.9"
-  },
-  overview: [
-    { day: "D 01", title: "Arrival in the Gion District", subtitle: "Twilight exploration of historic tea houses and traditional geisha houses." },
-    { day: "D 02", title: "Zen Gardens & Golden Pavilions", subtitle: "A morning walk through Kinkaku-ji followed by a private tea ceremony." },
-    { day: "D 03", title: "The Bamboo Path of Arashiyama", subtitle: "Traversing the towering stalks and visiting the Tenryu-ji Temple gardens." },
-    { day: "D 04", title: "Nishiki Market Culinary Tour", subtitle: "A sensory journey through the 'Kitchen of Kyoto' with a master chef." },
-    { day: "D 05", title: "Transit to Osaka: Neon & Nightlife", subtitle: "Experiencing the high-energy pulse of Dotonbori and local izakayas." },
-    { day: "D 06", title: "Umeda Sky & Architectural Wonders", subtitle: "Panoramic views of the metropolis followed by fashion exploration." },
-    { day: "D 07", title: "Whisky & Departure", subtitle: "A final morning visit to the Suntory Yamazaki Distillery for a private tasting." }
-  ],
-  days: [
-    {
-      id: 1,
-      items: [
-        { category: "Art", title: "Tenryu-ji Zen Garden", desc: "A world-class example of Shakkei (borrowed scenery) architecture." },
-        { category: "Food", title: "Omakase at Gion Matsuyama", desc: "Traditional multi-course kaiseki featuring hyper-seasonal ingredients." },
-        { category: "Nightlife", title: "The Ponto-cho Alley", desc: "A late-night stroll through Kyoto's most atmospheric lantern-lit passage." }
-      ]
-    }
-  ]
+  Fashion: 'cat-fashion',
+  Nature: 'cat-nature',
+  Wellness: 'cat-wellness'
 };
 
 // Custom Typewriter Hook
@@ -95,34 +80,100 @@ export default function AITripPlanner() {
   const [duration, setDuration] = useState("7d");
   const [budget, setBudget] = useState(1500);
   const [styles, setStyles] = useState(["Cultural"]);
+  const [plan, setPlan] = useState(DEFAULT_PLAN);
+  const [heroImage, setHeroImage] = useState("");
 
-  const { displayedText: typedTitle, complete: titleDone } = useTypewriter(DUMMY_PLAN.title, 45, showResults);
+  const { displayedText: typedTitle, complete: titleDone } = useTypewriter(plan.title, 45, showResults);
 
-  const handleGenerate = (e) => {
+  const fetchHeroImage = async (query) => {
+    if (!UNSPLASH_ACCESS_KEY) return;
+    try {
+      const res = await fetch(`https://api.unsplash.com/search/photos?query=${query}&per_page=1&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`);
+      const data = await res.json();
+      if (data.results?.[0]) {
+        setHeroImage(data.results[0].urls.regular);
+      }
+    } catch (err) {
+      console.error("Unsplash error:", err);
+    }
+  };
+
+  const generateWithAI = async () => {
+    if (!GEMINI_API_KEY) {
+      // Mock result if no API key
+      return new Promise(resolve => {
+        setTimeout(() => {
+          setPlan({ ...DEFAULT_PLAN, title: `A Bespoke Journey to ${destination}` });
+          resolve();
+        }, 3000);
+      });
+    }
+
+    const prompt = `Create a travel itinerary for ${destination} for ${duration} with a budget of $${budget}. 
+    Focus on these styles: ${styles.join(", ")}. 
+    Return ONLY a JSON object in this exact format:
+    {
+      "title": "String",
+      "stats": { "days": "String", "cost": "String", "activities": "String", "rating": "String" },
+      "overview": [ { "day": "D 01", "title": "String", "subtitle": "String" } ],
+      "days": [ { "id": 1, "items": [ { "category": "Food|Art|Nightlife|Fashion|Nature|Wellness", "title": "String", "desc": "String" } ] } ]
+    }`;
+
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { response_mime_type: "application/json" }
+        })
+      });
+      const data = await res.json();
+      const text = data.candidates[0].content.parts[0].text;
+      const json = JSON.parse(text);
+      setPlan(json);
+    } catch (err) {
+      console.error("AI Error:", err);
+      // Fallback
+      setPlan({ ...DEFAULT_PLAN, title: "Error generating plan. Please try again." });
+    }
+  };
+
+  const handleGenerate = async (e) => {
     e.preventDefault();
     setIsGenerating(true);
     setShowResults(false);
     setProgress(0);
     setStatusIdx(0);
 
+    // Start fetching image & AI content in parallel
+    const heroPromise = fetchHeroImage(destination);
+    const aiPromise = generateWithAI();
+
     // Status Cycling
     const statusInterval = setInterval(() => {
       setStatusIdx(prev => (prev + 1) % STATUS_MESSAGES.length);
-    }, 900);
+    }, 1500);
 
-    // Progress Bar
+    // Progress Bar (Simulated but tied to the promises)
+    let currentProgress = 0;
     const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          clearInterval(statusInterval);
-          setIsGenerating(false);
-          setShowResults(true);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 90);
+      currentProgress += 5;
+      if (currentProgress >= 95) {
+        clearInterval(progressInterval);
+      }
+      setProgress(currentProgress);
+    }, 200);
+
+    await Promise.all([heroPromise, aiPromise]);
+
+    clearInterval(statusInterval);
+    clearInterval(progressInterval);
+    setProgress(100);
+    setTimeout(() => {
+      setIsGenerating(false);
+      setShowResults(true);
+    }, 500);
   };
 
   const toggleStyle = (style) => {
@@ -240,7 +291,7 @@ export default function AITripPlanner() {
 
         {/* RIGHT PANEL: EDITORIAL RESULTS */}
         <main className="editorial-right-panel">
-          <div className="results-header">
+          <div className="results-header" style={heroImage ? { backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
             <span className="label-sm">✦ INTELLIGENCE</span>
             <h1 className={showResults ? "typewriter-cursor cp-result-title" : "cp-result-title"}>
               {typedTitle}
@@ -253,19 +304,19 @@ export default function AITripPlanner() {
               <div className="stats-row">
                 <div className="stat-col">
                   <span className="label">Days</span>
-                  <span className="value">{DUMMY_PLAN.stats.days}</span>
+                  <span className="value">{plan.stats.days}</span>
                 </div>
                 <div className="stat-col">
                   <span className="label">ESTIMATED COST</span>
-                  <span className="value gold cp-cost-val">{DUMMY_PLAN.stats.cost}</span>
+                  <span className="value gold cp-cost-val">{plan.stats.cost}</span>
                 </div>
                 <div className="stat-col">
                   <span className="label">Activities</span>
-                  <span className="value">{DUMMY_PLAN.stats.activities}</span>
+                  <span className="value">{plan.stats.activities}</span>
                 </div>
                 <div className="stat-col">
                   <span className="label">Rating</span>
-                  <span className="value">{DUMMY_PLAN.stats.rating} \u2605</span>
+                  <span className="value">{plan.stats.rating} \u2605</span>
                 </div>
               </div>
 
@@ -285,7 +336,7 @@ export default function AITripPlanner() {
               {/* Tab Content */}
               {activeTab === 'Overview' ? (
                 <div className="day-list">
-                  {DUMMY_PLAN.overview.map((d, idx) => (
+                  {plan.overview.map((d, idx) => (
                     <div 
                       key={idx} 
                       className="day-row animate-slide-up" 
@@ -302,16 +353,16 @@ export default function AITripPlanner() {
               ) : (
                 <div className="day-detail-view animate-slide-up">
                   <div className="day-subtabs">
-                    {Array.from({length: 7}, (_, i) => (
+                    {Array.from({length: parseInt(plan.stats.days) || 1}, (_, i) => (
                       <button key={i} className={`subtab-btn ${i === 0 ? 'active' : ''}`}>
                         Day {i + 1}
                       </button>
                     ))}
                   </div>
                   <div className="activity-list">
-                    {DUMMY_PLAN.days[0].items.map((item, idx) => (
+                    {(plan.days?.[0]?.items || []).map((item, idx) => (
                       <div key={idx} className="activity-item animate-slide-up" style={{ animationDelay: `${0.2 + (idx * 0.1)}s` }}>
-                        <span className={`cat-tag ${CATEGORIES[item.category]}`}>{item.category}</span>
+                        <span className={`cat-tag ${CATEGORIES[item.category] || 'cat-general'}`}>{item.category}</span>
                         <h4 className="activity-title">{item.title}</h4>
                         <p className="activity-desc">{item.desc}</p>
                       </div>
