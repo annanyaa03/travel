@@ -45,7 +45,7 @@ export default function Navbar() {
   }, []);
 
   const isActive = (path) => location.pathname === path;
-  const isDarkTheme = location.pathname === '/blog';
+  const isDarkTheme = location.pathname === '/blog' || location.pathname === '/';
 
   return (
     <nav className={`lux-navbar ${scrolled ? 'lux-scrolled' : ''} ${isDarkTheme ? 'lux-theme-dark' : ''}`} id="lux-transparent-nav">
