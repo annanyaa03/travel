@@ -1,0 +1,423 @@
+.flight-booking-page {
+  --font-heading: var(--font-body); /* Force sans-serif globally inside FlightBooking */
+  background: var(--bg-primary);
+  min-height: 100vh;
+  padding: 120px 0 80px;
+}
+
+.fb-header {
+  margin-bottom: 40px;
+}
+
+.fb-header h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.fb-header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.fb-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.fb-main {
+  flex: 1;
+}
+
+.fb-sidebar {
+  width: 400px;
+}
+
+/* Section Forms */
+.fb-section {
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 24px;
+}
+
+.fb-section h3 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+}
+
+.fb-section h3 svg {
+  color: var(--brand-main);
+}
+
+.fb-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.fb-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.fb-input-group.full-width {
+  grid-column: span 2;
+}
+
+.fb-input-group label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.fb-input-group input {
+  padding: 14px 16px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.fb-input-group input:focus {
+  outline: none;
+  border-color: var(--brand-main);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.fb-input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.fb-input-with-icon .input-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--text-muted);
+}
+
+.fb-input-with-icon input {
+  width: 100%;
+  padding-left: 44px;
+}
+
+.fb-secure-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Actions */
+.fb-actions {
+  margin-top: 32px;
+  text-align: right;
+}
+
+.terms-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.fb-submit-btn {
+  background: var(--brand-main);
+  color: #fff;
+  border: none;
+  padding: 18px 40px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  max-width: 400px;
+}
+
+.fb-submit-btn:hover:not(:disabled) {
+  background: #b5952f;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+.fb-submit-btn:disabled {
+  background: #999;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Sidebar Summary */
+.fb-summary.sticky {
+  position: sticky;
+  top: 100px;
+  padding: 32px;
+  border-radius: var(--radius-lg);
+}
+
+.fb-summary h3 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+.fbs-flight {
+  margin-bottom: 24px;
+}
+
+.fbs-airline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.fbs-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.fbs-city strong {
+  display: block;
+  font-size: 1.8rem;
+  color: var(--brand-main);
+}
+
+.fbs-city span {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.fbs-path {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.fbs-path::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 10%; right: 10%;
+  height: 1px;
+  border-top: 1px dashed var(--border-light);
+  z-index: 0;
+}
+
+.fbs-path .fbs-plane {
+  background: var(--bg-primary);
+  padding: 0 8px;
+  z-index: 1;
+  color: var(--brand-main);
+  margin-bottom: 4px;
+}
+
+.fbs-path span {
+  font-size: 0.8rem;
+}
+
+.fbs-date {
+  background: var(--bg-dark);
+  color: #fff;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.fbs-divider {
+  border: 0;
+  border-top: 1px dashed var(--border-light);
+  margin: 20px 0;
+}
+
+.fbs-price-breakdown {
+  margin-bottom: 24px;
+}
+
+.fbs-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.fbs-row .free {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.fbs-row.total {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.fbs-amenities h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.fba-list {
+  display: grid;
+  gap: 10px;
+}
+
+.fba-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.fba-item svg {
+  color: var(--brand-main);
+}
+
+/* Success Page */
+.booking-success-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+  background: var(--bg-primary);
+}
+
+.bs-card {
+  max-width: 600px;
+  width: 100%;
+  padding: 60px 40px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+}
+
+.bs-icon-wrap {
+  width: 100px;
+  height: 100px;
+  background: rgba(39, 174, 96, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+}
+
+.bs-success-icon {
+  font-size: 3rem;
+  color: #27ae60;
+}
+
+.bs-card h2 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.bs-card p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+.bs-details {
+  background: var(--bg-primary);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.bs-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.bs-row:last-child {
+  margin-bottom: 0;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.bs-row span {
+  color: var(--text-muted);
+}
+
+.bs-row strong {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.bs-email {
+  font-style: italic;
+  font-size: 0.9rem !important;
+}
+
+.bs-btn {
+  background: var(--brand-main);
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.bs-btn:hover {
+  background: #b5952f;
+}
+
+@media (max-width: 992px) {
+  .fb-layout {
+    flex-direction: column;
+  }
+  .fb-sidebar {
+    width: 100%;
+    order: -1; /* Summary on top for mobile */
+  }
+  .fb-summary.sticky {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .fb-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .fb-input-group.full-width {
+    grid-column: span 1;
+  }
+}

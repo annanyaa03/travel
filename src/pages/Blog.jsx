@@ -73,8 +73,8 @@ export default function Blog() {
       {/* Blog Header */}
       <header className="blog-header">
         <div className="bh-inner">
-          <p className="bh-eyebrow">The Compass Journal</p>
-          <h1 className="bh-title">Stories &amp; <em>Inspiration</em></h1>
+          <p className="bh-eyebrow animate-fly-in">The Compass Journal</p>
+          <h1 className="bh-title animate-fade-in delay-1">Stories &amp; <em>Inspiration</em></h1>
         </div>
       </header>
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaPlane, FaSearch, FaPlaneDeparture, FaPlaneArrival, FaSpinner } from 'react-icons/fa';
 import './FlightTracker.css';
 

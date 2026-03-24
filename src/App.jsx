@@ -16,6 +16,8 @@ import Wishlist from './pages/Wishlist';
 import Experiences from './pages/Experiences';
 import Blog from './pages/Blog';
 import Flights from './pages/Flights';
+import FlightBooking from './pages/FlightBooking';
+import Booking from './pages/Booking';
 
 function App() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -38,6 +40,8 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/experiences" element={<Experiences />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/book-flight" element={<FlightBooking />} />
+          <Route path="/hotel-booking" element={<Booking />} />
         </Routes>
 
         <Footer />

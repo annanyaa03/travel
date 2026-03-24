@@ -52,16 +52,16 @@ export default function Hero() {
 
       {/* Content */}
       <div className="container hero-content">
-        <div className="hero-text animate-slide-up">
-          <div className="badge-ai">
+        <div className="hero-text">
+          <div className="badge-ai animate-fade-in">
             <span className="badge-dot"></span>
             #1 Rated Travel Experience Platform
           </div>
-          <h1>
+          <h1 className="animate-reveal-text delay-1">
             <span>Discover the World's</span><br />
             <span className="italic">Breathtaking Wonders</span>
           </h1>
-          <p className="hero-subtext">Curated journeys to the planet's most extraordinary destinations</p>
+          <p className="hero-subtext animate-fade-up delay-3">Curated journeys to the planet's most extraordinary destinations</p>
           
           <div className="hero-search">
             <div className="search-input">

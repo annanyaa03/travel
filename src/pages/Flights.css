@@ -1,154 +1,281 @@
 .flights-page {
+  --font-heading: var(--font-body); /* Force sans-serif globally inside Flights for a modern airline feel */
   min-height: 100vh;
   background: var(--bg-primary);
-  padding-bottom: 80px;
+  padding-bottom: 0px; /* changed from 80px */
 }
 
+/* HERO */
 .flights-hero {
-  background: linear-gradient(to bottom, #1a1a18 0%, #2a2a28 100%);
-  padding: 120px 0 60px;
+  position: relative;
+  padding: 200px 0 160px;
   text-align: center;
-  color: #fff;
+  color: #ffffff;
+  overflow: hidden;
+  background-color: #0a0a0a; /* Fallback */
+}
+
+.flights-hero-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(to bottom, rgba(10, 10, 10, 0.4) 0%, rgba(10, 10, 10, 0.8) 100%),
+    url('https://images.pexels.com/photos/111953/pexels-photo-111953.jpeg?auto=compress&cs=tinysrgb&w=1600');
+  background-position: center 30%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.flights-hero-bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
+  z-index: 2;
 }
 
 .flights-hero .eyebrow {
   display: block;
-  font-size: 10px;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.5em;
   color: var(--brand-main);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  position: relative;
+  z-index: 10;
 }
 
 .flights-hero h1 {
   font-family: var(--font-heading);
-  font-size: 48px;
-  margin-bottom: 16px;
-  font-weight: 400;
+  font-size: 72px;
+  margin-bottom: 24px;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  line-height: 1;
+  position: relative;
+  z-index: 10;
 }
 
 .flights-hero h1 em {
   font-style: italic;
   color: var(--brand-main);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 .flights-hero p {
   font-family: var(--font-body);
-  font-weight: 300;
-  color: rgba(255,255,255,0.6);
-  max-width: 600px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.95);
+  max-width: 750px;
   margin: 0 auto;
-}
-
-.flights-content {
-  margin-top: -40px;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  text-shadow: 0 2px 15px rgba(0,0,0,0.8);
   position: relative;
   z-index: 10;
 }
 
-/* Popular Routes Grid */
-.popular-routes-section {
-  margin-top: 60px;
+/* SEARCH & RESULTS */
+.flights-content {
+  position: relative;
+  z-index: 10;
 }
 
-.section-header {
-  margin-bottom: 32px;
+.search-widget-wrapper {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+
+
+/* FEATURED ROUTES */
+.flights-featured {
+  padding: 40px 0 80px;
+}
+
+.ff-header {
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.section-header h3 {
+.ff-header .eyebrow {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--brand-main);
+  margin-bottom: 12px;
+}
+
+.ff-header h2 {
   font-family: var(--font-heading);
-  font-size: 28px;
-  margin-bottom: 8px;
+  font-size: 32px;
+  color: var(--text-primary);
+  margin-bottom: 12px;
 }
 
-.section-header h3 em {
+.ff-header h2 em {
   font-style: italic;
   color: var(--brand-main);
 }
 
-.section-header p {
+.ff-header p {
   color: var(--text-muted);
-  font-size: 14px;
 }
 
-.routes-grid {
+.ff-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 
-.route-card {
-  padding: 24px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.ff-card {
+  position: relative;
+  height: 280px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
   cursor: pointer;
-  background: #ffffff;
-}
-
-.route-card:hover {
-  transform: translateY(-5px);
   box-shadow: var(--shadow-deep);
-  border-color: var(--brand-main);
 }
 
-.route-main {
+.ff-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.ff-card:hover .ff-bg {
+  transform: scale(1.1);
+}
+
+.ff-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+}
+
+.ff-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 24px;
+  color: #fff;
+}
+
+.ff-route {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.airport-code {
+  gap: 12px;
   font-family: var(--font-heading);
-  font-size: 24px;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  margin-bottom: 8px;
 }
 
-.route-line {
+.ff-line {
   flex: 1;
-  height: 2px;
-  background: var(--border-light);
-  margin: 0 16px;
+  height: 1px;
+  background: rgba(255,255,255,0.4);
   position: relative;
 }
 
-.route-line::after {
+.ff-line::after {
   content: '✈';
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 12px;
-  color: var(--brand-main);
-  background: #fff;
-  padding: 0 4px;
+  font-size: 10px;
+  color: #fff;
 }
 
-.route-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-}
-
-.airline {
-  color: var(--text-muted);
+.ff-city {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.price {
-  color: var(--text-primary);
+.ff-price {
+  font-size: 0.9rem;
 }
 
-.price strong {
+.ff-price strong {
+  font-size: 1.2rem;
   color: var(--brand-main);
-  font-size: 16px;
   margin-left: 4px;
 }
 
+/* AVIATION EXPERIENCE */
+.flights-experience {
+  background: #111010;
+  padding: 100px 0;
+  color: #fff;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.fe-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.fe-header h2 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.fe-header h2 em {
+  font-style: italic;
+  color: var(--brand-main);
+}
+
+.fe-header p {
+  color: #9a9284;
+}
+
+.fe-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.fe-item {
+  text-align: center;
+}
+
+.fe-icon {
+  font-size: 2.5rem;
+  color: var(--brand-main);
+  margin-bottom: 24px;
+}
+
+.fe-item h4 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.fe-item p {
+  font-size: 0.9rem;
+  color: #9a9284;
+  line-height: 1.6;
+}
+
+@media (max-width: 992px) {
+  .ff-grid { grid-template-columns: repeat(2, 1fr); }
+  .fe-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 768px) {
+  .flights-hero { padding: 120px 0 80px; }
   .flights-hero h1 { font-size: 36px; }
-  .routes-grid { grid-template-columns: 1fr; }
+  .ff-grid { grid-template-columns: 1fr; }
+  .fe-grid { grid-template-columns: 1fr; gap: 40px; }
 }
