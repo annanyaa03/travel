@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import './Hotels.css';
 import './HotelsExtra.css';
-import { useLocation } from 'react-router-dom';
-import CurrencyConverter from '../components/CurrencyConverter';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const DEFAULT_CITY = 'Paris';
 const OTM_API_KEY = '5ae2e3f221c38a28845f05b66b16781a10a0af4e0b5e89d18e044a76';
@@ -156,6 +155,16 @@ function getHotelDesc(hotelName, city, stars, index) {
 
 const G_AMENITIES = ["WiFi", "Pool", "Spa", "Gym", "Parking", "Bar", "Restaurant", "Pet Friendly"];
 
+// Helper: Clean OSM names
+const cleanName = (name) => {
+  if (!name) return "";
+  return name
+    .replace(/\s*-\s*\d+\s*\*+/g, '') // Remove " - 4*"
+    .replace(/\s*\d+\s*stars?/gi, '') // Remove " 4 stars"
+    .replace(/\[.*\]/g, '') // Remove brackets
+    .trim();
+};
+
 // --- Fix 1: Timeout Wrapper ---
 function fetchWithTimeout(url, options = {}, ms = 5000) {
   const controller = new AbortController();
@@ -179,7 +188,8 @@ async function fetchOverpass(lat, lon, city) {
   return (data.elements || [])
     .filter(el => el.tags?.name)
     .map((el, i) => {
-      const name = el.tags.name;
+      const rawName = el.tags.name;
+      const name = cleanName(rawName);
       const stars = el.tags.stars ? parseInt(el.tags.stars) : 4;
       return {
         id: `osm_${el.id}`,
@@ -305,10 +315,13 @@ function getMockFallback(city) {
 
 export default function Hotels() {
   const location = useLocation();
+  const navigate = useNavigate();
   // --- States ---
   const [city, setCity] = useState('');
   const [inputValue, setInputValue] = useState(DEFAULT_CITY);
   const [suggestions, setSuggestions] = useState([]);
+  const [isFocused, setIsFocused] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -423,7 +436,7 @@ export default function Hotels() {
 
   // --- Search Suggestions ---
   useEffect(() => {
-    if (inputValue.length < 3) {
+    if (!userInteracted || inputValue.length < 3) {
       setSuggestions([]);
       return;
     }
@@ -523,19 +536,24 @@ export default function Hotels() {
     <div className="hotels-page">
       {/* Search Section */}
       <section className="hotels-dark-bar">
-        <div style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#B8883A',marginBottom:'10px'}}>✦ Hotels worldwide</div>
-        <h1 className="hdb-heading">Find Your Perfect <em>Stay</em></h1>
-        <div className="hdb-search-row">
+        <div className="animate-slide-right" style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#B8883A',marginBottom:'10px'}}>✦ Hotels worldwide</div>
+        <h1 className="hdb-heading animate-blur-in delay-1">Find Your Perfect <em>Stay</em></h1>
+        <div className="hdb-search-row animate-fade-up delay-2">
           <input 
             className="hdb-input" 
             placeholder="Search a city..." 
             value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
+            onChange={e => {
+              setInputValue(e.target.value);
+              setUserInteracted(true);
+            }}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
             onKeyDown={e => e.key === 'Enter' && performSearch(inputValue)}
           />
           <button className="hdb-btn" onClick={() => performSearch(inputValue)}>Search</button>
           
-          {suggestions.length > 0 && (
+          {isFocused && suggestions.length > 0 && (
             <ul className="suggestions-list">
               {suggestions.map((s, i) => (
                 <li key={i} className="suggestion-item" onClick={() => {
@@ -610,9 +628,6 @@ export default function Hotels() {
         </div>
       </div>
 
-      <div className="container" style={{maxWidth: '300px', marginBottom: '40px'}}>
-        <CurrencyConverter />
-      </div>
 
       {/* Main Content */}
       <section className="hotel-list">
@@ -641,7 +656,12 @@ export default function Hotels() {
           </div>
         ) : (
           filteredHotels.map((h, idx) => (
-            <div key={h.id || idx} className={`hotel-row fade-in ${h.price < priceRange[0] || h.price > priceRange[1] ? 'dimmed' : ''}`} style={{ animationDelay: `${idx * 0.08}s` }}>
+            <div 
+              key={h.id || idx} 
+              className={`hotel-row fade-in ${h.price < priceRange[0] || h.price > priceRange[1] ? 'dimmed' : ''}`} 
+              style={{ animationDelay: `${idx * 0.08}s`, cursor: 'pointer' }}
+              onClick={() => navigate('/hotel-booking', { state: { hotel: h, city, country, weather } })}
+            >
               <div className="hr-photo">
                 <div className="hr-badge">{h.badge}</div>
                 <button 
@@ -689,7 +709,7 @@ export default function Hotels() {
                   <div className="hr-price">${h.price}</div>
                   <div className="hr-per-night">per night</div>
                 </div>
-                <button className="hr-view-btn" onClick={() => openModal(h, idx)}>View Hotel</button>
+                <button className="hr-view-btn" onClick={(e) => { e.stopPropagation(); openModal(h, idx); }}>View Details</button>
               </div>
             </div>
           ))
@@ -768,7 +788,12 @@ export default function Hotels() {
                 <div className="hm-price-row">
                   <div className="hm-price">${selHotel.price} <span className="hm-night">/ night</span></div>
                 </div>
-                <button className="hm-cta">Book this hotel with Compass →</button>
+                <button 
+                  className="hm-cta" 
+                  onClick={() => navigate('/hotel-booking', { state: { hotel: selHotel, city, country, weather } })}
+                >
+                  Book this hotel with Compass →
+                </button>
               </div>
             </div>
           </div>

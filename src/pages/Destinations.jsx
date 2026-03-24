@@ -12,10 +12,10 @@ export default function Destinations() {
           className="dest-hero-img"
         />
         <div className="dest-hero-overlay"></div>
-        <div className="container dest-hero-content animate-slide-up">
-          <div className="breadcrumb">Home / <span className="bc-active">Destinations</span></div>
-          <h2>Explore <em>All Destinations</em></h2>
-          <p>Discover handpicked destinations worldwide</p>
+        <div className="container dest-hero-content">
+          <div className="breadcrumb animate-fade-in">Home / <span className="bc-active">Destinations</span></div>
+          <h2 className="animate-mask-reveal delay-1">Explore <em>All Destinations</em></h2>
+          <p className="animate-fade-up delay-2">Discover handpicked destinations worldwide</p>
         </div>
       </div>
 

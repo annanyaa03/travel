@@ -189,8 +189,82 @@ h1, h2, h3, h4 {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.8s var(--ease) forwards;
+  animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes letterSpacing {
+  from { letter-spacing: -0.1em; opacity: 0; }
+  to { letter-spacing: normal; opacity: 1; }
+}
+
+.animate-slide-down { animation: slideDown 0.8s var(--ease) forwards; }
+.animate-slide-left { animation: slideLeft 0.8s var(--ease) forwards; }
+.animate-slide-right { animation: slideRight 0.8s var(--ease) forwards; }
+.animate-fade-in { animation: fadeIn 1.2s var(--ease) forwards; }
+.animate-reveal-text { animation: letterSpacing 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+/* Diversified Animations */
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(12px); transform: scale(0.95); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+
+@keyframes zoomOut {
+  from { opacity: 0; transform: scale(1.1); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes maskReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes typewriterEffect {
+  from { width: 0; opacity: 0; }
+  to { width: 100%; opacity: 1; }
+}
+
+@keyframes flyIn {
+  from { opacity: 0; transform: translateX(-100px) skewX(-20deg); }
+  to { opacity: 1; transform: translateX(0) skewX(0); }
+}
+
+.animate-blur-in { animation: blurIn 1.2s var(--ease) forwards; }
+.animate-zoom-out { animation: zoomOut 1.5s var(--ease) forwards; }
+.animate-mask-reveal { animation: maskReveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+.animate-typewriter-line { 
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriterEffect 1.5s steps(40, end) forwards; 
+}
+.animate-fly-in { animation: flyIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
 
 /* Scrollbar */
 ::-webkit-scrollbar {

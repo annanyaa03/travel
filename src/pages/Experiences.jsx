@@ -89,9 +89,9 @@ export default function Experiences() {
           style={{ transform: `translateY(${offsetY * 0.4}px)` }}
         />
         <div className="exp-hero-content">
-          <div className="exp-eyebrow">Curated exclusively for you</div>
-          <h1 className="exp-title">Extraordinary <em>Journeys</em></h1>
-          <p className="exp-subtitle">Beyond destinations. We craft moments that define a lifetime, blending unparalleled luxury with profound authenticity.</p>
+          <div className="exp-eyebrow animate-mask-reveal">Curated exclusively for you</div>
+          <h1 className="exp-title animate-blur-in delay-1">Extraordinary <em>Journeys</em></h1>
+          <p className="exp-subtitle animate-fade-up delay-2">Beyond destinations. We craft moments that define a lifetime, blending unparalleled luxury with profound authenticity.</p>
         </div>
         <div className="exp-scroll-indicator">
           <span>Scroll to explore</span>

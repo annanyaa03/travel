@@ -23,9 +23,9 @@ export default function About() {
       <div className="about-hero">
         <div className="about-hero-bg" />
         <div className="container about-hero-content">
-          <p className="section-label" style={{ color: '#ffb3b3' }}>Our Story</p>
-          <h1 className="about-title">Travel Is Our <br /><span>Greatest Passion</span></h1>
-          <p className="about-hero-sub">
+          <p className="section-label animate-slide-left" style={{ color: '#ffb3b3' }}>Our Story</p>
+          <h1 className="about-title animate-typewriter-line delay-1">Travel Is Our <span>Greatest Passion</span></h1>
+          <p className="about-hero-sub animate-fade-in delay-3">
             Born from a love of exploration, Voyage has been crafting extraordinary journeys for
             curious, adventurous souls since 2009. We don't just plan trips — we create memories that last a lifetime.
           </p>
