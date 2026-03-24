@@ -1,12 +1,12 @@
 .booking-page {
-  background-color: #0A0F19;
-  color: #fff;
+  background-color: #F9F5F0;
+  color: #3E2F1C;
   min-height: 100vh;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .booking-hero {
-  height: 45vh;
+  height: 50vh;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -18,6 +18,8 @@
 .booking-hero-content {
   max-width: 1200px;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .booking-badge {
@@ -29,17 +31,21 @@
 }
 
 .booking-hotel-name {
-  font-size: 3.5rem;
-  font-weight: 300;
+  font-family: 'Gilda Display', serif;
+  font-size: 4.5rem;
+  font-weight: 400;
   margin: 0 0 16px 0;
   letter-spacing: -0.02em;
+  color: #1A1A18;
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.4);
 }
 
 .booking-hotel-meta {
   display: flex;
   gap: 24px;
-  color: rgba(255,255,255,0.7);
-  font-size: 0.95rem;
+  color: rgba(62, 47, 28, 0.8);
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .inline-flag {
@@ -67,12 +73,14 @@
 }
 
 .section-title {
-  font-size: 1.25rem;
-  font-weight: 400;
-  margin-bottom: 24px;
+  font-family: 'Gilda Display', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 32px;
   color: #B8883A;
-  border-bottom: 1px solid rgba(184, 136, 58, 0.2);
-  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(184, 136, 58, 0.1);
+  padding-bottom: 16px;
+  letter-spacing: 0.02em;
 }
 
 .form-grid {
@@ -88,26 +96,29 @@
 }
 
 .form-group label {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.6);
+  font-size: 0.75rem;
+  color: #8B735B;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
 .form-group input, .form-group select {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 14px 18px;
-  border-radius: 8px;
-  color: #fff;
-  font-family: inherit;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  background: #FFFFFF;
+  border: 1px solid #E5E1DA;
+  padding: 16px 20px;
+  border-radius: 12px;
+  color: #3E2F1C;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.3s var(--ease);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.form-group input:focus {
+.form-group input:focus, .form-group select:focus {
   outline: none;
   border-color: #B8883A;
+  box-shadow: 0 0 0 4px rgba(184, 136, 58, 0.1);
 }
 
 .room-selector {
@@ -119,46 +130,49 @@
 .room-option {
   display: flex;
   align-items: center;
-  padding: 18px 24px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  padding: 24px;
+  background: #FFFFFF;
+  border: 1px solid #E5E1DA;
+  border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .room-option:hover {
-  background: rgba(255,255,255,0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .room-option.active {
   border-color: #B8883A;
-  background: rgba(184, 136, 58, 0.05);
-  box-shadow: 0 0 20px rgba(184, 136, 58, 0.1);
+  background: #FFFDF9;
+  box-shadow: 0 0 0 1px #B8883A, 0 8px 24px rgba(184, 136, 58, 0.1);
 }
 
 .room-checkbox {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255,255,255,0.2);
+  width: 24px;
+  height: 24px;
+  border: 2px solid #E5E1DA;
   border-radius: 50%;
   margin-right: 20px;
   position: relative;
+  transition: all 0.3s;
 }
 
 .room-option.active .room-checkbox {
   border-color: #B8883A;
+  background: #B8883A;
 }
 
 .room-option.active .room-checkbox::after {
-  content: '';
+  content: '✓';
   position: absolute;
-  top: 4px;
-  left: 4px;
-  right: 4px;
-  bottom: 4px;
-  background: #B8883A;
-  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 14px;
 }
 
 .room-info {
@@ -174,8 +188,8 @@
 }
 
 .room-perks {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+  color: #8B735B;
 }
 
 .room-price-offset {
@@ -190,12 +204,19 @@
 }
 
 .card-input-wrap input {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 14px 18px;
-  border-radius: 8px;
-  color: #fff;
-  font-family: inherit;
+  background: #FFFFFF;
+  border: 1px solid #E5E1DA;
+  padding: 16px 20px;
+  border-radius: 12px;
+  color: #3E2F1C;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s;
+}
+
+.card-input-wrap input:focus {
+  outline: none;
+  border-color: #B8883A;
+  box-shadow: 0 0 0 4px rgba(184, 136, 58, 0.1);
 }
 
 .card-number-row {
@@ -227,8 +248,8 @@
 }
 
 .booking-disclaimer {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+  color: #8B735B;
   text-align: center;
 }
 
@@ -239,11 +260,11 @@
 }
 
 .summary-card {
-  background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 32px;
+  background: #FFFFFF;
+  border: 1px solid #E5E1DA;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(62, 47, 28, 0.08);
 }
 
 .summary-card h3 {
@@ -256,23 +277,24 @@
 .summary-line {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.8);
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #5D4D3D;
 }
 
 .summary-divider {
   height: 1px;
-  background: rgba(255,255,255,0.1);
+  background: #E5E1DA;
   margin: 24px 0;
 }
 
 .summary-total {
   display: flex;
   justify-content: space-between;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
-  color: #fff;
+  color: #3E2F1C;
+  font-family: 'Gilda Display', serif;
 }
 
 .summary-hotel-preview {

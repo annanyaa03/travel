@@ -74,7 +74,7 @@ export default function Booking() {
 
   return (
     <div className="booking-page">
-      <div className="booking-hero" style={{ backgroundImage: `linear-gradient(to bottom, rgba(10,15,25,0.4), #0A0F19), url(${hotel.img})` }}>
+      <div className="booking-hero" style={{ backgroundImage: `linear-gradient(to bottom, rgba(249,245,240,0.2), #F9F5F0), url(${hotel.img})` }}>
         <div className="booking-hero-content">
           <div className="booking-badge animate-mask-reveal">{hotel.badge || 'Premium Selection'}</div>
           <h1 className="booking-hotel-name animate-zoom-out delay-1">{hotel.name}</h1>
@@ -167,7 +167,7 @@ export default function Booking() {
           </div>
 
           <button className="confirm-booking-btn" disabled={isSubmitting}>
-            {isSubmitting ? 'Securing reservation...' : `Confirm Reservation — $${total.toLocaleString()}`}
+            {isSubmitting ? 'Securing reservation...' : `Confirm Reservation — $${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
           </button>
           <p className="booking-disclaimer">Zero cancellation fees if cancelled 48 hours prior to arrival.</p>
         </form>

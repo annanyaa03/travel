@@ -1,7 +1,7 @@
 .footer-area {
   background: #111010;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 64px 0 56px 0;
+  padding: 40px 0 32px 0;
   color: #fafaf8;
 }
 
@@ -10,16 +10,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 48px;
-  margin-bottom: 48px;
+  padding-bottom: 32px;
+  margin-bottom: 32px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .fn-content h3 {
-  font-family: var(--font-heading);
-  font-size: 20px;
-  margin-bottom: 8px;
+  font-family: 'Gilda Display', serif;
+  font-size: 24px;
+  margin-bottom: 4px;
   color: #ffffff;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .fn-content p {
@@ -68,20 +70,21 @@
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 60px;
-  margin-bottom: 64px;
+  gap: 40px;
+  margin-bottom: 40px;
 }
 
 .footer-logo {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-family: 'Gilda Display', serif;
+  font-size: 1.8rem;
+  font-weight: 500;
   color: #ffffff;
   text-decoration: none;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
 }
 
 .brand-icon {
@@ -91,9 +94,9 @@
 
 .brand-desc {
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.5;
   opacity: 0.60;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   max-width: 280px;
 }
 
