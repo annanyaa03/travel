@@ -2,11 +2,17 @@ import { useState } from 'react';
 import { FaPlane, FaSearch, FaPlaneDeparture, FaPlaneArrival, FaSpinner } from 'react-icons/fa';
 import './FlightTracker.css';
 
-export default function FlightTracker() {
+export default function FlightTracker(props) {
   const [flightData, setFlightData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    if (props.prefill) {
+      setSearch(props.prefill);
+    }
+  }, [props.prefill]);
 
   // We use the free OpenSky Network API. Note: It returns state vectors for all flights.
   // We'll mimic a search by fetching flights over a specific bounding box (e.g. Europe) if no search is provided,

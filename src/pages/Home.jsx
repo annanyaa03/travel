@@ -1,5 +1,6 @@
 import Hero from '../sections/Hero';
 import TypewriterStrip from '../sections/TypewriterStrip';
+import WeatherStrip from '../sections/WeatherStrip';
 import FeaturedDestinations from '../sections/FeaturedDestinations';
 import AIPlannerTeaser from '../sections/AIPlannerTeaser';
 import HotDeals from '../sections/HotDeals';
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <main className="home-page">
       <Hero />
+      <WeatherStrip />
       <TypewriterStrip />
       <FeaturedDestinations />
       <AIPlannerTeaser />

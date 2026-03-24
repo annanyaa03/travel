@@ -64,6 +64,7 @@ export default function Navbar() {
           <Link to="/" className={`lux-nav-link ${isActive('/') ? 'lux-active' : ''}`}>Home</Link>
           <Link to="/destinations" className={`lux-nav-link ${isActive('/destinations') ? 'lux-active' : ''}`}>Destinations</Link>
           <Link to="/hotels" className={`lux-nav-link ${isActive('/hotels') ? 'lux-active' : ''}`}>Hotels</Link>
+          <Link to="/flights" className={`lux-nav-link ${isActive('/flights') ? 'lux-active' : ''}`}>Flights</Link>
           <Link to="/experiences" className={`lux-nav-link ${isActive('/experiences') ? 'lux-active' : ''}`}>Experiences</Link>
           <Link to="/blog" className={`lux-nav-link ${isActive('/blog') ? 'lux-active' : ''}`}>Blog</Link>
         </div>

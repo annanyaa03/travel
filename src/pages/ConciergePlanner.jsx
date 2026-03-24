@@ -10,6 +10,7 @@ import {
   HiOutlineMap,
   HiOutlinePhotograph
 } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
 import './ConciergePlanner.css';
 
 // API Configuration
@@ -374,10 +375,10 @@ export default function AITripPlanner() {
               {/* Results Footer */}
               <footer className="results-footer">
                 <div className="footer-links">
-                  <a href="#" className="footer-link">Recommended Flights</a>
-                  <a href="#" className="footer-link">Selected Hotels</a>
+                  <Link to={`/flights?destination=${destination}`} className="footer-link">Recommended Flights</Link>
+                  <Link to={`/hotels?city=${destination}`} className="footer-link">Selected Hotels</Link>
                 </div>
-                <button className="save-btn">VIEW FULL PLAN</button>
+                <button className="save-btn" onClick={() => window.print()}>PRINT FULL PLAN</button>
               </footer>
             </div>
           )}
