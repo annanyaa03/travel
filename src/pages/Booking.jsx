@@ -173,6 +173,22 @@ export default function Booking() {
         </form>
 
         <aside className="booking-summary">
+          <div className="summary-property-card">
+            <div className="summary-property-img">
+              <img src={hotel.img} alt={hotel.name} />
+            </div>
+            <div className="summary-property-info">
+              <div className="summary-property-name">{hotel.name}</div>
+              <div className="summary-property-meta">
+                <span>{'★'.repeat(hotel.stars)}</span>
+                <span>{city}{country ? `, ${country.name}` : ''}</span>
+              </div>
+              {weather?.temp && (
+                <div className="summary-weather">{weather.temp}°C {weather.emoji}</div>
+              )}
+            </div>
+          </div>
+
           <div className="summary-card">
             <h3>Summary of Charges</h3>
             <div className="summary-line">
@@ -180,7 +196,7 @@ export default function Booking() {
               <span>${(basePrice * multiplier * nights).toLocaleString()}</span>
             </div>
             <div className="summary-line">
-              <span>Taxes & Fees (12%)</span>
+              <span>Taxes &amp; Fees (12%)</span>
               <span>${tax.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
             </div>
             <div className="summary-line">
@@ -191,13 +207,6 @@ export default function Booking() {
             <div className="summary-total">
               <span>Total Amount</span>
               <span>${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-            </div>
-            
-            <div className="summary-hotel-preview">
-              <img src={hotel.img} alt={hotel.name} />
-              <div className="preview-overlay">
-                <div>{weather?.temp}°C {weather?.emoji} in {city}</div>
-              </div>
             </div>
           </div>
         </aside>
