@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import './Hotels.css';
 import './HotelsExtra.css';
+import { useLocation } from 'react-router-dom';
+import CurrencyConverter from '../components/CurrencyConverter';
 
 const DEFAULT_CITY = 'Paris';
 const OTM_API_KEY = '5ae2e3f221c38a28845f05b66b16781a10a0af4e0b5e89d18e044a76';
@@ -302,6 +304,7 @@ function getMockFallback(city) {
 }
 
 export default function Hotels() {
+  const location = useLocation();
   // --- States ---
   const [city, setCity] = useState('');
   const [inputValue, setInputValue] = useState(DEFAULT_CITY);
@@ -408,8 +411,15 @@ export default function Hotels() {
   }, []);
 
   useEffect(() => {
-    performSearch(DEFAULT_CITY);
-  }, [performSearch]);
+    const params = new URLSearchParams(location.search);
+    const cityParam = params.get('city');
+    if (cityParam) {
+      setInputValue(cityParam);
+      performSearch(cityParam);
+    } else {
+      performSearch(DEFAULT_CITY);
+    }
+  }, [performSearch, location.search]);
 
   // --- Search Suggestions ---
   useEffect(() => {
@@ -598,6 +608,10 @@ export default function Hotels() {
           <input type="range" min="0" max="1000" value={priceRange[0]} onChange={handleMinChange} className="slider-input min" />
           <input type="range" min="0" max="1000" value={priceRange[1]} onChange={handleMaxChange} className="slider-input max" />
         </div>
+      </div>
+
+      <div className="container" style={{maxWidth: '300px', marginBottom: '40px'}}>
+        <CurrencyConverter />
       </div>
 
       {/* Main Content */}

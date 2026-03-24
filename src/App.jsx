@@ -15,6 +15,7 @@ import Profile from './pages/Profile';
 import Wishlist from './pages/Wishlist';
 import Experiences from './pages/Experiences';
 import Blog from './pages/Blog';
+import Flights from './pages/Flights';
 
 function App() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/hotels" element={<Hotels />} />
+          <Route path="/flights" element={<Flights />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/concierge-plan" element={<ConciergePlanner />} />
           <Route path="/about" element={<About />} />
