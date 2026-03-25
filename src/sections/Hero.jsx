@@ -37,6 +37,7 @@ export default function Hero() {
           muted 
           playsInline 
           className="hero-video"
+          poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=85"
           onEnded={() => {
             if (videoRef.current) {
               videoRef.current.currentTime = 0;

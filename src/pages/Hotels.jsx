@@ -176,13 +176,13 @@ function fetchWithTimeout(url, options = {}, ms = 5000) {
 
 // --- Fix 3: Overpass Union Query ---
 async function fetchOverpass(lat, lon, city) {
-  const d = 0.18;
+  const d = 0.25;
   const bbox = `${lat-d},${lon-d},${lat+d},${lon+d}`;
-  const query = `[out:json][timeout:8];(node["tourism"="hotel"](${bbox});node["tourism"="hostel"](${bbox});node["tourism"="guest_house"](${bbox});way["tourism"="hotel"](${bbox}););out body center 35;`;
+  const query = `[out:json][timeout:12];(node["tourism"="hotel"](${bbox});node["tourism"="hostel"](${bbox});node["tourism"="guest_house"](${bbox});way["tourism"="hotel"](${bbox}););out body center 40;`;
   const res = await fetchWithTimeout(
     'https://overpass-api.de/api/interpreter',
     { method: 'POST', body: query },
-    2500
+    4000
   );
   const data = await res.json();
   return (data.elements || [])
@@ -211,6 +211,48 @@ async function fetchOverpass(lat, lon, city) {
 
 // --- Fix 5: Static Fallbacks ---
 const fallbackHotels = {
+  paris: [
+    { name:'Hôtel Le Meurice', address:'228 Rue de Rivoli, 75001 Paris', stars:5, price:720 },
+    { name:'The Ritz Paris', address:'15 Place Vendôme, 75001 Paris', stars:5, price:1100 },
+    { name:'Four Seasons George V', address:'31 Avenue George V, 75008 Paris', stars:5, price:980 },
+    { name:'Hôtel de Crillon', address:'10 Place de la Concorde, 75008 Paris', stars:5, price:850 },
+    { name:'Le Bristol Paris', address:'112 Rue du Faubourg Saint-Honoré', stars:5, price:920 },
+    { name:'Hôtel Plaza Athénée', address:'25 Avenue Montaigne, 75008 Paris', stars:5, price:870 },
+    { name:'Hôtel Costes', address:'239 Rue Saint-Honoré, 75001 Paris', stars:5, price:490 },
+    { name:'Hôtel du Louvre', address:'Place André Malraux, 75001 Paris', stars:4, price:310 },
+    { name:'Hôtel Bourg Tibourg', address:'19 Rue du Bourg Tibourg, Paris', stars:4, price:220 },
+    { name:'Generator Paris', address:'9-11 Place du Colonel Fabien', stars:3, price:85 }
+  ],
+  tokyo: [
+    { name:'Park Hyatt Tokyo', address:'3-7-1-2 Nishi-Shinjuku, Tokyo', stars:5, price:620 },
+    { name:'The Peninsula Tokyo', address:'1-8-1 Yurakucho, Chiyoda-ku', stars:5, price:780 },
+    { name:'Aman Tokyo', address:'1-5-6 Otemachi, Chiyoda-ku', stars:5, price:950 },
+    { name:'Mandarin Oriental Tokyo', address:'2-1-1 Nihonbashi Muromachi', stars:5, price:700 },
+    { name:'The Prince Gallery Tokyo Kioicho', address:'1-2 Kioi-cho, Chiyoda-ku', stars:5, price:580 },
+    { name:'Shinjuku Granbell Hotel', address:'2-14-5 Kabukicho, Shinjuku', stars:4, price:185 },
+    { name:'Hotel Gracery Shinjuku', address:'1-19-1 Kabukicho, Shinjuku', stars:4, price:155 },
+    { name:'Khaosan Tokyo Laboratory', address:'2-14-3 Asakusa, Taito-ku', stars:3, price:65 }
+  ],
+  bali: [
+    { name:'Four Seasons Resort Bali at Jimbaran Bay', address:'Jimbaran, Bali 80361', stars:5, price:850 },
+    { name:'COMO Uma Ubud', address:'Jalan Raya Sanggingan, Ubud', stars:5, price:620 },
+    { name:'Capella Ubud', address:'Desa Keliki, Tegallalang, Ubud', stars:5, price:1200 },
+    { name:'Amandari Resort', address:'Sayan, Ubud, Bali 80571', stars:5, price:990 },
+    { name:'Alila Seminyak', address:'Jalan Taman Ganesha 9, Seminyak', stars:5, price:480 },
+    { name:'Katamama Hotel', address:'Jalan Petitenget 51B, Seminyak', stars:5, price:520 },
+    { name:'The Layar', address:'Jalan Sarinande 9, Seminyak, Bali', stars:4, price:290 },
+    { name:'Komaneka at Bisma', address:'Jalan Bisma, Ubud, Bali 80571', stars:4, price:340 }
+  ],
+  dubai: [
+    { name:'Burj Al Arab Jumeirah', address:'Jumeirah Street, Dubai', stars:5, price:1500 },
+    { name:'Atlantis The Palm', address:'Crescent Road, The Palm, Dubai', stars:5, price:520 },
+    { name:'Armani Hotel Dubai', address:'Burj Khalifa, Sheikh Mohammed Blvd', stars:5, price:780 },
+    { name:'Four Seasons Resort Dubai', address:'Jumeirah Beach Road, Dubai', stars:5, price:690 },
+    { name:'Jumeirah Al Naseem', address:'Al Sufouh Road, Madinat Jumeirah', stars:5, price:480 },
+    { name:'FIVE Palm Jumeirah', address:'Palm Jumeirah, Dubai', stars:5, price:390 },
+    { name:'Rove Downtown Dubai', address:'Sheikh Mohammed bin Rashid Blvd', stars:3, price:120 },
+    { name:'ibis Styles Dragon Mart Dubai', address:'International City, Dubai', stars:3, price:75 }
+  ],
   london: [
     { name:'The Savoy', address:'Strand, London WC2R 0EU', stars:5, price:520 },
     { name:'Claridge\'s', address:'Brook Street, Mayfair, London', stars:5, price:610 },
@@ -294,23 +336,9 @@ function getStaticFallback(city) {
 }
 
 function getMockFallback(city) {
-  return [1, 2, 3, 4, 5, 6].map((_, i) => {
-    const name = `${city} ${["Grand", "Palace", "Resort", "Suites", "Lodge", "Boutique"][i]} Hotel`;
-    const stars = i % 2 === 0 ? 5 : 4;
-    return {
-      id: `mock-${i}`,
-      name,
-      stars,
-      price: seedPrice(name, stars),
-      desc: getHotelDesc(name, city, stars, i),
-      img: getHotelImage(city, i),
-      rating: 8.5 + (Math.sin(i) * 1.2),
-      amenities: G_AMENITIES.slice(0, 4),
-      badge: i === 0 ? "Editor's Choice" : "Popular",
-      address: `Luxury Row ${i + 1}, ${city}`,
-      point: { lat: 0, lon: 0 }
-    };
-  });
+  // Return an empty array — the UI will show the empty state
+  // instead of displaying fake generated hotel names
+  return [];
 }
 
 export default function Hotels() {
@@ -790,7 +818,7 @@ export default function Hotels() {
                 </div>
                 <button 
                   className="hm-cta" 
-                  onClick={() => navigate('/hotel-booking', { state: { hotel: selHotel, city, country, weather } })}
+                  onClick={() => { document.body.style.overflow = 'auto'; navigate('/hotel-booking', { state: { hotel: selHotel, city, country, weather } }); }}
                 >
                   Book this hotel with Compass →
                 </button>

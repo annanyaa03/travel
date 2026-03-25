@@ -1,27 +1,26 @@
-import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
-const CompassIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="lux-compass-svg">
-    {/* Outer Circle */}
-    <circle cx="18" cy="18" r="17.5" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
+const DarkCompassIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="lux-compass-svg">
+    {/* Outer Circle - Dark */}
+    <circle cx="18" cy="18" r="17.5" fill="#1A1A14" />
     {/* Inner Ring */}
-    <circle cx="18" cy="18" r="14" stroke="rgba(255, 255, 255, 0.20)" strokeWidth="0.5"/>
+    <circle cx="18" cy="18" r="14" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="0.5"/>
     
     {/* Cardinal Ticks */}
-    <line x1="18" y1="0.5" x2="18" y2="4.5" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1"/>
-    <line x1="18" y1="31.5" x2="18" y2="35.5" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
-    <line x1="31.5" y1="18" x2="35.5" y2="18" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
-    <line x1="0.5" y1="18" x2="4.5" y2="18" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.75"/>
+    <line x1="18" y1="0.5" x2="18" y2="4.5" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1"/>
+    <line x1="18" y1="31.5" x2="18" y2="35.5" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="0.75"/>
+    <line x1="31.5" y1="18" x2="35.5" y2="18" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="0.75"/>
+    <line x1="0.5" y1="18" x2="4.5" y2="18" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="0.75"/>
     
     {/* South Needle (Gold) */}
-    <path d="M18,29.5 L16.9,19.2 L18,18.6 L19.1,19.2 Z" fill="#c9a84c" fillOpacity="0.85"/>
+    <path d="M18,29.5 L16.9,19.2 L18,18.6 L19.1,19.2 Z" fill="#C9972A" />
     {/* North Needle (White) */}
-    <path d="M18,6.5 L19.1,16.8 L18,17.4 L16.9,16.8 Z" fill="white"/>
+    <path d="M18,6.5 L19.1,16.8 L18,17.4 L16.9,16.8 Z" fill="#FFFFFF"/>
     
-    <circle cx="18" cy="18" r="1.8" fill="white"/>
-    <circle cx="18" cy="18" r="0.8" fill="#c9a84c"/>
+    <circle cx="18" cy="18" r="1.8" fill="#FFFFFF"/>
+    <circle cx="18" cy="18" r="0.8" fill="#C9972A"/>
   </svg>
 );
 
@@ -31,33 +30,23 @@ const UserIcon = () => (
   </svg>
 );
 
-export default function Navbar() {
+export default function Navbar({ onLoginClick }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const isActive = (path) => location.pathname === path;
-  const isDarkTheme = location.pathname === '/blog' || location.pathname === '/';
 
   return (
-    <nav className={`lux-navbar ${scrolled ? 'lux-scrolled' : ''} ${isDarkTheme ? 'lux-theme-dark' : ''}`} id="lux-transparent-nav">
+    <nav id="lux-nav-fixed">
       <div className="lux-nav-container">
         
         {/* Left Section: Brand */}
-        <div className="lux-nav-left" onClick={() => navigate('/')}>
-          <CompassIcon />
+        <Link to="/" className="lux-nav-left">
+          <DarkCompassIcon />
           <span className="lux-brand-name">
             Compass <span className="lux-ampersand">&amp;</span> Co.
           </span>
-        </div>
+        </Link>
 
         {/* Center Section: Links */}
         <div className="lux-nav-center">
@@ -71,11 +60,8 @@ export default function Navbar() {
 
         {/* Right Section: Actions */}
         <div className="lux-nav-right">
-          <button className="lux-login-btn" onClick={() => navigate('/login')}>
-            <div className="lux-avatar-circle">
-              <UserIcon />
-            </div>
-            <span>Login</span>
+          <button className="lux-login-btn" onClick={onLoginClick || (() => navigate('/login'))}>
+            <UserIcon /> Login
           </button>
           
           <Link to="/concierge-plan" className="lux-cta-pill">

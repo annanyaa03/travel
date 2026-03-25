@@ -87,7 +87,7 @@ export default function FlightResults({ searchParams }) {
 
       <div className="flight-list">
         {MOCK_FLIGHTS.map((flight) => (
-          <div key={flight.id} className="flight-card glass-panel">
+          <div key={flight.id} className="flight-card">
             <div className="flight-main-info">
               
               {/* Airline Col */}

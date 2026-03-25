@@ -1,18 +1,34 @@
-#lux-transparent-nav {
+/* ============================
+   NAVBAR — REDESIGN
+   Color tokens:
+   Gold    #C9972A
+   Dark    #1A1A14
+   Cream   #F5EFE6
+   White   #FFFFFF
+   Muted   #6B6355
+   Border  rgba(42,38,32,0.10)
+   ============================ */
+
+#lux-nav-fixed {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 72px;
   z-index: 1000;
-  padding: 0 40px;
+  padding: 0 48px;
   display: flex;
   align-items: center;
-  background: transparent;
+  background: rgba(245, 239, 230, 0.92); /* Cream at 92% */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(42, 38, 32, 0.08);
 }
 
 .lux-nav-container {
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,8 +38,9 @@
 .lux-nav-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .lux-nav-left:hover .lux-compass-svg {
@@ -32,18 +49,19 @@
 
 .lux-compass-svg {
   display: block;
+  transition: transform 0.3s ease;
 }
 
 .lux-brand-name {
-  font-family: Georgia, serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 22px;
-  color: #ffffff;
+  color: #1A1A14;
+  font-weight: 500;
   letter-spacing: 0.02em;
-  font-weight: 400;
 }
 
 .lux-ampersand {
-  color: rgba(255, 255, 255, 0.55);
+  color: #C9972A;
   font-style: italic;
   margin: 0 1px;
 }
@@ -52,230 +70,108 @@
 .lux-nav-center {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 32px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .lux-nav-link {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.13em;
-  color: rgba(255, 255, 255, 0.62);
+  letter-spacing: 0.1em;
+  color: #6B6355;
   text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  padding: 8px 0;
+  transition: color 0.2s ease;
   position: relative;
 }
 
 .lux-nav-link:hover {
-  color: rgba(255, 255, 255, 0.92);
+  color: #1A1A14;
 }
 
 .lux-nav-link.lux-active {
-  color: #ffffff;
+  color: #1A1A14;
 }
 
 .lux-nav-link.lux-active::after {
   content: '';
   position: absolute;
-  bottom: 4px;
-  left: 14px;
-  right: 14px;
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.55);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #C9972A; /* Gold underline */
 }
 
 /* RIGHT: ACTIONS */
 .lux-nav-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 }
 
 .lux-login-btn {
+  background: none;
+  border: none;
+  color: #1A1A14;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: opacity 0.2s;
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  cursor: pointer;
-  padding: 6px 16px 6px 8px;
-  border-radius: 30px;
-  color: #ffffff;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 8px;
 }
 
 .lux-login-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(201, 168, 76, 0.4); /* Subtle Gold border on hover */
-  transform: translateY(-1px);
-}
-
-.lux-avatar-circle {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  transition: all 0.4s ease;
-}
-
-.lux-login-btn:hover .lux-avatar-circle {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #c9a84c;
-  color: #c9a84c;
-}
-
-.lux-nav-sep {
-  width: 1px;
-  height: 16px;
-  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 0.7;
 }
 
 .lux-cta-pill {
-  background-color: #ffffff;
-  color: #1a1a18;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #1A1A14;
+  color: #FFFFFF;
+  font-family: 'DM Sans', sans-serif;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  padding: 10px 20px;
-  border-radius: 30px;
+  padding: 12px 24px;
+  border-radius: 40px;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
+  gap: 6px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .lux-cta-pill:hover {
-  background-color: #f5f1ea;
+  background-color: #2a2a24;
   transform: translateY(-1px);
 }
 
 .lux-cta-arrow {
-  color: #c9a84c;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
   font-weight: 400;
   margin-left: 2px;
+  transition: color 0.2s, transform 0.2s;
 }
 
-/* SCROLLED & DARK THEME STATE */
-.lux-navbar.lux-scrolled {
-  background: rgba(249, 245, 240, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  height: 64px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); /* Stronger shadow */
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+.lux-cta-pill:hover .lux-cta-arrow {
+  color: #C9972A;
+  transform: translateX(2px);
 }
 
-.lux-navbar.lux-scrolled .lux-brand-name,
-.lux-navbar.lux-theme-dark .lux-brand-name {
-  color: #1a1a18;
-}
-
-.lux-navbar.lux-scrolled .lux-ampersand,
-.lux-navbar.lux-theme-dark .lux-ampersand {
-  color: #c9a84c;
-}
-
-.lux-navbar.lux-scrolled .lux-nav-link,
-.lux-navbar.lux-theme-dark .lux-nav-link {
-  color: rgba(26, 26, 24, 0.6);
-}
-
-.lux-navbar.lux-scrolled .lux-nav-link:hover,
-.lux-navbar.lux-theme-dark .lux-nav-link:hover {
-  color: #1a1a18;
-}
-
-.lux-navbar.lux-scrolled .lux-nav-link.lux-active,
-.lux-navbar.lux-theme-dark .lux-nav-link.lux-active {
-  color: #1a1a18;
-}
-
-.lux-navbar.lux-scrolled .lux-nav-link.lux-active::after,
-.lux-navbar.lux-theme-dark .lux-nav-link.lux-active::after {
-  background-color: #c9a84c;
-}
-
-.lux-navbar.lux-scrolled .lux-login-btn,
-.lux-navbar.lux-theme-dark .lux-login-btn {
-  color: #1a1a18;
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
-.lux-navbar.lux-scrolled .lux-login-btn:hover,
-.lux-navbar.lux-theme-dark .lux-login-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: #c9a84c;
-}
-
-.lux-navbar.lux-scrolled .lux-avatar-circle,
-.lux-navbar.lux-theme-dark .lux-avatar-circle {
-  border-color: rgba(0, 0, 0, 0.15);
-  background: rgba(0, 0, 0, 0.02);
-  color: #1a1a18;
-}
-
-.lux-navbar.lux-scrolled .lux-login-btn:hover .lux-avatar-circle,
-.lux-navbar.lux-theme-dark .lux-login-btn:hover .lux-avatar-circle {
-  background: #1a1a18;
-  border-color: #1a1a18;
-  color: #ffffff;
-}
-
-.lux-navbar.lux-scrolled .lux-cta-pill,
-.lux-navbar.lux-theme-dark .lux-cta-pill {
-  background-color: #1a1a18;
-  color: #ffffff;
-}
-
-.lux-navbar.lux-scrolled .lux-cta-pill:hover,
-.lux-navbar.lux-theme-dark .lux-cta-pill:hover {
-  background-color: #2a2a28;
-}
-
-/* Compass SVG Scrolled/Dark */
-.lux-navbar.lux-scrolled .lux-compass-svg circle:first-child,
-.lux-navbar.lux-theme-dark .lux-compass-svg circle:first-child {
-  fill: rgba(0, 0, 0, 0.03);
-  stroke: rgba(0, 0, 0, 0.1);
-}
-.lux-navbar.lux-scrolled .lux-compass-svg circle:nth-child(2),
-.lux-navbar.lux-theme-dark .lux-compass-svg circle:nth-child(2) {
-  stroke: rgba(0, 0, 0, 0.05);
-}
-.lux-navbar.lux-scrolled .lux-compass-svg line,
-.lux-navbar.lux-theme-dark .lux-compass-svg line {
-  stroke: rgba(0, 0, 0, 0.2);
-}
-.lux-navbar.lux-scrolled .lux-compass-svg path[fill="white"],
-.lux-navbar.lux-theme-dark .lux-compass-svg path[fill="white"] {
-  fill: #1a1a18;
-}
-
-/* Transiton */
-.lux-navbar, .lux-brand-name, .lux-nav-link, .lux-login-btn, .lux-cta-pill, .lux-compass-svg * {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Responsive adjustment */
+/* Responsive */
 @media (max-width: 1024px) {
-  #lux-transparent-nav { padding: 0 20px; }
+  #lux-nav-fixed { padding: 0 24px; }
   .lux-nav-center { display: none; }
 }

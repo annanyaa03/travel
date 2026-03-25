@@ -41,6 +41,8 @@ export default function Booking() {
   const total = subtotal + tax + serviceFee;
 
   useEffect(() => {
+    // Always re-enable scroll — the Hotels modal may have locked it
+    document.body.style.overflow = 'auto';
     if (!hotel) {
       navigate('/hotels');
     }
