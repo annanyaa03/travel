@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaMapMarkerAlt, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Hero.css';
 
 export default function Hero() {
-  const [searchVal, setSearchVal] = useState('');
-  const [category, setCategory] = useState('All Categories');
   const navigate = useNavigate();
   const videoRef = useRef(null);
 
@@ -15,16 +13,7 @@ export default function Hero() {
     }
   }, []);
 
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (searchVal) params.set('search', searchVal);
-    if (category !== 'All Categories') params.set('category', category);
-    navigate(`/destinations?${params.toString()}`);
-  };
 
-  const handleQuickSearch = (place) => {
-    navigate(`/destinations?search=${place}`);
-  };
 
   return (
     <section className="hero">
@@ -37,7 +26,7 @@ export default function Hero() {
           muted 
           playsInline 
           className="hero-video"
-          poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=85"
+          poster="https://images.pexels.com/videos/36407453/pexels-photo-36407453.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
           onEnded={() => {
             if (videoRef.current) {
               videoRef.current.currentTime = 0;
@@ -45,7 +34,7 @@ export default function Hero() {
             }
           }}
         >
-          <source src="https://videos.pexels.com/video-files/33862542/14370083_2560_1440_25fps.mp4" type="video/mp4" />
+          <source src="https://videos.pexels.com/video-files/36407453/15438667_3840_2160_60fps.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="hero-overlay"></div>
@@ -54,58 +43,54 @@ export default function Hero() {
       {/* Content */}
       <div className="container hero-content">
         <div className="hero-text">
-          <div className="badge-ai animate-fade-in">
-            <span className="badge-dot"></span>
-            #1 Rated Travel Experience Platform
+
+          <div className="eyebrow-line animate-fade-in">
+            <span className="gold-line"></span>
+            <span className="eyebrow-text">#1 Rated Travel Experience Platform</span>
           </div>
           <h1 className="animate-reveal-text delay-1">
-            <span>Discover the World's</span><br />
-            <span className="italic">Breathtaking Wonders</span>
+            <span className="heading-light">Discover the World's</span>
+            <span className="heading-italic">Breathtaking Wonders</span>
           </h1>
-          <p className="hero-subtext animate-fade-up delay-3">Curated journeys to the planet's most extraordinary destinations</p>
-          
-          <div className="hero-search">
-            <div className="search-input">
-              <FaMapMarkerAlt />
-              <input 
-                type="text" 
-                placeholder="Where do you want to go?" 
-                value={searchVal}
-                onChange={(e) => setSearchVal(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              />
-            </div>
-            <div className="search-divider"></div>
-            <select 
-              className="search-select"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option>All Categories</option>
-              <option>Beach</option>
-              <option>Mountain</option>
-              <option>Cultural</option>
-              <option>Adventure</option>
-            </select>
-            <button className="btn btn-primary search-btn" onClick={handleSearch}>Search</button>
+          <p className="hero-subtext animate-fade-up delay-3">
+            Curated journeys to the planet's most extraordinary destinations — crafted for the curious traveller.
+          </p>
+
+          <div className="hero-ctas animate-fade-up delay-4">
+            <button className="btn btn-primary cta-gold" onClick={() => navigate('/concierge-plan')}>Plan a Trip</button>
+            <button className="btn btn-ghost cta-outline" onClick={() => navigate('/destinations')}>Explore Destinations</button>
           </div>
 
-          <div className="hero-tags">
-            <span>Popular:</span>
-            <button onClick={() => handleQuickSearch('Santorini')}>Santorini</button>
-            <button onClick={() => handleQuickSearch('Maldives')}>Maldives</button>
-            <button onClick={() => handleQuickSearch('Dubai')}>Dubai</button>
-            <button onClick={() => handleQuickSearch('Patagonia')}>Patagonia</button>
-            <button onClick={() => handleQuickSearch('Morocco')}>Morocco</button>
+          <div className="hero-stats animate-fade-up delay-5">
+            <div className="stat-item">
+              <span className="stat-number">4,200+</span>
+              <span className="stat-label">Destinations</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <span className="stat-number">98%</span>
+              <span className="stat-label">Satisfaction</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <span className="stat-number">120k</span>
+              <span className="stat-label">Travellers</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Scroll Indicator */}
-      <div className="scroll-indicator">
-        <div className="mouse">
-          <div className="wheel"></div>
-        </div>
+      <div className="scroll-indicator-v2">
+        <div className="scroll-line"></div>
+        <span className="scroll-text">SCROLL</span>
+      </div>
+
+      {/* Progress Dots */}
+      <div className="hero-progress-dots">
+        <div className="progress-dot active"></div>
+        <div className="progress-dot"></div>
+        <div className="progress-dot"></div>
       </div>
     </section>
   );

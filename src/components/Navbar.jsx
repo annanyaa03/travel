@@ -1,10 +1,11 @@
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 const DarkCompassIcon = () => (
   <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="lux-compass-svg">
     {/* Outer Circle - Dark */}
-    <circle cx="18" cy="18" r="17.5" fill="#1A1A14" />
+    <circle cx="18" cy="18" r="17.5" fill="#1A1A14" className="lux-compass-bg" />
     {/* Inner Ring */}
     <circle cx="18" cy="18" r="14" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="0.5"/>
     
@@ -33,11 +34,28 @@ const UserIcon = () => (
 export default function Navbar({ onLoginClick }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (location.pathname === '/' && window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check once on mount/location change
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
 
   const isActive = (path) => location.pathname === path;
+  const isHomePage = location.pathname === '/';
+  const navClass = (isHomePage && !isScrolled) ? 'lux-nav-hero' : '';
 
   return (
-    <nav id="lux-nav-fixed">
+    <nav id="lux-nav-fixed" className={navClass}>
       <div className="lux-nav-container">
         
         {/* Left Section: Brand */}

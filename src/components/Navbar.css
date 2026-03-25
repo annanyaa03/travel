@@ -23,6 +23,40 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(42, 38, 32, 0.08);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+#lux-nav-fixed.lux-nav-hero {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#lux-nav-fixed.lux-nav-hero .lux-brand-name {
+  color: #FFFFFF;
+}
+
+#lux-nav-fixed.lux-nav-hero .lux-nav-link {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+#lux-nav-fixed.lux-nav-hero .lux-nav-link:hover,
+#lux-nav-fixed.lux-nav-hero .lux-nav-link.lux-active {
+  color: #FFFFFF;
+}
+
+#lux-nav-fixed.lux-nav-hero .lux-login-btn {
+  color: #FFFFFF;
+}
+
+#lux-nav-fixed.lux-nav-hero .lux-compass-svg circle:first-child {
+  fill: #FFFFFF;
+  opacity: 0.15;
+}
+
+#lux-nav-fixed.lux-nav-hero .lux-compass-svg path:last-of-type {
+  fill: #FFFFFF;
 }
 
 .lux-nav-container {
@@ -104,7 +138,7 @@
   left: 0;
   width: 100%;
   height: 1.5px;
-  background-color: #C9972A; /* Gold underline */
+  background-color: #d4a855; /* Gold underline */
 }
 
 /* RIGHT: ACTIONS */
