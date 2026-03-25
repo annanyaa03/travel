@@ -1,29 +1,39 @@
+/* ============================================================
+   FLIGHT BOOKING — EDITORIAL REDESIGN
+   ============================================================ */
+
 .flight-booking-page {
-  --font-heading: var(--font-body); /* Force sans-serif globally inside FlightBooking */
-  background: var(--bg-primary);
+  background: #F5EFE6;
+  color: #1A1A14;
   min-height: 100vh;
-  padding: 120px 0 80px;
+  padding: 120px 0 100px;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .fb-header {
-  margin-bottom: 40px;
+  margin-bottom: 60px;
+  max-width: 800px;
 }
 
 .fb-header h1 {
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  color: var(--text-primary);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 16px;
+  color: #1A1A14;
 }
 
 .fb-header p {
-  color: var(--text-muted);
-  font-size: 1.1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: #6B6355;
 }
 
 .fb-layout {
   display: flex;
-  gap: 40px;
+  gap: 80px;
   align-items: flex-start;
 }
 
@@ -32,68 +42,72 @@
 }
 
 .fb-sidebar {
-  width: 400px;
+  width: 440px;
 }
 
-/* Section Forms */
+/* ─── SECTION STYLING (OPEN) ─── */
 .fb-section {
-  padding: 32px;
-  border-radius: var(--radius-lg);
-  margin-bottom: 24px;
+  padding: 48px 0;
+  border-bottom: 1px solid rgba(26, 26, 20, 0.08);
+  margin-bottom: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.fb-section:first-child {
+  padding-top: 0;
 }
 
 .fb-section h3 {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  margin-bottom: 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 32px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: var(--text-primary);
+  gap: 16px;
+  color: #1A1A14;
 }
 
 .fb-section h3 svg {
-  color: var(--brand-main);
+  color: #C9972A;
+  font-size: 0.9em;
+  opacity: 0.8;
 }
 
+/* ─── FORM ELEMENTS ─── */
 .fb-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.fb-input-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.fb-input-group.full-width {
-  grid-column: span 2;
+  gap: 32px;
 }
 
 .fb-input-group label {
-  font-size: 0.8rem;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #9E9485;
+  margin-bottom: 12px;
+  display: block;
 }
 
 .fb-input-group input {
-  padding: 14px 16px;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  background: #ffffff;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  transition: all 0.2s;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(26, 26, 20, 0.1);
+  padding: 12px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: #1A1A14;
+  transition: border-color 0.3s;
 }
 
 .fb-input-group input:focus {
   outline: none;
-  border-color: var(--brand-main);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  border-color: #C9972A;
 }
 
 .fb-input-with-icon {
@@ -104,320 +118,298 @@
 
 .fb-input-with-icon .input-icon {
   position: absolute;
-  left: 16px;
-  color: var(--text-muted);
+  right: 0;
+  color: #C9972A;
+  opacity: 0.5;
+  font-size: 1.2rem;
 }
 
 .fb-input-with-icon input {
-  width: 100%;
-  padding-left: 44px;
+  padding-right: 32px;
 }
 
 .fb-secure-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(39, 174, 96, 0.1);
-  color: #27ae60;
-  padding: 10px 16px;
-  border-radius: var(--radius-md);
-  margin-bottom: 24px;
-  font-size: 0.9rem;
+  gap: 10px;
+  background: rgba(39, 174, 96, 0.05);
+  color: #2D6A4F;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-bottom: 32px;
+  font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.05em;
 }
 
-/* Actions */
-.fb-actions {
-  margin-top: 32px;
-  text-align: right;
-}
-
-.terms-text {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-.fb-submit-btn {
-  background: var(--brand-main);
-  color: #fff;
-  border: none;
-  padding: 18px 40px;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 1.1rem;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: all 0.3s;
-  width: 100%;
-  max-width: 400px;
-}
-
-.fb-submit-btn:hover:not(:disabled) {
-  background: #b5952f;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-}
-
-.fb-submit-btn:disabled {
-  background: #999;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-/* Sidebar Summary */
-.fb-summary.sticky {
+/* ─── SIDEBAR SUMMARY (EDITORIAL TICKET) ─── */
+.fb-summary {
+  background: #FFFFFF;
+  padding: 48px;
+  border-radius: 4px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.03);
   position: sticky;
-  top: 100px;
-  padding: 32px;
-  border-radius: var(--radius-lg);
+  top: 120px;
 }
 
 .fb-summary h3 {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  margin-bottom: 24px;
-  color: var(--text-primary);
-}
-
-.fbs-flight {
-  margin-bottom: 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #1A1A14;
+  padding-bottom: 12px;
+  color: #1A1A14;
 }
 
 .fbs-airline {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  font-weight: 700;
-  font-size: 1.1rem;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-family: 'Gilda Display', serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.airline-logo {
+  width: 32px;
+  height: 32px;
+  background: #F5EFE6;
+  border-radius: 50%;
 }
 
 .fbs-route {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+.fbs-city {
+  flex: 1;
+}
+
+.fbs-city:first-child {
+  text-align: left;
+}
+
+.fbs-city:last-child {
+  text-align: right;
 }
 
 .fbs-city strong {
   display: block;
-  font-size: 1.8rem;
-  color: var(--brand-main);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: #1A1A14;
+  line-height: 1.1;
+  margin-bottom: 8px;
 }
 
 .fbs-city span {
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  color: #C9972A;
+  letter-spacing: 0.05em;
 }
 
 .fbs-path {
-  flex: 1;
+  flex: 0 0 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--text-muted);
   position: relative;
+  margin: 10px 15px 0;
 }
 
 .fbs-path::before {
   content: '';
   position: absolute;
-  top: 50%; left: 10%; right: 10%;
+  top: 10px;
+  left: 0;
+  right: 0;
   height: 1px;
-  border-top: 1px dashed var(--border-light);
-  z-index: 0;
+  background: rgba(26, 26, 20, 0.1);
 }
 
-.fbs-path .fbs-plane {
-  background: var(--bg-primary);
+.fbs-plane {
+  background: #FFFFFF;
   padding: 0 8px;
   z-index: 1;
-  color: var(--brand-main);
+  color: #C9972A;
+  font-size: 1.1rem;
   margin-bottom: 4px;
 }
 
 .fbs-path span {
-  font-size: 0.8rem;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #9E9485;
+  letter-spacing: 0.1em;
 }
 
 .fbs-date {
-  background: var(--bg-dark);
-  color: #fff;
-  padding: 12px;
-  border-radius: var(--radius-md);
-  text-align: center;
-}
-
-.fbs-divider {
-  border: 0;
-  border-top: 1px dashed var(--border-light);
-  margin: 20px 0;
-}
-
-.fbs-price-breakdown {
-  margin-bottom: 24px;
+  font-size: 13px;
+  color: #6B6355;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px dashed rgba(26, 26, 20, 0.1);
 }
 
 .fbs-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
-  color: var(--text-muted);
-  font-size: 0.95rem;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #6B6355;
+}
+
+.fbs-row.total {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  color: #1A1A14;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #1A1A14;
 }
 
 .fbs-row .free {
   color: #27ae60;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.fbs-row.total {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--text-primary);
+.fbs-amenities {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(26, 26, 20, 0.06);
 }
 
 .fbs-amenities h4 {
-  font-size: 0.9rem;
+  font-size: 10px;
+  font-weight: 800;
   text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+  color: #9E9485;
+  margin-bottom: 16px;
 }
 
 .fba-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
 .fba-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  font-weight: 600;
+  gap: 12px;
+  font-size: 13px;
+  color: #1A1A14;
 }
 
 .fba-item svg {
-  color: var(--brand-main);
+  color: #C9972A;
+  opacity: 0.6;
 }
 
-/* Success Page */
+/* ─── ACTIONS ─── */
+.fb-actions {
+  padding-top: 48px;
+}
+
+.fb-submit-btn {
+  background: #1A1A14;
+  color: #FFFFFF;
+  border: none;
+  padding: 24px 60px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.4s;
+  width: 100%;
+}
+
+.fb-submit-btn:hover:not(:disabled) {
+  background: #C9972A;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(201, 151, 42, 0.2);
+}
+
+/* ─── SUCCESS PAGE ─── */
 .booking-success-page {
+  background: #F5EFE6;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px 20px;
-  background: var(--bg-primary);
 }
 
 .bs-card {
-  max-width: 600px;
-  width: 100%;
-  padding: 60px 40px;
+  max-width: 500px;
   text-align: center;
-  border-radius: var(--radius-lg);
 }
 
 .bs-icon-wrap {
-  width: 100px;
-  height: 100px;
-  background: rgba(39, 174, 96, 0.1);
+  width: 80px;
+  height: 80px;
+  background: #FFFFFF;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 30px;
+  margin: 0 auto 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .bs-success-icon {
-  font-size: 3rem;
-  color: #27ae60;
+  font-size: 40px;
+  color: #C9972A;
 }
 
 .bs-card h2 {
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
   margin-bottom: 16px;
-}
-
-.bs-card p {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  margin-bottom: 30px;
+  line-height: 1;
 }
 
 .bs-details {
-  background: var(--bg-primary);
-  padding: 24px;
-  border-radius: var(--radius-md);
-  margin-bottom: 30px;
+  margin: 40px 0;
+  padding: 32px 0;
+  border-top: 1px solid rgba(26, 26, 20, 0.1);
+  border-bottom: 1px solid rgba(26, 26, 20, 0.1);
   text-align: left;
 }
 
 .bs-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.bs-row:last-child {
-  margin-bottom: 0;
-  padding-top: 12px;
-  border-top: 1px dashed var(--border-light);
-}
-
-.bs-row span {
-  color: var(--text-muted);
-}
-
-.bs-row strong {
-  font-size: 1.1rem;
-  color: var(--text-primary);
-}
-
-.bs-email {
-  font-style: italic;
-  font-size: 0.9rem !important;
+  margin-bottom: 8px;
 }
 
 .bs-btn {
-  background: var(--brand-main);
-  color: #fff;
-  border: none;
-  padding: 16px 32px;
+  background: #1A1A14;
+  color: #FFFFFF;
+  padding: 18px 32px;
+  font-size: 11px;
   font-weight: 700;
-  border-radius: var(--radius-pill);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .bs-btn:hover {
-  background: #b5952f;
+  background: #C9972A;
 }
 
-@media (max-width: 992px) {
-  .fb-layout {
-    flex-direction: column;
-  }
-  .fb-sidebar {
-    width: 100%;
-    order: -1; /* Summary on top for mobile */
-  }
-  .fb-summary.sticky {
-    position: static;
-  }
-}
-
-@media (max-width: 768px) {
-  .fb-form-grid {
-    grid-template-columns: 1fr;
-  }
-  .fb-input-group.full-width {
-    grid-column: span 1;
-  }
+@media (max-width: 1024px) {
+  .fb-layout { flex-direction: column; gap: 40px; }
+  .fb-sidebar { width: 100%; }
 }

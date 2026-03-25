@@ -84,7 +84,7 @@ export default function Flights() {
   const [activeDropdown, setActiveDropdown] = useState(null); // 'from' | 'to' | null
 
   const filterAirports = (query) => {
-    if (!query || query.length < 1) return [];
+    if (!query || query.length < 1) return AIRPORTS.slice(0, 6);
     const q = query.toLowerCase();
     return AIRPORTS.filter(
       (a) =>
@@ -223,6 +223,7 @@ export default function Flights() {
                 />
                 {activeDropdown === 'from' && fromSuggestions.length > 0 && (
                   <ul className="fl-autocomplete-dropdown">
+                    {!from && <li className="fl-autocomplete-header">POPULAR ORIGINS</li>}
                     {fromSuggestions.map((a) => (
                       <li
                         key={a.code}
@@ -259,6 +260,7 @@ export default function Flights() {
                 />
                 {activeDropdown === 'to' && toSuggestions.length > 0 && (
                   <ul className="fl-autocomplete-dropdown">
+                    {!to && <li className="fl-autocomplete-header">POPULAR DESTINATIONS</li>}
                     {toSuggestions.map((a) => (
                       <li
                         key={a.code}
