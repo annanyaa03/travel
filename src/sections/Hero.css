@@ -55,6 +55,7 @@
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
+  padding-top: 22vh;
 }
 
 /* EYEBROW LINE */
@@ -91,14 +92,14 @@
 
 .heading-light {
   font-weight: 300;
-  font-size: 46px;
+  font-size: 68px;
   color: #FFFFFF;
 }
 
 .heading-italic {
   font-weight: 400;
   font-style: italic;
-  font-size: 52px;
+  font-size: 78px;
   color: #f5d98c;
   display: block;
 }
@@ -149,44 +150,6 @@
 .cta-outline:hover {
   background: rgba(255, 255, 255, 0.1) !important;
   border-color: #fff !important;
-}
-
-/* STATS ROW */
-.hero-stats {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding-top: 20px;
-  margin-top: 32px;
-  width: fit-content;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.stat-number {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-size: 24px;
-  color: #FFFFFF;
-}
-
-.stat-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.stat-divider {
-  width: 1px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Hero Search */

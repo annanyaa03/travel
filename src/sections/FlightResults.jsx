@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaPlane, FaSuitcase, FaWifi, FaUtensils, FaCheckCircle, FaSpinner } from 'react-icons/fa';
+import { FaPlane, FaSuitcase, FaWifi, FaUtensils, FaCheckCircle, FaSpinner, FaCompass, FaCrown, FaGlobeAmericas } from 'react-icons/fa';
 import './FlightResults.css';
 
 const MOCK_FLIGHTS = [
@@ -92,7 +92,11 @@ export default function FlightResults({ searchParams }) {
               
               {/* Airline Col */}
               <div className="fc-airline">
-                <div className={`airline-logo logo-${flight.logo}`}></div>
+                <div className={`airline-logo logo-${flight.logo}`}>
+                  {flight.logo === 'compass' && <FaCompass />}
+                  {flight.logo === 'luxe' && <FaCrown />}
+                  {flight.logo === 'aero' && <FaGlobeAmericas />}
+                </div>
                 <span className="airline-name">{flight.airline}</span>
               </div>
 

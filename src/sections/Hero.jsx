@@ -60,23 +60,6 @@ export default function Hero() {
             <button className="btn btn-primary cta-gold" onClick={() => navigate('/concierge-plan')}>Plan a Trip</button>
             <button className="btn btn-ghost cta-outline" onClick={() => navigate('/destinations')}>Explore Destinations</button>
           </div>
-
-          <div className="hero-stats animate-fade-up delay-5">
-            <div className="stat-item">
-              <span className="stat-number">4,200+</span>
-              <span className="stat-label">Destinations</span>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <span className="stat-number">98%</span>
-              <span className="stat-label">Satisfaction</span>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <span className="stat-number">120k</span>
-              <span className="stat-label">Travellers</span>
-            </div>
-          </div>
         </div>
       </div>
 

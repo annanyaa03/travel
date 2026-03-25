@@ -17,8 +17,8 @@ export default function LoginPage() {
       {/* ── LEFT: full-bleed editorial image ── */}
       <div className="lp-visual">
         <img
-          src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1800&q=90"
-          alt="Aerial mountain landscape"
+          src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1800&q=95"
+          alt="Dolomites Mountains"
           className="lp-visual-img"
         />
         <div className="lp-visual-overlay" />
