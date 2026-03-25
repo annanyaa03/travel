@@ -37,8 +37,13 @@ export default function FlightSearchWidget({ prefillDestination, onSearch }) {
     onSearch({ origin, destination, departDate, returnDate, passengers, travelClass, tripType });
   };
 
-  const filteredOrigin = POPULAR_AIRPORTS.filter(a => a.toLowerCase().includes(origin.toLowerCase()));
-  const filteredDest = POPULAR_AIRPORTS.filter(a => a.toLowerCase().includes(destination.toLowerCase()));
+  const filteredOrigin = origin 
+    ? POPULAR_AIRPORTS.filter(a => a.toLowerCase().includes(origin.toLowerCase()))
+    : POPULAR_AIRPORTS.slice(0, 8);
+
+  const filteredDest = destination 
+    ? POPULAR_AIRPORTS.filter(a => a.toLowerCase().includes(destination.toLowerCase()))
+    : POPULAR_AIRPORTS.slice(0, 8);
 
   return (
     <div className="flight-search-widget glass-panel animate-slide-up">
@@ -105,11 +110,12 @@ export default function FlightSearchWidget({ prefillDestination, onSearch }) {
                 required
               />
             </div>
-            {showOriginDrop && origin && filteredOrigin.length > 0 && (
-              <ul className="fsw-autocomplete">
+            {showOriginDrop && filteredOrigin.length > 0 && (
+              <ul className="fsw-autocomplete scale-in">
+                {!origin && <li className="fsw-autocomplete-header">Popular Destinations</li>}
                 {filteredOrigin.map(a => (
                   <li key={a} onClick={() => { setOrigin(a); setShowOriginDrop(false); }}>
-                    <FaPlaneDeparture style={{marginRight: '8px', opacity: 0.5}}/> {a}
+                    <FaPlaneDeparture className="fsw-auto-icon" /> {a}
                   </li>
                 ))}
               </ul>
@@ -134,11 +140,12 @@ export default function FlightSearchWidget({ prefillDestination, onSearch }) {
                 required
               />
             </div>
-            {showDestDrop && destination && filteredDest.length > 0 && (
-              <ul className="fsw-autocomplete">
+            {showDestDrop && filteredDest.length > 0 && (
+              <ul className="fsw-autocomplete scale-in">
+                {!destination && <li className="fsw-autocomplete-header">Popular Destinations</li>}
                 {filteredDest.map(a => (
                   <li key={a} onClick={() => { setDestination(a); setShowDestDrop(false); }}>
-                    <FaPlaneArrival style={{marginRight: '8px', opacity: 0.5}}/> {a}
+                    <FaPlaneArrival className="fsw-auto-icon" /> {a}
                   </li>
                 ))}
               </ul>

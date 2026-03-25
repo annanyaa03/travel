@@ -40,7 +40,7 @@ export default function FlightBooking() {
   if (isSuccess) {
     return (
       <div className="booking-success-page">
-        <div className="bs-card glass-panel animate-fade-in">
+        <div className="bs-card animate-fade-in">
           <div className="bs-icon-wrap">
             <FaCheckCircle className="bs-success-icon" />
           </div>
@@ -78,7 +78,7 @@ export default function FlightBooking() {
             <form onSubmit={handlePayment}>
               
               {/* Passenger Details */}
-              <div className="fb-section glass-panel">
+              <div className="fb-section">
                 <h3><FaUser /> Lead Passenger Details</h3>
                 <div className="fb-form-grid">
                   <div className="fb-input-group">
@@ -107,7 +107,7 @@ export default function FlightBooking() {
               </div>
 
               {/* Payment Details */}
-              <div className="fb-section glass-panel">
+              <div className="fb-section">
                 <h3><FaCreditCard /> Payment Information</h3>
                 <div className="fb-secure-badge">
                   <FaLock /> <span>256-bit Secure Encryption</span>
@@ -147,7 +147,7 @@ export default function FlightBooking() {
 
           {/* Sidebar Summary */}
           <div className="fb-sidebar">
-            <div className="fb-summary glass-panel sticky">
+            <div className="fb-summary sticky">
               <h3>Booking Summary</h3>
               
               <div className="fbs-flight">
@@ -158,7 +158,7 @@ export default function FlightBooking() {
                 
                 <div className="fbs-route">
                   <div className="fbs-city">
-                    <strong>{searchParams.origin ? searchParams.origin.substring(0,3).toUpperCase() : 'JFK'}</strong>
+                    <strong>{searchParams.origin || 'New York'}</strong>
                     <span>{flight.departTime}</span>
                   </div>
                   <div className="fbs-path">
@@ -166,7 +166,7 @@ export default function FlightBooking() {
                     <span>{flight.duration}</span>
                   </div>
                   <div className="fbs-city">
-                    <strong>{searchParams.destination ? searchParams.destination.substring(0,3).toUpperCase() : 'LHR'}</strong>
+                    <strong>{searchParams.destination || 'London'}</strong>
                     <span>{flight.arriveTime}</span>
                   </div>
                 </div>

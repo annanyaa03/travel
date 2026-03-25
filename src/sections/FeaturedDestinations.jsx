@@ -47,7 +47,7 @@ export default function FeaturedDestinations() {
             <div
               key={idx}
               className="fd-card"
-              onClick={() => navigate(`/destinations/${dest.id}`)}
+              onClick={() => navigate(`/destinations`)}
             >
               <img src={dest.image} alt={dest.name} className="fd-card-img" />
               <div className="fd-card-overlay" />

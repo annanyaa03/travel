@@ -8,7 +8,8 @@ import {
   HiOutlineCamera,
   HiOutlineHeart,
   HiOutlineMap,
-  HiOutlinePhotograph
+  HiOutlinePhotograph,
+  HiOutlineCheckCircle
 } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import './ConciergePlanner.css';
@@ -70,6 +71,7 @@ const useTypewriter = (text, speed = 45, start = false) => {
 };
 
 export default function AITripPlanner() {
+  const [currentStep, setCurrentStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [activeTab, setActiveTab] = useState('Overview');
@@ -78,9 +80,9 @@ export default function AITripPlanner() {
   
   // Form State
   const [destination, setDestination] = useState("");
-  const [duration, setDuration] = useState("7d");
+  const [duration, setDuration] = useState("");
   const [budget, setBudget] = useState(1500);
-  const [styles, setStyles] = useState(["Cultural"]);
+  const [styles, setStyles] = useState([]);
   const [plan, setPlan] = useState(DEFAULT_PLAN);
   const [heroImage, setHeroImage] = useState("");
 
@@ -99,18 +101,40 @@ export default function AITripPlanner() {
     }
   };
 
+  const getMockPlan = (dest, dur, bud, sty) => {
+    return {
+      title: `The Sublime Soul of ${dest || "your destination"}`,
+      stats: { days: dur || "7", cost: `$${bud || "1500"}`, activities: "12", rating: "4.9" },
+      overview: [
+        { day: "D 01", title: "Arrival & Orientation", subtitle: "Settling into the rhythm of the city." },
+        { day: "D 02", title: "Cultural Deep-Dive", subtitle: "Exploring ancient sites and local legends." },
+        { day: "D 03", title: "Artisan Encounters", subtitle: "Meeting the masters of local craft." }
+      ],
+      days: [
+        {
+          id: 1,
+          items: [
+            { category: "Art", title: "Morning Gallery Walk", desc: "A curated walk through the city's finest independent galleries." },
+            { category: "Food", title: "Traditional Luncheon", desc: "Savory local delicacies in a hidden courtyard setting." },
+            { category: "Nightlife", title: "Jazz & Moonlight", desc: "A cozy evening of live music in an intimate venue." }
+          ]
+        }
+      ]
+    };
+  };
+
   const generateWithAI = async () => {
-    if (!GEMINI_API_KEY) {
-      // Mock result if no API key
+    // If no key or demo mode, return rich mock data
+    if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_API_KEY_HERE") {
       return new Promise(resolve => {
         setTimeout(() => {
-          setPlan({ ...DEFAULT_PLAN, title: `A Bespoke Journey to ${destination}` });
+          setPlan(getMockPlan(destination, duration, budget, styles));
           resolve();
-        }, 3000);
+        }, 2500);
       });
     }
 
-    const prompt = `Create a travel itinerary for ${destination} for ${duration} with a budget of $${budget}. 
+    const prompt = `Create a travel itinerary for ${destination} for ${duration} days with a budget of $${budget}. 
     Focus on these styles: ${styles.join(", ")}. 
     Return ONLY a JSON object in this exact format:
     {
@@ -129,34 +153,37 @@ export default function AITripPlanner() {
           generationConfig: { response_mime_type: "application/json" }
         })
       });
+      
+      if (!res.ok) throw new Error(`API returned ${res.status}`);
+      
       const data = await res.json();
+      if (!data.candidates?.[0]?.content?.parts?.[0]?.text) throw new Error("Invalid API response structure");
+      
       const text = data.candidates[0].content.parts[0].text;
       const json = JSON.parse(text);
       setPlan(json);
     } catch (err) {
       console.error("AI Error:", err);
-      // Fallback
-      setPlan({ ...DEFAULT_PLAN, title: "Error generating plan. Please try again." });
+      // Fail gracefully to mock data but with an error title
+      const mock = getMockPlan(destination, duration, budget, styles);
+      mock.title = `A Dream of ${destination} (Off-key Edition)`;
+      setPlan(mock);
     }
   };
 
-  const handleGenerate = async (e) => {
-    e.preventDefault();
+  const handleGenerate = async () => {
     setIsGenerating(true);
     setShowResults(false);
     setProgress(0);
     setStatusIdx(0);
 
-    // Start fetching image & AI content in parallel
     const heroPromise = fetchHeroImage(destination);
     const aiPromise = generateWithAI();
 
-    // Status Cycling
     const statusInterval = setInterval(() => {
       setStatusIdx(prev => (prev + 1) % STATUS_MESSAGES.length);
     }, 1500);
 
-    // Progress Bar (Simulated but tied to the promises)
     let currentProgress = 0;
     const progressInterval = setInterval(() => {
       currentProgress += 5;
@@ -183,214 +210,270 @@ export default function AITripPlanner() {
     );
   };
 
-  return (
-    <div className="editorial-planner-page">
-      <div className="editorial-container">
-        
-        {/* LEFT PANEL: CONCIERGE INPUTS */}
-        <aside className="editorial-left-panel">
-          <div className="editorial-header-dark">
-            <span className="cp-eyebrow">Compass & Co. AI</span>
-            <h2 className="cp-title">Trip Planner</h2>
-            <p className="cp-subtitle">Bespoke itineraries curated by Gemini AI</p>
+  const nextStep = () => {
+    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    else handleGenerate();
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
+  };
+
+  // Render Logic
+  if (showResults) {
+    return (
+      <div className="planner-results-page">
+        <div className={`results-hero ${!heroImage ? 'no-image' : ''}`} style={heroImage ? { backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${heroImage})` } : {}}>
+          <div className="container">
+            <span className="cp-eyebrow animate-fade-in">✦ BESPOKE JOURNEY</span>
+            <h1 className="cp-result-title typewriter-cursor">{typedTitle}</h1>
+            
+            <div className="stats-row animate-slide-up">
+              <div className="stat-col"><span className="label">Days</span><span className="value">{plan.stats.days}</span></div>
+              <div className="stat-col"><span className="label">Budget</span><span className="value gold">{plan.stats.cost}</span></div>
+              <div className="stat-col"><span className="label">Activities</span><span className="value">{plan.stats.activities}</span></div>
+              <div className="stat-col"><span className="label">Rating</span><span className="value">{plan.stats.rating} ★</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="container results-content">
+          <div className="tab-bar">
+            {['Overview', 'Itinerary'].map(t => (
+              <button key={t} className={`tab-btn ${activeTab === t ? 'active' : ''}`} onClick={() => setActiveTab(t)}>{t}</button>
+            ))}
           </div>
 
-          <form className="editorial-form" onSubmit={handleGenerate}>
-            {/* Destination */}
-            <div className="input-block">
-              <label className="input-label-sm">Destination</label>
-              <input 
-                className="editorial-input" 
-                placeholder="Where to wander?" 
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                required
-              />
-              <div className="suggestion-pills">
-                {["Kyoto", "Maldives", "Santorini", "Bali"].map(p => (
-                  <span key={p} className="cp-pill" onClick={() => setDestination(p)}>{p}</span>
+          <div className="tab-content animate-fade-in">
+            {activeTab === 'Overview' ? (
+              <div className="overview-list">
+                {plan.overview.map((d, i) => (
+                  <div key={i} className="day-card" style={{animationDelay: `${i*0.1}s`}}>
+                    <div className="day-tag">{d.day}</div>
+                    <div className="day-info">
+                      <h3>{d.title}</h3>
+                      <p>{d.subtitle}</p>
+                    </div>
+                  </div>
                 ))}
               </div>
-            </div>
-
-            {/* Duration */}
-            <div className="input-block">
-              <label className="input-label-sm">Duration</label>
-              <div className="pill-group">
-                {["3d", "5d", "7d", "10d"].map(d => (
-                  <button 
-                    key={d}
-                    type="button"
-                    className={`pill-toggle ${duration === d ? 'selected' : ''}`}
-                    onClick={() => setDuration(d)}
-                  >
-                    {d}
-                  </button>
+            ) : (
+              <div className="itinerary-view">
+                {(plan.days?.[0]?.items || []).map((item, i) => (
+                  <div key={i} className="activity-item">
+                    <span className={`cat-tag ${CATEGORIES[item.category] || 'cat-general'}`}>{item.category}</span>
+                    <h4>{item.title}</h4>
+                    <p>{item.desc}</p>
+                  </div>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Budget */}
-            <div className="input-block">
-              <label className="input-label-sm">
-                Budget <span className="value-gold">${budget}</span>
-              </label>
-              <input 
-                type="range" 
-                min="300" 
-                max="5000" 
-                className="custom-slider" 
-                value={budget}
-                onChange={(e) => setBudget(e.target.value)}
-              />
-            </div>
+          <div className="results-actions">
+            <button className="btn btn-primary" onClick={() => setShowResults(false)}>Create New Plan</button>
+            <button className="btn btn-ghost" onClick={() => window.print()}>Export to PDF</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-            {/* Travel Style */}
-            <div className="input-block">
-              <label className="input-label-sm">Travel Style</label>
-              <div className="pill-group">
-                {["Cultural", "Food", "Nature", "Adventure", "Wellness"].map(s => (
-                  <button 
-                    key={s}
-                    type="button"
-                    className={`pill-toggle multi ${styles.includes(s) ? 'selected' : ''}`}
-                    onClick={() => toggleStyle(s)}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
+  if (isGenerating) {
+    return (
+      <div className="planner-loading-page">
+        <div className="loader-content">
+          <div className="pulse-loader">
+            <div className="loader-ring"></div>
+            <div className="loader-logo">C</div>
+          </div>
+          <h2 className="status-text">{STATUS_MESSAGES[statusIdx]}</h2>
+          <div className="loader-progress-wrap">
+            <div className="loader-progress" style={{ width: `${progress}%` }}></div>
+          </div>
+          <p className="loading-sub">Forging your itinerary with artistic precision...</p>
+        </div>
+      </div>
+    );
+  }
 
-            {/* Status Section */}
-            {isGenerating && (
-              <div className="generation-status">
-                <div className="pulse-loader">
-                  <div className="dot"></div>
-                  <div className="dot"></div>
-                  <div className="dot"></div>
-                </div>
-                <p className="status-text">{STATUS_MESSAGES[statusIdx]}</p>
-                <div className="progress-container">
-                  <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+  return (
+    <div className="story-planner-page">
+      {/* HEADER SECTION */}
+      <header className="story-header">
+        <div className="header-left">
+          <span className="story-badge">B — STEP-BY-STEP STORY</span>
+        </div>
+        <div className="step-nav">
+          {[1, 2, 3, 4].map(step => (
+            <div key={step} className={`step-node ${currentStep === step ? 'active' : ''} ${currentStep > step ? 'completed' : ''}`}>
+              {currentStep > step ? <HiOutlineCheckCircle /> : step}
+            </div>
+          ))}
+        </div>
+      </header>
+
+      <main className="story-main">
+        {/* LEFT PANEL: QUESTIONNAIRE */}
+        <section className="story-panel-left">
+          <div className="step-counter">STEP {currentStep} OF 4 — {
+            currentStep === 1 ? 'DESTINATION' : 
+            currentStep === 2 ? 'DURATION' : 
+            currentStep === 3 ? 'BUDGET' : 'STYLE'
+          }</div>
+          
+          <div className="step-content-wrap">
+            <span className="step-bg-num">0{currentStep}</span>
+            
+            {currentStep === 1 && (
+              <div className="step-body animate-fade-in">
+                <h1 className="step-q">Where will your <br/>story begin?</h1>
+                <div className="input-wrap-main">
+                  <input 
+                    type="text" 
+                    className="story-input-large" 
+                    placeholder="Enter City or Country"
+                    value={destination}
+                    onChange={(e) => setDestination(e.target.value)}
+                    autoFocus
+                  />
+                  <div className="quick-suggestions">
+                    {["Kyoto", "Tuscany", "Santorini", "Bali", "Paris"].map(city => (
+                      <button key={city} className="city-pill" onClick={() => setDestination(city)}>{city}</button>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* Footer & CTA */}
-            <div className="editorial-footer-dark">
-              <div className="cost-strip">
-                <span className="label">Estimated cost per person</span>
-                <span className="value">~${Math.round(budget * 0.6)}</span>
-              </div>
-              <button type="submit" className="editorial-cta" disabled={isGenerating}>
-                {isGenerating ? "Synthesizing..." : "GENERATE MY TRIP"}
-              </button>
-            </div>
-          </form>
-        </aside>
-
-        {/* RIGHT PANEL: EDITORIAL RESULTS */}
-        <main className="editorial-right-panel">
-          <div className="results-header" style={heroImage ? { backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-            <span className="label-sm">✦ INTELLIGENCE</span>
-            <h1 className={showResults ? "typewriter-cursor cp-result-title" : "cp-result-title"}>
-              {typedTitle}
-            </h1>
-          </div>
-
-          {showResults && (
-            <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              {/* Stats Row */}
-              <div className="stats-row">
-                <div className="stat-col">
-                  <span className="label">Days</span>
-                  <span className="value">{plan.stats.days}</span>
-                </div>
-                <div className="stat-col">
-                  <span className="label">ESTIMATED COST</span>
-                  <span className="value gold cp-cost-val">{plan.stats.cost}</span>
-                </div>
-                <div className="stat-col">
-                  <span className="label">Activities</span>
-                  <span className="value">{plan.stats.activities}</span>
-                </div>
-                <div className="stat-col">
-                  <span className="label">Rating</span>
-                  <span className="value">{plan.stats.rating} \u2605</span>
-                </div>
-              </div>
-
-              {/* Tab Bar */}
-              <div className="tab-bar">
-                {['Overview', 'Day by day'].map(t => (
-                  <button 
-                    key={t}
-                    className={`tab-btn ${activeTab === t ? 'active' : ''}`}
-                    onClick={() => setActiveTab(t)}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-
-              {/* Tab Content */}
-              {activeTab === 'Overview' ? (
-                <div className="day-list">
-                  {plan.overview.map((d, idx) => (
+            {currentStep === 2 && (
+              <div className="step-body animate-fade-in">
+                <h1 className="step-q">How long will <br/>you explore?</h1>
+                <div className="option-grid">
+                  {[
+                    { val: "3", label: "3 Days", desc: "Quick escape" },
+                    { val: "5", label: "5 Days", desc: "Short break" },
+                    { val: "7", label: "7 Days", desc: "Perfect week" },
+                    { val: "10", label: "10 Days", desc: "Deep immersion" }
+                  ].map(opt => (
                     <div 
-                      key={idx} 
-                      className="day-row animate-slide-up" 
-                      style={{ animationDelay: `${0.4 + (idx * 0.1)}s` }}
+                      key={opt.val} 
+                      className={`option-card ${duration === opt.val ? 'selected' : ''}`}
+                      onClick={() => setDuration(opt.val)}
                     >
-                      <div className="day-num">{d.day}</div>
-                      <div className="day-content">
-                        <span className="day-title">{d.title}</span>
-                        <span className="day-subtitle">{d.subtitle}</span>
+                      <div className="card-top">
+                        <span className="card-title">{opt.label}</span>
+                        {duration === opt.val && <HiOutlineCheckCircle className="check-icon" />}
                       </div>
+                      <span className="card-desc">{opt.desc}</span>
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div className="day-detail-view animate-slide-up">
-                  <div className="day-subtabs">
-                    {Array.from({length: parseInt(plan.stats.days) || 1}, (_, i) => (
-                      <button key={i} className={`subtab-btn ${i === 0 ? 'active' : ''}`}>
-                        Day {i + 1}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="activity-list">
-                    {(plan.days?.[0]?.items || []).map((item, idx) => (
-                      <div key={idx} className="activity-item animate-slide-up" style={{ animationDelay: `${0.2 + (idx * 0.1)}s` }}>
-                        <span className={`cat-tag ${CATEGORIES[item.category] || 'cat-general'}`}>{item.category}</span>
-                        <h4 className="activity-title">{item.title}</h4>
-                        <p className="activity-desc">{item.desc}</p>
-                      </div>
-                    ))}
+              </div>
+            )}
+
+            {currentStep === 3 && (
+              <div className="step-body animate-fade-in">
+                <h1 className="step-q">Envision your <br/>budget level.</h1>
+                <div className="budget-slider-wrap">
+                  <div className="budget-display">${budget}</div>
+                  <input 
+                    type="range" 
+                    min="500" 
+                    max="10000" 
+                    step="500"
+                    className="story-range" 
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                  />
+                  <div className="range-labels">
+                    <span>Modest</span>
+                    <span>Luxury</span>
+                    <span>Ultra</span>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {currentStep === 4 && (
+              <div className="step-body animate-fade-in">
+                <h1 className="step-q">What defines your <br/>travel style?</h1>
+                <div className="option-grid">
+                  {[
+                    { id: "Cultural", label: "Cultural Heritage", icon: <HiOutlineGlobeAlt /> },
+                    { id: "Food", label: "Culinary & Food", icon: <HiOutlineHeart /> },
+                    { id: "Nature", label: "Natural Wonders", icon: <HiOutlinePhotograph /> },
+                    { id: "Wellness", label: "Wellness & Spa", icon: <HiOutlineCamera /> }
+                  ].map(style => (
+                    <div 
+                      key={style.id} 
+                      className={`option-card style-card ${styles.includes(style.id) ? 'selected' : ''}`}
+                      onClick={() => toggleStyle(style.id)}
+                    >
+                      <div className="style-icon">{style.icon}</div>
+                      <span className="card-title">{style.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="step-actions">
+              {currentStep > 1 && (
+                <button className="btn-story-back" onClick={prevStep}>← Back</button>
               )}
-
-              {/* Results Footer */}
-              <footer className="results-footer">
-                <div className="footer-links">
-                  <Link to={`/flights?destination=${destination}`} className="footer-link">Recommended Flights</Link>
-                  <Link to={`/hotels?city=${destination}`} className="footer-link">Selected Hotels</Link>
-                </div>
-                <button className="save-btn" onClick={() => window.print()}>PRINT FULL PLAN</button>
-              </footer>
+              <button 
+                className="btn-story-continue" 
+                onClick={nextStep}
+                disabled={currentStep === 1 ? !destination : currentStep === 2 ? !duration : false}
+              >
+                {currentStep === 4 ? 'GENERATE JOURNEY →' : 'CONTINUE →'}
+              </button>
             </div>
-          )}
+          </div>
+        </section>
 
-          {!showResults && !isGenerating && (
-            <div className="placeholder-content">
-              {/* Optional: Add a subtle graphic or hint here */}
+        {/* RIGHT PANEL: LIVE SUMMARY */}
+        <section className="story-panel-right">
+          <div className="summary-card">
+            <h3 className="summary-title">YOUR TRIP SO FAR</h3>
+            
+            <div className="summary-list">
+              <div className="summary-item">
+                <span className="summary-label">DESTINATION</span>
+                <span className={`summary-value ${!destination ? 'unset' : ''}`}>
+                  {destination || '— not set yet'}
+                </span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">DURATION</span>
+                <span className={`summary-value ${!duration ? 'unset' : ''}`}>
+                  {duration ? `${duration} Days` : '— not set yet'}
+                </span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">BUDGET</span>
+                <span className={`summary-value ${currentStep < 3 ? 'unset' : ''}`}>
+                  {currentStep >= 3 ? `$${budget}` : '— not set yet'}
+                </span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">STYLE</span>
+                <span className={`summary-value ${styles.length === 0 ? 'unset' : ''}`}>
+                  {styles.length > 0 ? styles.join(", ") : '— not set yet'}
+                </span>
+              </div>
             </div>
-          )}
-        </main>
 
-      </div>
+            <div className="progress-footer">
+              <span className="progress-label">PROGRESS</span>
+              <div className="progress-track">
+                <div className="progress-fill" style={{ width: `${(currentStep / 4) * 100}%` }}></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
