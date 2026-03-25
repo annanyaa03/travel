@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
   --cream-bg: #F5F0E8;
@@ -38,7 +38,7 @@
 }
 
 .hdb-heading {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-weight: 400;
   font-size: 32px;
   color: var(--cream-bg);
@@ -72,7 +72,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   padding: 12px 16px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
@@ -201,7 +201,7 @@
 }
 
 .rc-city {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-weight: 400;
   color: var(--text-dark);
@@ -441,7 +441,7 @@
 }
 
 .hr-name {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-weight: 400;
   font-size: 22px;
   color: var(--text-dark);
@@ -524,10 +524,10 @@
 }
 
 .hr-price {
-  font-family: 'Playfair Display', serif;
-  font-weight: 400;
-  font-size: 28px;
-  color: var(--text-dark);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 32px;
+  color: #1a1a18;
   line-height: 1;
 }
 
@@ -577,7 +577,7 @@
 }
 
 .empty-heading {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 32px;
   color: var(--text-dark);
@@ -628,7 +628,7 @@
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 20px;
   padding: 8px 18px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 13px;
   color: var(--text-dark);
@@ -755,8 +755,8 @@
 }
 
 .hm-city {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
   color: #fff;
 }
 
@@ -842,8 +842,8 @@
 }
 
 .hm-price {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
   color: #fff;
 }
 

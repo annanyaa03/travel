@@ -22,8 +22,8 @@
 /* ─── HERO ─── */
 .fl-hero {
   position: relative;
-  height: 100vh;
-  min-height: 640px;
+  height: 72vh;
+  min-height: 520px;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -59,7 +59,7 @@
   width: 100%;
   margin: 0 auto;
   padding: 0 48px;
-  padding-top: 80px;
+  padding-top: 60px;
 }
 
 /* Eyebrow */
@@ -86,11 +86,11 @@
 /* Heading */
 .fl-hero-h1 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(56px, 7vw, 90px);
+  font-size: clamp(40px, 5vw, 64px);
   font-weight: 400;
   line-height: 1.05;
   color: #1A1A14;
-  margin: 0 0 24px 0;
+  margin: 0 0 20px 0;
   letter-spacing: -0.5px;
 }
 
@@ -152,10 +152,12 @@
 }
 
 .fl-search-card {
-  background: #FFFFFF;
-  border: 1px solid rgba(42, 38, 32, 0.10);
-  border-radius: 12px;
-  box-shadow: 0 8px 48px rgba(42, 38, 32, 0.10);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(26, 26, 20, 0.12);
   overflow: hidden;
 }
 
@@ -169,16 +171,17 @@
 .fl-tab {
   background: none;
   border: none;
-  padding: 18px 20px;
+  padding: 22px 28px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   color: #6B6355;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  transition: color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fl-tab:hover { color: #1A1A14; }
@@ -193,21 +196,102 @@
 
 .fl-form-row {
   display: grid;
-  grid-template-columns: 1fr auto 1fr 1fr 1fr;
+  grid-template-columns: 1.2fr auto 1.2fr 1fr 1fr;
   gap: 0;
-  align-items: end;
-  border: 1px solid rgba(42, 38, 32, 0.10);
-  border-radius: 8px;
+  align-items: center;
+  border: 1px solid rgba(26, 26, 20, 0.08);
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .fl-field {
-  padding: 14px 18px;
-  border-right: 1px solid rgba(42, 38, 32, 0.08);
+  padding: 18px 24px;
+  border-right: 1px solid rgba(26, 26, 20, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 84px;
 }
 
 .fl-field:last-child { border-right: none; }
+
+/* ─── AUTOCOMPLETE DROPDOWN ─── */
+.fl-field--autocomplete {
+  position: relative;
+}
+
+.fl-autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -1px;
+  right: -1px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 151, 42, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(26, 26, 20, 0.14), 0 4px 16px rgba(26, 26, 20, 0.06);
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  z-index: 100;
+  overflow: hidden;
+  animation: fl-dropdown-in 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fl-dropdown-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.fl-autocomplete-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.fl-autocomplete-item:hover {
+  background: rgba(201, 151, 42, 0.08);
+}
+
+.fl-ac-code {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #C9972A;
+  letter-spacing: 0.06em;
+  min-width: 36px;
+}
+
+.fl-ac-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fl-ac-city {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A14;
+  line-height: 1.2;
+}
+
+.fl-ac-country {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  color: #9E9485;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
 
 .fl-field--disabled {
   opacity: 0.38;
@@ -229,13 +313,22 @@
   background: transparent;
   border: none;
   outline: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 500;
   color: #1A1A14;
   padding: 0;
+  height: 28px;
 }
 
-.fl-input::placeholder { color: rgba(42, 38, 32, 0.35); }
+.fl-input::placeholder { 
+  color: rgba(26, 26, 20, 0.25);
+  font-family: 'DM Sans', sans-serif;
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
 
 .fl-input:focus {
   color: #1A1A14;
@@ -252,18 +345,22 @@
 
 /* Swap button */
 .fl-swap-btn {
-  background: none;
+  background: rgba(255, 255, 255, 0.8);
   border: none;
-  width: 42px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 14px;
   color: #C9972A;
   cursor: pointer;
-  transition: transform 0.3s;
-  padding: 14px 8px;
-  border-right: 1px solid rgba(42, 38, 32, 0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 0 -18px;
+  z-index: 5;
+  border: 1px solid rgba(201, 151, 42, 0.2);
 }
 
 .fl-swap-btn:hover { transform: rotate(180deg); }
@@ -277,39 +374,44 @@
 
 .fl-field--sm {
   flex: 1;
-  min-width: 160px;
-  border: 1px solid rgba(42, 38, 32, 0.10);
-  border-radius: 8px;
-  padding: 12px 16px;
+  min-width: 180px;
+  border: 1px solid rgba(26, 26, 20, 0.08);
+  border-radius: 12px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.4);
+  transition: all 0.2s ease;
 }
 
 .fl-field--sm:focus-within {
   border-color: #C9972A;
-  background: rgba(201, 151, 42, 0.03);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
 .fl-search-btn {
-  background: #C9972A;
-  color: #fff;
+  background: #1A1A14;
+  color: #FFFFFF;
   border: none;
-  border-radius: 8px;
-  padding: 14px 32px;
+  border-radius: 40px;
+  padding: 16px 40px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: background 0.2s, transform 0.2s;
-  white-space: nowrap;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(26, 26, 20, 0.2);
   margin-left: auto;
 }
 
 .fl-search-btn:hover {
-  background: #b5861f;
-  transform: translateY(-1px);
+  background: #C9972A;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(201, 151, 42, 0.3);
 }
 
 /* ─── RESULTS ─── */

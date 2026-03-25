@@ -7,7 +7,6 @@ import Destinations from './pages/Destinations';
 import Hotels from './pages/Hotels';
 import LoginPage from './pages/LoginPage';
 import AIChatbot from './components/AIChatbot';
-import AuthModal from './components/AuthModal';
 import ScrollToTop from './components/ScrollToTop';
 import ConciergePlanner from './pages/ConciergePlanner';
 import About from './pages/About';
@@ -20,13 +19,11 @@ import FlightBooking from './pages/FlightBooking';
 import Booking from './pages/Booking';
 
 function App() {
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
-
   return (
     <Router>
       <ScrollToTop />
       <div className="app">
-        <Navbar onLoginClick={() => setIsAuthOpen(true)} />
+        <Navbar onLoginClick={null} />
         
         <Routes>
           <Route path="/" element={<Home />} />
@@ -46,7 +43,6 @@ function App() {
 
         <Footer />
         <AIChatbot />
-        <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       </div>
     </Router>
   );

@@ -68,14 +68,14 @@ export default function FlightResults({ searchParams }) {
 
   return (
     <div className="flight-results-container animate-fade-in">
-      <div className="results-header">
-        <div className="results-meta">
+      <div className="fl-results-header">
+        <div className="fl-results-meta">
           <h3>
             Available Flights: <span>{searchParams.origin || 'Anywhere'}</span> to <span>{searchParams.destination || 'Anywhere'}</span>
           </h3>
           <p>{MOCK_FLIGHTS.length} flights found • {searchParams.passengers} Passenger(s) • {searchParams.travelClass}</p>
         </div>
-        <div className="results-sort">
+        <div className="fl-results-sort">
           <select>
             <option>Sort by: Recommended</option>
             <option>Price (Lowest)</option>

@@ -26,6 +26,42 @@ const POPULAR_ROUTES = [
   }
 ];
 
+const AIRPORTS = [
+  { code: 'JFK', city: 'New York', country: 'United States', label: 'New York (JFK)' },
+  { code: 'LAX', city: 'Los Angeles', country: 'United States', label: 'Los Angeles (LAX)' },
+  { code: 'LHR', city: 'London', country: 'United Kingdom', label: 'London (LHR)' },
+  { code: 'CDG', city: 'Paris', country: 'France', label: 'Paris (CDG)' },
+  { code: 'DXB', city: 'Dubai', country: 'UAE', label: 'Dubai (DXB)' },
+  { code: 'HND', city: 'Tokyo', country: 'Japan', label: 'Tokyo (HND)' },
+  { code: 'SYD', city: 'Sydney', country: 'Australia', label: 'Sydney (SYD)' },
+  { code: 'SIN', city: 'Singapore', country: 'Singapore', label: 'Singapore (SIN)' },
+  { code: 'AMS', city: 'Amsterdam', country: 'Netherlands', label: 'Amsterdam (AMS)' },
+  { code: 'FCO', city: 'Rome', country: 'Italy', label: 'Rome (FCO)' },
+  { code: 'BCN', city: 'Barcelona', country: 'Spain', label: 'Barcelona (BCN)' },
+  { code: 'MXP', city: 'Milan', country: 'Italy', label: 'Milan (MXP)' },
+  { code: 'VCE', city: 'Venice', country: 'Italy', label: 'Venice (VCE)' },
+  { code: 'ATH', city: 'Athens', country: 'Greece', label: 'Athens (ATH)' },
+  { code: 'IST', city: 'Istanbul', country: 'Turkey', label: 'Istanbul (IST)' },
+  { code: 'BKK', city: 'Bangkok', country: 'Thailand', label: 'Bangkok (BKK)' },
+  { code: 'DPS', city: 'Bali', country: 'Indonesia', label: 'Bali (DPS)' },
+  { code: 'NRT', city: 'Tokyo Narita', country: 'Japan', label: 'Tokyo Narita (NRT)' },
+  { code: 'ICN', city: 'Seoul', country: 'South Korea', label: 'Seoul (ICN)' },
+  { code: 'PVG', city: 'Shanghai', country: 'China', label: 'Shanghai (PVG)' },
+  { code: 'DEL', city: 'New Delhi', country: 'India', label: 'New Delhi (DEL)' },
+  { code: 'BOM', city: 'Mumbai', country: 'India', label: 'Mumbai (BOM)' },
+  { code: 'GRU', city: 'São Paulo', country: 'Brazil', label: 'São Paulo (GRU)' },
+  { code: 'MEX', city: 'Mexico City', country: 'Mexico', label: 'Mexico City (MEX)' },
+  { code: 'YYZ', city: 'Toronto', country: 'Canada', label: 'Toronto (YYZ)' },
+  { code: 'ORD', city: 'Chicago', country: 'United States', label: 'Chicago (ORD)' },
+  { code: 'MIA', city: 'Miami', country: 'United States', label: 'Miami (MIA)' },
+  { code: 'SFO', city: 'San Francisco', country: 'United States', label: 'San Francisco (SFO)' },
+  { code: 'CPT', city: 'Cape Town', country: 'South Africa', label: 'Cape Town (CPT)' },
+  { code: 'NBO', city: 'Nairobi', country: 'Kenya', label: 'Nairobi (NBO)' },
+  { code: 'MAD', city: 'Madrid', country: 'Spain', label: 'Madrid (MAD)' },
+  { code: 'ZRH', city: 'Zurich', country: 'Switzerland', label: 'Zurich (ZRH)' },
+  { code: 'DOH', city: 'Doha', country: 'Qatar', label: 'Doha (DOH)' },
+];
+
 const WHY_ITEMS = [
   { num: '01', title: 'Curated Partner Airlines', desc: 'We only work with top-tier carriers known for exceptional service, safety records, and on-time performance.' },
   { num: '02', title: '500+ Global Destinations', desc: 'From niche city-breaks to iconic capitals — our network spans every corner of the world.' },
@@ -45,6 +81,22 @@ export default function Flights() {
   const [passengers, setPassengers] = useState('1 Adult');
   const [cabin, setCabin] = useState('Economy');
   const [searchParams, setSearchParams] = useState(null);
+  const [activeDropdown, setActiveDropdown] = useState(null); // 'from' | 'to' | null
+
+  const filterAirports = (query) => {
+    if (!query || query.length < 1) return [];
+    const q = query.toLowerCase();
+    return AIRPORTS.filter(
+      (a) =>
+        a.city.toLowerCase().includes(q) ||
+        a.code.toLowerCase().includes(q) ||
+        a.country.toLowerCase().includes(q) ||
+        a.label.toLowerCase().includes(q)
+    ).slice(0, 6);
+  };
+
+  const fromSuggestions = filterAirports(from);
+  const toSuggestions = filterAirports(to);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -158,26 +210,70 @@ export default function Flights() {
           <form className="fl-form" onSubmit={handleSearch}>
             {/* Main input row */}
             <div className="fl-form-row">
-              <div className="fl-field">
+              <div className="fl-field fl-field--autocomplete">
                 <label className="fl-label">FROM</label>
                 <input
                   className="fl-input"
                   placeholder="City or airport"
                   value={from}
                   onChange={e => setFrom(e.target.value)}
+                  onFocus={() => setActiveDropdown('from')}
+                  onBlur={() => setTimeout(() => setActiveDropdown(null), 150)}
+                  autoComplete="off"
                 />
+                {activeDropdown === 'from' && fromSuggestions.length > 0 && (
+                  <ul className="fl-autocomplete-dropdown">
+                    {fromSuggestions.map((a) => (
+                      <li
+                        key={a.code}
+                        className="fl-autocomplete-item"
+                        onMouseDown={() => { setFrom(a.label); setActiveDropdown(null); }}
+                      >
+                        <span className="fl-ac-code">{a.code}</span>
+                        <span className="fl-ac-info">
+                          <span className="fl-ac-city">{a.city}</span>
+                          <span className="fl-ac-country">{a.country}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
-              <button type="button" className="fl-swap-btn" onClick={handleSwap} title="Swap">⇄</button>
+              <button type="button" className="fl-swap-btn" onClick={handleSwap} title="Swap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m7 16-4-4 4-4"/><path d="m17 8 4 4-4 4"/><path d="M3 12h18"/>
+                </svg>
+              </button>
 
-              <div className="fl-field">
+              <div className="fl-field fl-field--autocomplete">
                 <label className="fl-label">TO</label>
                 <input
                   className="fl-input"
                   placeholder="City or airport"
                   value={to}
                   onChange={e => setTo(e.target.value)}
+                  onFocus={() => setActiveDropdown('to')}
+                  onBlur={() => setTimeout(() => setActiveDropdown(null), 150)}
+                  autoComplete="off"
                 />
+                {activeDropdown === 'to' && toSuggestions.length > 0 && (
+                  <ul className="fl-autocomplete-dropdown">
+                    {toSuggestions.map((a) => (
+                      <li
+                        key={a.code}
+                        className="fl-autocomplete-item"
+                        onMouseDown={() => { setTo(a.label); setActiveDropdown(null); }}
+                      >
+                        <span className="fl-ac-code">{a.code}</span>
+                        <span className="fl-ac-info">
+                          <span className="fl-ac-city">{a.city}</span>
+                          <span className="fl-ac-country">{a.country}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
               <div className="fl-field">

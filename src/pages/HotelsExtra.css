@@ -2,13 +2,31 @@
 
 /* Fix 1: Search Bar Padding & Heading (Accounts for Navbar) */
 .hotels-dark-bar {
-  padding-top: 72px !important;
-  padding-bottom: 40px !important;
-  padding-left: 56px !important;
-  padding-right: 56px !important;
+  padding-top: 100px !important;
+  padding-bottom: 72px !important;
+  padding-left: 64px !important;
+  padding-right: 64px !important;
 }
 .hdb-heading {
-  font-size: 32px !important;
+  font-size: 48px !important;
+  margin-bottom: 36px !important;
+}
+
+.hdb-search-row {
+  max-width: 800px !important;
+  gap: 12px !important;
+}
+
+.hdb-input {
+  padding: 16px 24px !important;
+  font-size: 18px !important;
+  border-radius: 12px !important;
+}
+
+.hdb-btn {
+  padding: 0 40px !important;
+  font-size: 13px !important;
+  border-radius: 12px !important;
 }
 
 /* Fix 2: Hotel Row Spacing and Borders (Option A) */
@@ -187,7 +205,7 @@
 }
 
 .hm-city {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 24px;
   color: #fff;
 }
@@ -229,7 +247,7 @@
 }
 
 .hm-stat-num {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 18px;
   color: #fff;
 }
@@ -274,7 +292,7 @@
 }
 
 .hm-price {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 24px;
   color: #fff;
 }
