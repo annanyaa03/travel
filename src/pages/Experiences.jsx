@@ -1,4 +1,20 @@
+import React, { useState, useRef, useEffect } from 'react';
+import './Experiences.css';
 
+const EXPERIENCES_DATA = [
+  {
+    id: 'e1',
+    title: 'Private Serengeti Safari',
+    category: 'Adventure',
+    location: 'Tanzania',
+    duration: '7 Days',
+    price: '$12,500',
+    img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200&q=90',
+    desc: 'Witness the Great Migration from an exclusive, undiscovered luxury camp.',
+    tip: 'Best migration views in August.',
+    meters: { adventure: 90, exclusivity: 80, relaxation: 20 }
+  },
+  {
     id: 'e2',
     title: 'Tuscan Culinary Masterclass',
     category: 'Culinary',
