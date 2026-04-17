@@ -1,11 +1,4 @@
-import React, { useState } from 'react';
-import './Blog.css';
 
-const ISSUE_NUMBER = 24;
-const ISSUE_DATE = 'October 2026';
-
-const POSTS = [
-  {
     id: 'b1',
     numeral: 'i.',
     title: 'The Art of Slow Travel in the Scottish Highlands',
