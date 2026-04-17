@@ -1,18 +1,3 @@
-import { useState, useEffect, useRef } from 'react';
-import { 
-  HiOutlineArrowRight, 
-  HiOutlineGlobeAlt, 
-  HiOutlineCurrencyDollar,
-  HiOutlineClock,
-  HiOutlineCalendar,
-  HiOutlineCamera,
-  HiOutlineHeart,
-  HiOutlineMap,
-  HiOutlinePhotograph,
-  HiOutlineCheckCircle
-} from 'react-icons/hi';
-import { Link } from 'react-router-dom';
-import './ConciergePlanner.css';
 
 // API Configuration
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
