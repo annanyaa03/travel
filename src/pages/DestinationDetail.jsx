@@ -1,17 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaMapMarkerAlt, FaStar, FaCheckCircle, FaClock, FaCalendarAlt, FaCloudSun, FaShieldAlt, FaUndo, FaHeadset, FaPaperPlane, FaHeart, FaGlobe, FaUsers, FaCoins, FaInfoCircle, FaTemperatureHigh } from 'react-icons/fa';
-import { destinations } from '../data';
-import './DestinationDetail.css';
 
-function Stars({ rating }) {
-  return (
-    <div className="stars">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <FaStar key={i} className={`star-icon ${i < Math.round(rating) ? 'filled' : ''}`} />
-      ))}
-    </div>
-  );
 }
 
 export default function DestinationDetail() {
