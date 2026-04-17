@@ -16,4 +16,12 @@ export default function Destinations() {
           <div className="breadcrumb animate-fade-in">Home / <span className="bc-active">Destinations</span></div>
           <h2 className="animate-mask-reveal delay-1">Explore <em>All Destinations</em></h2>
           <p className="animate-fade-up delay-2">Discover handpicked destinations worldwide</p>
-   
+        </div>
+      </div>
+
+      {/* Bento Grid Section */}
+      <BentoGrid />
+    </div>
+  );
+}
+
