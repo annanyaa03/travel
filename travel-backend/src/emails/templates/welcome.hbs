@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { width: 80%; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+    .header { background: #4a90e2; color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { padding: 20px; }
+    .footer { text-align: center; font-size: 0.8em; color: #777; margin-top: 20px; }
+    .button { display: inline-block; padding: 10px 20px; background: #4a90e2; color: white; text-decoration: none; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Welcome to Travel App!</h1>
+    </div>
+    <div class="content">
+      <p>Hi {{fullName}},</p>
+      <p>Thank you for joining Travel App. We're excited to help you plan your next adventure!</p>
+      <p>To get started, please verify your email address by clicking the button below:</p>
+      <p style="text-align: center;">
+        <a href="{{frontendUrl}}/verify-email" class="button">Verify Email</a>
+      </p>
+      <p>If you have any questions, feel free to reply to this email.</p>
+      <p>Happy travels!</p>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 Travel App. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

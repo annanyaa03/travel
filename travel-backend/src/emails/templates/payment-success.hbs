@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { width: 80%; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+    .header { background: #2ecc71; color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
+    .details { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; }
+    .footer { text-align: center; font-size: 0.8em; color: #777; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Payment Successful!</h1>
+    </div>
+    <div class="content">
+      <p>Your payment for Booking ID: {{booking_id}} was successful.</p>
+      <div class="details">
+        <p><strong>Amount Paid:</strong> ${{amount}}</p>
+        <p><strong>Status:</strong> Confirmed</p>
+      </div>
+      <p>Thank you for your business!</p>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 Travel App. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
