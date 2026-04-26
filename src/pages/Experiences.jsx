@@ -12,7 +12,8 @@ const EXPERIENCES_DATA = [
     img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200&q=90',
     desc: 'Witness the Great Migration from an exclusive, undiscovered luxury camp.',
     tip: 'Best migration views in August.',
-    meters: { adventure: 90, exclusivity: 80, relaxation: 20 }
+    meters: { adventure: 90, exclusivity: 80, relaxation: 20 },
+    link: 'https://www.andbeyond.com/safari-destinations/africa/tanzania/serengeti/'
   },
   {
     id: 'e2',
@@ -24,7 +25,8 @@ const EXPERIENCES_DATA = [
     img: 'https://images.unsplash.com/photo-1516681100942-77d8e7f9dd97?w=1200&q=90',
     desc: 'Truffle hunting, private wine tastings, and cooking with Michelin-starred chefs.',
     tip: 'Private truffle hunting included.',
-    meters: { adventure: 20, exclusivity: 70, relaxation: 60 }
+    meters: { adventure: 20, exclusivity: 70, relaxation: 60 },
+    link: 'https://www.cookingclassesinflorence.com'
   },
   {
     id: 'e3',
@@ -36,7 +38,8 @@ const EXPERIENCES_DATA = [
     img: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1200&q=90',
     desc: 'Explore untouched ice formations with seasoned polar explorers.',
     tip: 'Helicopter access to remote glaciers.',
-    meters: { adventure: 100, exclusivity: 95, relaxation: 10 }
+    meters: { adventure: 100, exclusivity: 95, relaxation: 10 },
+    link: 'https://www.hurtigruten.com/en-us/expeditions/antarctica/'
   },
   {
     id: 'e4',
@@ -48,7 +51,8 @@ const EXPERIENCES_DATA = [
     img: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=1200&q=90',
     desc: 'Private tea ceremonies, exclusive temple access, and ryokan wellness immersion.',
     tip: 'Exclusive after-hours temple access.',
-    meters: { adventure: 10, exclusivity: 85, relaxation: 100 }
+    meters: { adventure: 10, exclusivity: 85, relaxation: 100 },
+    link: 'https://www.sykioto.com/en/'
   },
   {
     id: 'e5',
@@ -60,7 +64,8 @@ const EXPERIENCES_DATA = [
     img: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1200&q=90',
     desc: 'Sail the Indian Ocean in absolute privacy on a 120ft luxury gulet.',
     tip: 'Comes with a private onboard chef.',
-    meters: { adventure: 30, exclusivity: 90, relaxation: 100 }
+    meters: { adventure: 30, exclusivity: 90, relaxation: 100 },
+    link: 'https://www.fourseasons.com/maldives/yachts/'
   },
   {
     id: 'e6',
@@ -72,7 +77,8 @@ const EXPERIENCES_DATA = [
     img: 'https://images.unsplash.com/photo-1520208422220-d12a3c588e6c?w=1200&q=90',
     desc: 'Luxury eco-domes nestled beneath the towering peaks of Torres del Paine.',
     tip: 'Stargazing from your private dome.',
-    meters: { adventure: 80, exclusivity: 60, relaxation: 70 }
+    meters: { adventure: 80, exclusivity: 60, relaxation: 70 },
+    link: 'https://www.ecocamp.travel'
   }
 ];
 
@@ -369,19 +375,48 @@ export default function Experiences() {
         <div className="exp-grid-container">
           {filtered.map(exp => (
             <div key={exp.id} className="exp-card">
-              <div className="exp-card-img-wrap">
-                <img src={exp.img} alt={exp.title} className="exp-card-img" />
-                <div className="exp-card-tag">{exp.category}</div>
-                <div className="exp-card-overlay-tip">
-                  <span className="exp-tip-label">INSIDER TIP</span>
-                  <span className="exp-tip-text">"{exp.tip}"</span>
+              <a
+                href={exp.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'block',
+                  cursor: 'pointer',
+                  textDecoration: 'none'
+                }}
+              >
+                <div className="exp-card-img-wrap">
+                  <img src={exp.img} alt={exp.title} className="exp-card-img" />
+                  <div className="exp-card-tag">{exp.category}</div>
+                  <div className="exp-card-overlay-tip">
+                    <span className="exp-tip-label">INSIDER TIP</span>
+                    <span className="exp-tip-text">"{exp.tip}"</span>
+                  </div>
                 </div>
-              </div>
+              </a>
               <div className="exp-card-body">
                 <div className="exp-card-loc">
                   {exp.location} <span className="exp-dot"></span> {exp.duration}
                 </div>
-                <h3 className="exp-card-heading">{exp.title}</h3>
+                <a
+                  href={exp.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    transition: 'color 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#C9A84C';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'inherit';
+                  }}
+                >
+                  <h3 className="exp-card-heading">{exp.title}</h3>
+                </a>
                 <p className="exp-card-desc">{exp.desc}</p>
                 
                 <div className="exp-meters">
@@ -401,7 +436,19 @@ export default function Experiences() {
               </div>
               <div className="exp-card-footer">
                 <span className="exp-card-price">{exp.price}</span>
-                <button className="exp-card-explore">Explore →</button>
+                <a
+                  href={exp.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="exp-card-explore"
+                  style={{
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                    display: 'inline-block'
+                  }}
+                >
+                  Explore →
+                </a>
               </div>
             </div>
           ))}
