@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import HotelCard from '../components/hotels/HotelCard';
+import HotelSkeleton from '../components/hotels/HotelSkeleton';
+import HotelModal from '../components/hotels/HotelModal';
 import './Hotels.css';
-import './HotelsExtra.css';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 const DEFAULT_CITY = 'Paris';
-const OTM_API_KEY = '5ae2e3f221c38a28845f05b66b16781a10a0af4e0b5e89d18e044a76';
 
-// Helper: Map weather codes to emojis
+// --- Helper Functions (Preserved) ---
 const mapWeatherEmoji = (code) => {
   if (code === 0) return '☀️';
   if (code >= 1 && code <= 3) return '⛅';
@@ -18,97 +19,26 @@ const mapWeatherEmoji = (code) => {
   return '⛅';
 };
 
-
-
-// Helper: Animated Counter
-const AnimatedCounter = ({ value }) => {
-  const [displayValue, setDisplayValue] = useState(0);
-  useEffect(() => {
-    let start = 0;
-    const end = parseInt(value);
-    if (start === end) return;
-    let totalMilisecForCount = 1000;
-    let timer = setInterval(() => {
-      start += Math.ceil(end / 40);
-      if (start > end) start = end;
-      setDisplayValue(start);
-      if (start === end) clearInterval(timer);
-    }, totalMilisecForCount / 40);
-    return () => clearInterval(timer);
-  }, [value]);
-  return <>{displayValue}</>;
-};
-
-// --- Images Mapping ---
 const cityImages = {
   paris: [
     'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=520&h=360&fit=crop&q=85',
     'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=520&h=360&fit=crop&q=85',
     'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=520&h=360&fit=crop&q=85',
     'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1455587734955-081b22074882?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=520&h=360&fit=crop&q=85',
   ],
   tokyo: [
     'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=520&h=360&fit=crop&q=85',
     'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1606046604972-77cc76aee944?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=520&h=360&fit=crop&q=85',
   ],
   bali: [
     'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=520&h=360&fit=crop&q=85',
     'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1574080598459-7e36e8bef3df?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1540202404-a2f29016b523?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=520&h=360&fit=crop&q=85',
-  ],
-  dubai: [
-    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=520&h=360&fit=crop&q=85',
-  ],
-  london: [
-    'https://images.unsplash.com/photo-1549180030-48bf079fb38a?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1455587734955-081b22074882?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=520&h=360&fit=crop&q=85',
   ],
   default: [
     'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=520&h=360&fit=crop&q=85',
     'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1455587734955-081b22074882?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=520&h=360&fit=crop&q=85',
   ]
 };
-
-cityImages.santorini = cityImages.bali;
-cityImages.kyoto = cityImages.tokyo;
-cityImages.newyork = cityImages.london;
-cityImages.rome = cityImages.paris;
-cityImages.barcelona = cityImages.paris;
-cityImages.amsterdam = cityImages.london;
 
 function getHotelImage(city, index) {
   const key = city.toLowerCase().trim();
@@ -116,281 +46,113 @@ function getHotelImage(city, index) {
   return list[index % list.length];
 }
 
-// --- Dynamic Prices ---
 function seedPrice(hotelName, stars) {
   let seed = 0;
   for (let i = 0; i < hotelName.length; i++) {
     seed += hotelName.charCodeAt(i) * (i + 1);
   }
   seed = seed % 1000;
-
-  const ranges = {
-    5: { min: 320, max: 680 },
-    4: { min: 160, max: 320 },
-    3: { min: 85,  max: 180 },
-    2: { min: 50,  max: 95  },
-    1: { min: 30,  max: 60  }
-  };
+  const ranges = { 5: { min: 320, max: 680 }, 4: { min: 160, max: 320 }, 3: { min: 85, max: 180 }, 2: { min: 50, max: 95 }, 1: { min: 30, max: 60 } };
   const { min, max } = ranges[stars] || ranges[3];
-  const range = max - min;
-  return min + (seed % range);
+  return min + (seed % (max - min));
 }
 
-// --- Dynamic Descriptions ---
 const descTemplates = [
-  (name, city, stars) => `${name} offers ${stars === 5 ? 'unrivalled luxury' : 'exceptional comfort'} in the heart of ${city}. A favourite among discerning travellers.`,
+  (name, city, stars) => `${name} offers ${stars === 5 ? 'unrivalled luxury' : 'exceptional comfort'} in the heart of ${city}. A favourite among travellers.`,
   (name, city, stars) => `Nestled in ${city}, ${name} combines ${stars >= 4 ? 'elegant design with world-class service' : 'comfort with convenient city access'}.`,
-  (name, city, stars) => `A ${stars >= 5 ? 'landmark' : 'well-loved'} property in ${city}, ${name} is celebrated for its ${stars >= 4 ? 'refined atmosphere and attentive staff' : 'great location and welcoming hospitality'}.`,
-  (name, city, stars) => `${name} stands as one of ${city}'s ${stars >= 5 ? 'most prestigious addresses' : 'most recommended stays'}, blending comfort with ${stars >= 4 ? 'sophistication' : 'practicality'}.`,
-  (name, city, stars) => `Steps from ${city}'s finest attractions, ${name} delivers ${stars >= 4 ? 'an impeccable stay' : 'a comfortable and convenient base'} for every kind of traveller.`,
-  (name, city, stars) => `With its ${stars >= 5 ? 'opulent interiors and flawless service' : 'inviting rooms and prime location'}, ${name} is a top-rated choice in ${city}.`,
-  (name, city, stars) => `${name} in ${city} offers ${stars >= 4 ? 'beautifully appointed rooms and exceptional dining' : 'clean comfortable rooms and friendly service'} at great value.`,
-  (name, city, stars) => `Guests consistently praise ${name} for its ${stars >= 4 ? 'luxurious amenities, stunning views, and outstanding service' : 'convenient location, helpful staff, and comfortable beds'}.`
 ];
 
 function getHotelDesc(hotelName, city, stars, index) {
-  const template = descTemplates[index % descTemplates.length];
-  return template(hotelName, city, stars || 3);
+  return descTemplates[index % descTemplates.length](hotelName, city, stars || 3);
 }
 
 const G_AMENITIES = ["WiFi", "Pool", "Spa", "Gym", "Parking", "Bar", "Restaurant", "Pet Friendly"];
 
-// Helper: Clean OSM names
-const cleanName = (name) => {
-  if (!name) return "";
-  return name
-    .replace(/\s*-\s*\d+\s*\*+/g, '') // Remove " - 4*"
-    .replace(/\s*\d+\s*stars?/gi, '') // Remove " 4 stars"
-    .replace(/\[.*\]/g, '') // Remove brackets
-    .trim();
-};
+const cleanName = (name) => name ? name.replace(/\s*-\s*\d+\s*\*+/g, '').replace(/\s*\d+\s*stars?/gi, '').replace(/\[.*\]/g, '').trim() : "";
 
-// --- Fix 1: Timeout Wrapper ---
 function fetchWithTimeout(url, options = {}, ms = 5000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ms);
-  return fetch(url, { ...options, signal: controller.signal })
-    .then(res => { clearTimeout(timer); return res; })
-    .catch(err => { clearTimeout(timer); throw err; });
+  return fetch(url, { ...options, signal: controller.signal }).then(res => { clearTimeout(timer); return res; });
 }
 
-// --- Fix 3: Overpass Union Query ---
 async function fetchOverpass(lat, lon, city) {
   const d = 0.25;
   const bbox = `${lat-d},${lon-d},${lat+d},${lon+d}`;
   const query = `[out:json][timeout:12];(node["tourism"="hotel"](${bbox});node["tourism"="hostel"](${bbox});node["tourism"="guest_house"](${bbox});way["tourism"="hotel"](${bbox}););out body center 40;`;
-  const res = await fetchWithTimeout(
-    'https://overpass-api.de/api/interpreter',
-    { method: 'POST', body: query },
-    4000
-  );
+  const res = await fetchWithTimeout('https://overpass-api.de/api/interpreter', { method: 'POST', body: query }, 4000);
   const data = await res.json();
-  return (data.elements || [])
-    .filter(el => el.tags?.name)
-    .map((el, i) => {
-      const rawName = el.tags.name;
-      const name = cleanName(rawName);
-      const stars = el.tags.stars ? parseInt(el.tags.stars) : 4;
-      return {
-        id: `osm_${el.id}`,
-        name,
-        lat: el.lat || el.center?.lat || lat,
-        lon: el.lon || el.center?.lon || lon,
-        address: [el.tags['addr:housenumber'], el.tags['addr:street']].filter(Boolean).join(' ') || el.tags['addr:city'] || '',
-        stars,
-        price: seedPrice(name, stars),
-        desc: getHotelDesc(name, city, stars, i),
-        img: getHotelImage(city, i),
-        rating: (stars * 1.6) + (Math.sin(i) * 0.5),
-        amenities: G_AMENITIES.slice(0, 4),
-        badge: ["Editor's Choice", "Popular", "Best Value", "Boutique", "Trending"][i % 5],
-        point: { lat: el.lat || el.center?.lat || lat, lon: el.lon || el.center?.lon || lon }
-      };
-    });
+  return (data.elements || []).filter(el => el.tags?.name).map((el, i) => {
+    const name = cleanName(el.tags.name);
+    const stars = el.tags.stars ? parseInt(el.tags.stars) : 4;
+    return {
+      id: `osm_${el.id}`,
+      name,
+      address: [el.tags['addr:housenumber'], el.tags['addr:street']].filter(Boolean).join(' ') || el.tags['addr:city'] || '',
+      stars,
+      price: seedPrice(name, stars),
+      desc: getHotelDesc(name, city, stars, i),
+      img: getHotelImage(city, i),
+      rating: 8.0 + (Math.random() * 1.8),
+      amenities: G_AMENITIES.slice(0, 4),
+      badge: ["Popular", "Great Deal", "New", "Editor's Choice", "Trending"][i % 5],
+      point: { lat: el.lat || el.center?.lat || lat, lon: el.lon || el.center?.lon || lon }
+    };
+  });
 }
 
-// --- Fix 5: Static Fallbacks ---
 const fallbackHotels = {
   paris: [
-    { name:'Hôtel Le Meurice', address:'228 Rue de Rivoli, 75001 Paris', stars:5, price:720 },
-    { name:'The Ritz Paris', address:'15 Place Vendôme, 75001 Paris', stars:5, price:1100 },
+    { name:'Hôtel Bourg Tibourg', address:'19 Rue du Bourg Tibourg, Paris', stars:4, price:220 },
     { name:'Four Seasons George V', address:'31 Avenue George V, 75008 Paris', stars:5, price:980 },
     { name:'Hôtel de Crillon', address:'10 Place de la Concorde, 75008 Paris', stars:5, price:850 },
-    { name:'Le Bristol Paris', address:'112 Rue du Faubourg Saint-Honoré', stars:5, price:920 },
-    { name:'Hôtel Plaza Athénée', address:'25 Avenue Montaigne, 75008 Paris', stars:5, price:870 },
-    { name:'Hôtel Costes', address:'239 Rue Saint-Honoré, 75001 Paris', stars:5, price:490 },
-    { name:'Hôtel du Louvre', address:'Place André Malraux, 75001 Paris', stars:4, price:310 },
-    { name:'Hôtel Bourg Tibourg', address:'19 Rue du Bourg Tibourg, Paris', stars:4, price:220 },
-    { name:'Generator Paris', address:'9-11 Place du Colonel Fabien', stars:3, price:85 }
-  ],
-  tokyo: [
-    { name:'Park Hyatt Tokyo', address:'3-7-1-2 Nishi-Shinjuku, Tokyo', stars:5, price:620 },
-    { name:'The Peninsula Tokyo', address:'1-8-1 Yurakucho, Chiyoda-ku', stars:5, price:780 },
-    { name:'Aman Tokyo', address:'1-5-6 Otemachi, Chiyoda-ku', stars:5, price:950 },
-    { name:'Mandarin Oriental Tokyo', address:'2-1-1 Nihonbashi Muromachi', stars:5, price:700 },
-    { name:'The Prince Gallery Tokyo Kioicho', address:'1-2 Kioi-cho, Chiyoda-ku', stars:5, price:580 },
-    { name:'Shinjuku Granbell Hotel', address:'2-14-5 Kabukicho, Shinjuku', stars:4, price:185 },
-    { name:'Hotel Gracery Shinjuku', address:'1-19-1 Kabukicho, Shinjuku', stars:4, price:155 },
-    { name:'Khaosan Tokyo Laboratory', address:'2-14-3 Asakusa, Taito-ku', stars:3, price:65 }
-  ],
-  bali: [
-    { name:'Four Seasons Resort Bali at Jimbaran Bay', address:'Jimbaran, Bali 80361', stars:5, price:850 },
-    { name:'COMO Uma Ubud', address:'Jalan Raya Sanggingan, Ubud', stars:5, price:620 },
-    { name:'Capella Ubud', address:'Desa Keliki, Tegallalang, Ubud', stars:5, price:1200 },
-    { name:'Amandari Resort', address:'Sayan, Ubud, Bali 80571', stars:5, price:990 },
-    { name:'Alila Seminyak', address:'Jalan Taman Ganesha 9, Seminyak', stars:5, price:480 },
-    { name:'Katamama Hotel', address:'Jalan Petitenget 51B, Seminyak', stars:5, price:520 },
-    { name:'The Layar', address:'Jalan Sarinande 9, Seminyak, Bali', stars:4, price:290 },
-    { name:'Komaneka at Bisma', address:'Jalan Bisma, Ubud, Bali 80571', stars:4, price:340 }
-  ],
-  dubai: [
-    { name:'Burj Al Arab Jumeirah', address:'Jumeirah Street, Dubai', stars:5, price:1500 },
-    { name:'Atlantis The Palm', address:'Crescent Road, The Palm, Dubai', stars:5, price:520 },
-    { name:'Armani Hotel Dubai', address:'Burj Khalifa, Sheikh Mohammed Blvd', stars:5, price:780 },
-    { name:'Four Seasons Resort Dubai', address:'Jumeirah Beach Road, Dubai', stars:5, price:690 },
-    { name:'Jumeirah Al Naseem', address:'Al Sufouh Road, Madinat Jumeirah', stars:5, price:480 },
-    { name:'FIVE Palm Jumeirah', address:'Palm Jumeirah, Dubai', stars:5, price:390 },
-    { name:'Rove Downtown Dubai', address:'Sheikh Mohammed bin Rashid Blvd', stars:3, price:120 },
-    { name:'ibis Styles Dragon Mart Dubai', address:'International City, Dubai', stars:3, price:75 }
-  ],
-  london: [
-    { name:'The Savoy', address:'Strand, London WC2R 0EU', stars:5, price:520 },
-    { name:'Claridge\'s', address:'Brook Street, Mayfair, London', stars:5, price:610 },
-    { name:'The Ritz London', address:'150 Piccadilly, London W1J 9BR', stars:5, price:580 },
-    { name:'45 Park Lane', address:'45 Park Lane, London W1K 1PN', stars:5, price:490 },
-    { name:'The Hoxton Shoreditch', address:'81 Great Eastern Street, London', stars:4, price:185 },
-    { name:'citizenM Tower of London', address:'40 Trinity Square, London', stars:4, price:165 },
-    { name:'Qbic London City', address:'42 Adler Street, London E1 1EE', stars:3, price:95 },
-    { name:'YHA London Central', address:'104 Bolsover Street, London', stars:2, price:55 }
-  ],
-  newyork: [
-    { name:'The Plaza Hotel', address:'Fifth Avenue at Central Park South', stars:5, price:695 },
-    { name:'The St. Regis New York', address:'2 East 55th Street, New York', stars:5, price:720 },
-    { name:'11 Howard', address:'11 Howard Street, SoHo, New York', stars:4, price:285 },
-    { name:'The Williamsburg Hotel', address:'96 Wythe Avenue, Brooklyn', stars:4, price:220 },
-    { name:'Arlo NoMad', address:'11 East 31st Street, New York', stars:4, price:195 },
-    { name:'Hotel 50 Bowery', address:'50 Bowery, New York NY 10013', stars:4, price:210 },
-    { name:'YOTEL New York', address:'570 Tenth Avenue, New York', stars:3, price:120 },
-    { name:'Pod 51', address:'230 East 51st Street, New York', stars:3, price:99 }
-  ],
-  rome: [
-    { name:'Hotel de Russie', address:'Via del Babuino 9, Rome', stars:5, price:480 },
-    { name:'Hotel Eden', address:'Via Ludovisi 49, Rome', stars:5, price:520 },
-    { name:'J.K. Place Roma', address:'Via di Monte d\'Oro 30, Rome', stars:5, price:440 },
-    { name:'Fendi Private Suites', address:'Largo Carlo Goldoni 420, Rome', stars:5, price:680 },
-    { name:'Hotel Raphael', address:'Largo Febo 2, Rome', stars:4, price:220 },
-    { name:'Chapter Roma', address:'Via di Santa Maria Maggiore', stars:4, price:195 },
-    { name:'The Beehive', address:'Via Marghera 8, Rome', stars:3, price:85 },
-    { name:'Hotel Artorius', address:'Via del Pellegrino 67, Rome', stars:3, price:110 }
-  ],
-  barcelona: [
-    { name:'Hotel Arts Barcelona', address:'Carrer de la Marina 19-21', stars:5, price:420 },
-    { name:'W Barcelona', address:'Plaça de la Rosa dels Vents 1', stars:5, price:390 },
-    { name:'Mandarin Oriental Barcelona', address:'Passeig de Gràcia 38-40', stars:5, price:460 },
-    { name:'Casa Camper Barcelona', address:'Carrer d\'Elisabets 11', stars:4, price:235 },
-    { name:'Hotel Brummell', address:'Carrer Nou de la Rambla 174', stars:4, price:180 },
-    { name:'Ohla Barcelona', address:'Via Laietana 49, Barcelona', stars:4, price:195 },
-    { name:'Generator Barcelona', address:'Carrer de Còrsega 373', stars:3, price:75 },
-    { name:'Equity Point Gothic', address:'Plaça de la Vila de Madrid 3', stars:2, price:45 }
-  ],
-  santorini: [
-    { name:'Canaves Oia Suites', address:'Oia, Santorini 847 02', stars:5, price:680 },
-    { name:'Katikies Hotel', address:'Oia, Santorini 847 02', stars:5, price:620 },
-    { name:'Mystique Hotel', address:'Oia, Santorini 847 02', stars:5, price:590 },
-    { name:'Vedema Resort', address:'Megalochori, Santorini', stars:5, price:510 },
-    { name:'Astra Suites', address:'Imerovigli, Santorini', stars:4, price:320 },
-    { name:'Santorini Secret', address:'Oia, Santorini 847 02', stars:4, price:280 },
-    { name:'Hotel Keti', address:'Fira, Santorini 847 00', stars:3, price:145 },
-    { name:'Pelican Hotel', address:'Fira, Santorini 847 00', stars:3, price:120 }
-  ],
-  amsterdam: [
-    { name:'Hotel V Nesplein', address:'Nes 49, Amsterdam 1012 KD', stars:4, price:210 },
-    { name:'The Dylan Amsterdam', address:'Keizersgracht 384, Amsterdam', stars:5, price:420 },
-    { name:'Pulitzer Amsterdam', address:'Prinsengracht 315-331', stars:5, price:380 },
-    { name:'Andaz Amsterdam', address:'Prinsengracht 587, Amsterdam', stars:5, price:350 },
-    { name:'Hotel Brouwer', address:'Singel 83, Amsterdam 1012 VE', stars:3, price:115 },
-    { name:'The Student Hotel Amsterdam', address:'Wibautstraat 129', stars:3, price:95 },
-    { name:'Generator Amsterdam', address:'Mauritskade 57, Amsterdam', stars:3, price:65 },
-    { name:'Stayokay Amsterdam', address:'Stadhouderskade 78', stars:2, price:45 }
+    { name:'Le Bristol Paris', address:'112 Rue du Faubourg Saint-Honoré', stars:5, price:920 }
   ]
 };
 
 function getStaticFallback(city) {
-  const cityKey = city.toLowerCase().trim();
-  const list = fallbackHotels[cityKey];
-  if (!list) return [];
-  
+  const key = city.toLowerCase().trim();
+  const list = fallbackHotels[key] || [];
   return list.map((h, i) => ({
-    id: `fb-${cityKey}-${i}`,
-    name: h.name,
-    address: h.address,
-    stars: h.stars,
-    price: h.price,
+    ...h,
+    id: `fb-${key}-${i}`,
     desc: getHotelDesc(h.name, city, h.stars, i),
-    img: getHotelImage(cityKey, i),
-    rating: 8.5 + (Math.sin(i) * 1.2),
+    img: getHotelImage(key, i),
+    rating: 9.0 + (Math.random() * 0.8),
     amenities: G_AMENITIES.slice(0, 4),
-    badge: i === 0 ? "Editor's Choice" : "Popular",
-    point: { lat: 0, lon: 0 } 
+    badge: i === 0 ? "Popular" : "Great Deal"
   }));
 }
 
-function getMockFallback(city) {
-  // Return an empty array — the UI will show the empty state
-  // instead of displaying fake generated hotel names
-  return [];
-}
-
-export default function Hotels() {
+const Hotels = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  // --- States ---
-  const [city, setCity] = useState('');
   const [inputValue, setInputValue] = useState(DEFAULT_CITY);
-  const [suggestions, setSuggestions] = useState([]);
-  const [isFocused, setIsFocused] = useState(false);
-  const [userInteracted, setUserInteracted] = useState(false);
+  const [city, setCity] = useState('');
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  
-  // Context Data
   const [weather, setWeather] = useState(null);
   const [country, setCountry] = useState(null);
-  
-  // UI Controls
-  const [showMap, setShowMap] = useState(false);
   const [sortBy, setSortBy] = useState('rating');
   const [activeFilter, setActiveFilter] = useState('All');
   const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [wishlist, setWishlist] = useState(() => {
-    const saved = localStorage.getItem('hotels_wishlist');
-    return saved ? JSON.parse(saved) : [];
-  });
-  
-  const mapRef = useRef(null);
-  const leafletMap = useRef(null);
+  const [showMap, setShowMap] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [error, setError] = useState(null);
 
-
-
-  // --- API Flow ---
   const performSearch = useCallback(async (searchCity) => {
+    if (!searchCity) return;
     setCity(searchCity);
+    setLoading(true);
+    setHasSearched(true);
     setError(null);
     setHotels([]);
 
-    // Show curated fallback instantly
+    // Curated fallback
     const curatedFb = getStaticFallback(searchCity);
-    const initialData = curatedFb.length > 0 ? curatedFb : getMockFallback(searchCity);
-    setHotels(initialData);
-    setLoading(false); // Instant render completely removes UI blocking
+    if (curatedFb.length > 0) setHotels(curatedFb);
 
     try {
-      const geoRes = await fetchWithTimeout(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchCity)}&format=json&limit=1`,
-        { headers: { 'Accept-Language': 'en' } },
-        1500
-      );
+      const geoRes = await fetchWithTimeout(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchCity)}&format=json&limit=1`, { headers: { 'Accept-Language': 'en' } }, 1500);
       const geoData = await geoRes.json();
       if (!geoData.length) throw new Error('City not found');
       
@@ -398,87 +160,37 @@ export default function Hotels() {
       const countryParts = display_name.split(', ');
       const countryName = countryParts[countryParts.length - 1];
 
-      const latNum = parseFloat(lat);
-      const lonNum = parseFloat(lon);
-
-      // Fix 1: All network requests wrapped in timeouts
-      const [osm, weatherPromise, countryPromise] = await Promise.allSettled([
-        fetchOverpass(latNum, lonNum, searchCity),
+      const [osm, weatherRes, countryRes] = await Promise.allSettled([
+        fetchOverpass(parseFloat(lat), parseFloat(lon), searchCity),
         fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`, {}, 2500),
         fetchWithTimeout(`https://restcountries.com/v3.1/name/${countryName}?fields=name,currencies,languages,flags`, {}, 2500)
       ]);
 
-      if (osm.status === 'fulfilled' && osm.value.length > 0) {
-        setHotels(osm.value);
-        
-        osm.value.forEach(h => {
-          fetchWithTimeout(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(h.name)}`, {}, 4000)
-            .then(res => res.json())
-            .then(data => {
-              if (data.type === 'standard' && data.extract) {
-                setHotels(prev => prev.map(hotel => 
-                  hotel.id === h.id ? { ...hotel, desc: data.extract } : hotel
-                ));
-              }
-            })
-            .catch(() => {});
-        });
-      } else if (curatedFb.length === 0) {
-        setHotels(getMockFallback(searchCity));
+      if (osm.status === 'fulfilled' && osm.value.length > 0) setHotels(osm.value);
+      if (weatherRes.status === 'fulfilled') {
+        const wData = await weatherRes.value.json();
+        setWeather({ temp: wData.current_weather.temperature, emoji: mapWeatherEmoji(wData.current_weather.weathercode) });
       }
-
-      if (weatherPromise.status === 'fulfilled') {
-        const wData = await weatherPromise.value.json();
-        setWeather({
-          temp: wData.current_weather.temperature,
-          emoji: mapWeatherEmoji(wData.current_weather.weathercode)
-        });
+      if (countryRes.status === 'fulfilled') {
+        const cData = (await countryRes.value.json())[0];
+        setCountry({ name: cData.name.common, flag: cData.flags.png, currency: Object.values(cData.currencies)[0].name, symbol: Object.values(cData.currencies)[0].symbol, language: Object.values(cData.languages)[0] });
       }
-      if (countryPromise.status === 'fulfilled') {
-        const cDataArray = await countryPromise.value.json();
-        const cData = cDataArray[0];
-        setCountry({
-          name: cData.name.common,
-          flag: cData.flags.png,
-          currency: Object.values(cData.currencies)[0].name,
-          symbol: Object.values(cData.currencies)[0].symbol,
-          language: Object.values(cData.languages)[0]
-        });
-      }
-      setHotels(prev => prev.length > 0 ? prev : getMockFallback(searchCity));
     } catch (err) {
       console.error("Search error:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const cityParam = params.get('city');
-    if (cityParam) {
-      setInputValue(cityParam);
-      performSearch(cityParam);
-    } else {
-      performSearch(DEFAULT_CITY);
-    }
-  }, [performSearch, location.search]);
+    const initialCity = cityParam || DEFAULT_CITY;
+    setInputValue(initialCity);
+    performSearch(initialCity);
+  }, [location.search, performSearch]);
 
-  // --- Search Suggestions ---
-  useEffect(() => {
-    if (!userInteracted || inputValue.length < 3) {
-      setSuggestions([]);
-      return;
-    }
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${inputValue}&format=json&limit=5&featuretype=city`);
-        const data = await res.json();
-        setSuggestions(data.map(d => d.display_name));
-      } catch {}
-    }, 4000);
-    return () => clearTimeout(timer);
-  }, [inputValue]);
-
-  // --- Filtering & Sorting ---
   const filteredHotels = useMemo(() => {
     let res = [...hotels];
     if (activeFilter !== 'All') {
@@ -486,347 +198,490 @@ export default function Hotels() {
         const s = parseInt(activeFilter[0]);
         res = res.filter(h => h.stars === s);
       }
-      // Add other filter logic here if needed
     }
     res = res.filter(h => h.price >= priceRange[0] && h.price <= priceRange[1]);
-
     if (sortBy === 'rating') res.sort((a,b) => b.rating - a.rating);
-    if (sortBy === 'price-low') res.sort((a,b) => a.price - b.price);
-    if (sortBy === 'price-high') res.sort((a,b) => b.price - a.price);
-
+    else if (sortBy === 'price_low') res.sort((a,b) => a.price - b.price);
+    else if (sortBy === 'price_high') res.sort((a,b) => b.price - a.price);
     return res;
   }, [hotels, activeFilter, priceRange, sortBy]);
 
-  // --- Wishlist ---
-  const toggleWishlist = (id) => {
-    setWishlist(prev => {
-      const news = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
-      localStorage.setItem('hotels_wishlist', JSON.stringify(news));
-      return news;
-    });
-  };
+  const handleSearch = () => performSearch(inputValue);
 
-  // --- Leaflet Map ---
-  useEffect(() => {
-    if (showMap && hotels.length > 0 && !leafletMap.current) {
-      const L = window.L;
-      if (!L) return;
-      
-      const first = hotels[0];
-      leafletMap.current = L.map('hotels-map').setView([first.point.lat, first.point.lon], 13);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(leafletMap.current);
-    }
-    
-    if (leafletMap.current && hotels.length > 0) {
-      const L = window.L;
-      // Clear markers (optional logic)
-      hotels.forEach(h => {
-        L.marker([h.point.lat, h.point.lon]).addTo(leafletMap.current)
-          .bindPopup(`<b>${h.name}</b><br/>$${h.price}/night`);
-      });
-    }
-  }, [showMap, hotels]);
-
-  // --- Price Range Slider Logic ---
-  const handleMinChange = (e) => {
-    const val = parseInt(e.target.value);
-    setPriceRange(prev => [Math.min(val, prev[1] - 50), prev[1]]);
-  };
-  const handleMaxChange = (e) => {
-    const val = parseInt(e.target.value);
-    setPriceRange(prev => [prev[0], Math.max(val, prev[0] + 50)]);
-  };
-
-  // --- Hover Preview ---
-  const [hoverData, setHoverData] = useState({ show: false, x: 0, y: 0, img: '' });
-  const handleNameHover = (e, img) => {
-    // Offset to keep preview near cursor but not under it
-    setHoverData({ show: true, x: e.clientX + 20, y: e.clientY - 60, img });
-  };
-  const handleNameLeave = () => setHoverData({ show: false, x: 0, y: 0, img: '' });
-
-  // --- Modal State ---
-  const [selHotel, setSelHotel] = useState(null);
-  const [modalIdx, setModalIdx] = useState(0);
-
-  const openModal = (h, idx) => {
-    console.log("Opening Modal", h.name);
-    setSelHotel(h);
-    setModalIdx(idx);
-    document.body.style.overflow = 'hidden';
-  };
-  const closeModal = () => {
-    setSelHotel(null);
-    document.body.style.overflow = 'auto';
-  };
+  // Mock dates for snippet requirements
+  const checkIn = '2024-05-10';
+  const checkOut = '2024-05-14';
 
   return (
-    <div className="hotels-page">
-      {/* Search Section */}
-      <section className="hotels-dark-bar">
-        <div className="animate-slide-right" style={{fontSize:'10px',letterSpacing:'0.16em',textTransform:'uppercase',color:'#B8883A',marginBottom:'10px'}}>✦ Hotels worldwide</div>
-        <h1 className="hdb-heading animate-blur-in delay-1">Find Your Perfect <em>Stay</em></h1>
-        <div className="hdb-search-row animate-fade-up delay-2">
-          <input 
-            className="hdb-input" 
-            placeholder="Search a city..." 
-            value={inputValue}
-            onChange={e => {
-              setInputValue(e.target.value);
-              setUserInteracted(true);
-            }}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-            onKeyDown={e => e.key === 'Enter' && performSearch(inputValue)}
-          />
-          <button className="hdb-btn" onClick={() => performSearch(inputValue)}>Search</button>
-          
-          {isFocused && suggestions.length > 0 && (
-            <ul className="suggestions-list">
-              {suggestions.map((s, i) => (
-                <li key={i} className="suggestion-item" onClick={() => {
-                  setInputValue(s.split(',')[0]);
-                  performSearch(s.split(',')[0]);
-                  setSuggestions([]);
-                }}>
-                  {s}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </section>
+    <div style={{ 
+      minHeight: '100vh', 
+      background: '#FAF9F6',
+      fontFamily: 'Inter, system-ui, sans-serif'
+    }}>
 
-      {/* Context Bar */}
-      {city && (
-        <div className="results-context">
-          <div className="rc-left">
-            {loading ? <span>Searching...</span> : (
-              <span>
-                <span className="rc-count"><AnimatedCounter value={filteredHotels.length} /></span> hotels found near <span className="rc-city">{city}</span>
-                {weather && ` · ${weather.temp}°C ${weather.emoji}`}
-                {country && ` · ${country.symbol} ${country.currency} · ${country.language}`}
+      {/* HERO SECTION */}
+      <div style={{
+        background: '#121212',
+        backgroundImage: `
+          radial-gradient(ellipse at 20% 50%,
+            rgba(201,168,76,0.05) 0%,
+            transparent 60%),
+          radial-gradient(ellipse at 80% 20%,
+            rgba(255,255,255,0.02) 0%,
+            transparent 50%)
+        `,
+        minHeight: '450px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '60px 48px',
+        textAlign: 'center'
+      }}>
+
+        {/* Small label */}
+        <p style={{
+          fontSize: '11px',
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: '#C9A84C',
+          fontWeight: '300',
+          marginBottom: '20px'
+        }}>
+          ✦ Hotels Worldwide
+        </p>
+
+        {/* Main heading */}
+        <h1 style={{
+          fontFamily: 'Fraunces, Georgia, serif',
+          fontSize: '56px',
+          fontWeight: '300',
+          color: 'white',
+          lineHeight: '1.1',
+          marginBottom: '16px'
+        }}>
+          Find Your Perfect{' '}
+          <em style={{ color: '#C9A84C', fontStyle: 'italic' }}>Stay</em>
+        </h1>
+
+        {/* Subtitle */}
+        <p style={{
+          color: 'rgba(255,255,255,0.45)',
+          fontSize: '16px',
+          fontWeight: '300',
+          marginBottom: '32px',
+          maxWidth: '480px'
+        }}>
+          Discover handpicked luxury hotels across
+          190+ destinations worldwide
+        </p>
+
+        {/* SEARCH BAR */}
+        <div style={{
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '0',
+          maxWidth: '450px',
+          width: '100%',
+          display: 'flex',
+          overflow: 'hidden',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
+        }}>
+          {/* Destination input section */}
+          <div style={{
+            flex: 1,
+            padding: '4px 14px',
+            borderRight: '1px solid rgba(0,0,0,0.05)'
+          }}>
+            <p style={{
+              fontSize: '8px',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#9e9e9e',
+              marginBottom: '1px',
+              fontWeight: '400'
+            }}>
+              Destination
+            </p>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSearch();
+              }}
+              placeholder="Where are you going?"
+              style={{
+                fontSize: '12px',
+                color: '#1a1a1a',
+                fontWeight: '300',
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+                width: '100%'
+              }}
+            />
+          </div>
+
+          {/* Search button */}
+          <button
+            onClick={handleSearch}
+            style={{
+              background: '#C9A84C',
+              color: 'white',
+              border: 'none',
+              padding: '0 16px',
+              fontSize: '11px',
+              letterSpacing: '0.08em',
+              fontWeight: '400',
+              cursor: 'pointer',
+              flexShrink: 0,
+              transition: 'background 0.2s ease'
+            }}
+            onMouseEnter={e => 
+              e.target.style.background = '#b8963e'
+            }
+            onMouseLeave={e => 
+              e.target.style.background = '#C9A84C'
+            }
+          >
+            Search Hotels →
+          </button>
+        </div>
+      </div>
+
+      {/* RESULTS BAR */}
+      {hasSearched && (
+        <div style={{
+          background: 'white',
+          borderBottom: '1px solid rgba(0,0,0,0.04)',
+          padding: '8px 48px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
+          {/* Left: results count + city info */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            flexWrap: 'wrap'
+          }}>
+            <span style={{
+              fontSize: '13px',
+              color: '#9e9e9e',
+              fontWeight: '300'
+            }}>
+              {hotels.length} hotels found near
+            </span>
+            <span style={{
+              fontFamily: 
+                'Fraunces, Georgia, serif',
+              fontStyle: 'italic',
+              fontSize: '15px',
+              color: '#1a1a1a'
+            }}>
+              {city}
+            </span>
+
+            {/* Weather pill */}
+            {weather?.temp && (
+              <span style={{
+                background: '#f7f5f0',
+                borderRadius: '0',
+                padding: '4px 12px',
+                fontSize: '11px',
+                color: '#6b6b6b',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}>
+                {weather.temp}°C
+              </span>
+            )}
+
+            {/* Currency pill */}
+            {country?.currency && (
+              <span style={{
+                background: '#f7f5f0',
+                borderRadius: '0',
+                padding: '4px 12px',
+                fontSize: '11px',
+                color: '#6b6b6b',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}>
+                {country.symbol} {country.currency}
+              </span>
+            )}
+
+            {/* Country pill */}
+            {country?.name && (
+              <span style={{
+                fontSize: '12px',
+                color: '#6b6b6b',
+                marginLeft: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}>
+                {country.flag && <img src={country.flag} alt="" style={{ width: '16px', height: '12px', borderRadius: '2px' }} />} {country.name}
               </span>
             )}
           </div>
-          {country && (
-            <div className="rc-center">
-              <img src={country.flag} className="rc-flag" alt="flag" />
-              <span className="rc-country">{country.name}</span>
-            </div>
-          )}
-          <div className="rc-right">
-            <select className="sort-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-              <option value="rating">Top Rated</option>
-              <option value="price-low">Price: Low–High</option>
-              <option value="price-high">Price: High–Low</option>
+
+          {/* Right: sort + show map */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px'
+          }}>
+            {/* Sort dropdown */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                background: 'white',
+                border: '1px solid #e5e5e5',
+                borderRadius: '0',
+                padding: '8px 16px',
+                fontSize: '12px',
+                color: '#4a4a4a',
+                cursor: 'pointer',
+                outline: 'none'
+              }}
+            >
+              <option value="rating">
+                Sort: Top Rated
+              </option>
+              <option value="price_low">
+                Price: Low → High
+              </option>
+              <option value="price_high">
+                Price: High → Low
+              </option>
             </select>
-            <button className="map-toggle" onClick={() => setShowMap(!showMap)}>
-              {showMap ? 'Hide map' : 'Show map →'}
+
+            {/* Show map button */}
+            <button 
+              onClick={() => setShowMap(!showMap)}
+              style={{
+              background: showMap ? '#1a1a1a' : 'transparent',
+              border: '1px solid #e0e0e0',
+              borderRadius: '0',
+              padding: '8px 20px',
+              fontSize: '12px',
+              color: showMap ? 'white' : '#4a4a4a',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={e => {
+              if (!showMap) {
+                e.target.style.borderColor = '#C9A84C';
+                e.target.style.color = '#C9A84C';
+              }
+            }}
+            onMouseLeave={e => {
+              if (!showMap) {
+                e.target.style.borderColor = '#e0e0e0';
+                e.target.style.color = '#4a4a4a';
+              }
+            }}>
+              {showMap ? 'Hide Map' : 'Show Map'}
             </button>
           </div>
         </div>
       )}
 
-      {/* Map Panel */}
-      <div id="hotels-map" className={showMap ? 'open' : ''}></div>
+      {/* FILTER PILLS */}
+      {hasSearched && (
+        <div style={{
+          background: '#FAF9F6',
+          padding: '12px 48px',
+          borderBottom: '1px solid rgba(0,0,0,0.06)'
+        }}>
 
-      {/* Filter Strip */}
-      <div className="filter-strip">
-        {['All', '5 Stars', '4 Stars', 'Boutique', 'Resort', 'Pool', 'Spa', 'Pet Friendly'].map(f => (
-          <button 
-            key={f} 
-            className={`filter-pill ${activeFilter === f ? 'active' : ''}`}
-            onClick={() => setActiveFilter(f)}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
-
-      {/* Price Slider Strip */}
-      <div className="price-slider-wrap">
-        <div className="slider-values">
-          <span>Range: ${priceRange[0]} — ${priceRange[1]}</span>
-          <span>Max $1000</span>
-        </div>
-        <div className="slider-container">
-          <input type="range" min="0" max="1000" value={priceRange[0]} onChange={handleMinChange} className="slider-input min" />
-          <input type="range" min="0" max="1000" value={priceRange[1]} onChange={handleMaxChange} className="slider-input max" />
-        </div>
-      </div>
-
-
-      {/* Main Content */}
-      <section className="hotel-list">
-        {loading ? (
-          <div className="sk-list">
-            {[1,2,3,4,5].map(i => (
-              <div key={i} className="hotel-row skeleton-row">
-                <div className="hr-photo skeleton" style={{width: 260}}></div>
-                <div className="hr-info" style={{padding: 24}}>
-                  <div className="skeleton" style={{height: 24, width: '60%', marginBottom: 12}}></div>
-                  <div className="skeleton" style={{height: 14, width: '40%', marginBottom: 8}}></div>
-                  <div className="skeleton" style={{height: 14, width: '80%'}}></div>
-                </div>
-              </div>
+          {/* Filter pills row */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+            marginBottom: '16px'
+          }}>
+            {['All','5 Stars','4 Stars','Boutique',
+              'Resort','Pool','Spa','Pet Friendly',
+              'Free Cancellation',
+              'Breakfast Included'].map(filter => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                style={{
+                  background: activeFilter === filter
+                    ? '#1a1a1a' : 'transparent',
+                  color: activeFilter === filter
+                    ? 'white' : '#6b6b6b',
+                  border: activeFilter === filter
+                    ? '1px solid #1a1a1a'
+                    : '1px solid #e0e0e0',
+                  borderRadius: '0',
+                  padding: '6px 16px',
+                  fontSize: '11px',
+                  fontWeight: '300',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {filter}
+              </button>
             ))}
           </div>
-        ) : hotels.length === 0 ? (
-          <div className="empty-state">
-            <h2 className="empty-heading">No hotels found near <em>{city}</em></h2>
-            <p className="empty-subtitle">Try a different city or broaden your search</p>
-            <div className="empty-pills">
-              {['Paris', 'Tokyo', 'Bali', 'Dubai', 'New York'].map(c => (
-                <button key={c} className="ps-pill" onClick={() => { setInputValue(c); performSearch(c); }}>{c}</button>
-              ))}
-            </div>
+
+          {/* Price range */}
+          <div>
+            <p style={{
+              fontSize: '10px',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#9e9e9e',
+              marginBottom: '10px',
+              fontWeight: '400'
+            }}>
+              Range: ${priceRange[0]} — ${priceRange[1]}
+            </p>
+            <input
+              type="range"
+              min="0"
+              max="1000"
+              value={priceRange[1]}
+              onChange={(e) => setPriceRange(
+                [priceRange[0], parseInt(e.target.value)]
+              )}
+              style={{
+                width: '250px',
+                accentColor: '#C9A84C',
+                cursor: 'pointer'
+              }}
+            />
           </div>
-        ) : (
-          filteredHotels.map((h, idx) => (
-            <div 
-              key={h.id || idx} 
-              className={`hotel-row fade-in ${h.price < priceRange[0] || h.price > priceRange[1] ? 'dimmed' : ''}`} 
-              style={{ animationDelay: `${idx * 0.08}s`, cursor: 'pointer' }}
-              onClick={() => navigate('/hotel-booking', { state: { hotel: h, city, country, weather } })}
-            >
-              <div className="hr-photo">
-                <div className="hr-badge">{h.badge}</div>
-                <button 
-                  className={`hr-heart ${wishlist.includes(h.id) ? 'active' : ''}`}
-                  onClick={(e) => { e.stopPropagation(); toggleWishlist(h.id); }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                  </svg>
-                </button>
-                <img 
-                  className="hr-img" 
-                  src={h.img} 
-                  alt={h.name} 
-                />
-              </div>
-              <div className="hr-info">
-                <div className="hr-stars">
-                  {'★'.repeat(h.stars)}
-                </div>
-                <h3 
-                  className="hr-name"
-                  onMouseMove={(e) => handleNameHover(e, h.img)}
-                  onMouseLeave={handleNameLeave}
-                >
-                  {h.name}
-                </h3>
-                <div className="hr-loc">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                  </svg>
-                  {h.address || city}
-                </div>
-                <p className="hr-desc">{h.desc}</p>
-                <div className="hr-amenities">
-                  {h.amenities.map(a => <span key={a} className="amenity-pill">{a}</span>)}
-                </div>
-              </div>
-              <div className="hr-price-cta">
-                <div className="hr-score-wrap">
-                  <div className="hr-score">{h.rating.toFixed(1)}</div>
-                  <div className="hr-score-label">{h.rating > 9 ? 'Exceptional' : h.rating > 8.5 ? 'Very Good' : 'Good'}</div>
-                </div>
-                <div className="hr-price-wrap">
-                  <div className="hr-price">${h.price}</div>
-                  <div className="hr-per-night">per night</div>
-                </div>
-                <button className="hr-view-btn" onClick={(e) => { e.stopPropagation(); openModal(h, idx); }}>View Details</button>
-              </div>
-            </div>
-          ))
+        </div>
+      )}
+
+      {/* MAIN CONTENT */}
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '24px 48px 60px'
+      }}>
+
+        {/* LOADING */}
+        {loading && hotels.length === 0 && (
+          <div>
+            {[1,2,3,4].map(i => (
+              <HotelSkeleton key={i} />
+            ))}
+          </div>
         )}
-      </section>
 
-      {/* Popular Searches */}
-      <section className="popular-searches">
-        <span className="ps-label">Popular destinations</span>
-        <div className="ps-row">
-          {['Paris', 'Tokyo', 'Bali', 'New York', 'Dubai', 'Santorini'].map(c => (
-            <button key={c} className="ps-pill" onClick={() => { setInputValue(c); performSearch(c); }}>{c}</button>
-          ))}
-        </div>
-      </section>
-
-      {/* Hover Preview */}
-      {hoverData.show && (
-        <div 
-          className="hover-preview"
-          style={{ position: 'fixed', left: hoverData.x, top: hoverData.y, zIndex: 1000, pointerEvents: 'none' }}
-        >
-          <img src={hoverData.img} alt="preview" style={{ width: 180, height: 120, borderRadius: 8, border: '2px solid #fff', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }} />
-        </div>
-      )}
-
-      {/* Hotel Detail Modal (Dark Luxury) */}
-      {selHotel && (
-        <>
-          <div className="hotel-modal-backdrop" onClick={closeModal}></div>
-          <div className="hotel-modal-wrap">
-            <div className="hotel-modal-card">
-              <button className="modal-close-x" onClick={closeModal}>×</button>
-              <div className="hm-top">
-                <div className="hm-photo ken-burns">
-                  <img 
-                    src={selHotel.img} 
-                    alt={selHotel.name} 
-                  />
-                  <div className="hm-photo-label">
-                    <span className="hm-region">{city}</span>
-                    <h2 className="hm-city">{selHotel.name.split(' ').slice(0,-1).join(' ')} <em>{selHotel.name.split(' ').pop()}</em></h2>
-                  </div>
-                </div>
-                <div className="hm-info">
-                  <div className="hm-stars">{'★'.repeat(selHotel.stars)}</div>
-                  <div className="hm-country">{country?.name || 'Local Destination'}</div>
-                  <p className="hm-desc">{selHotel.desc}</p>
-                  
-                  <div className="hm-stats">
-                    <div className="hm-stat">
-                      <div className="hm-stat-num">{weather?.temp}°C</div>
-                      <div className="hm-stat-lbl">Weather</div>
-                    </div>
-                    <div className="hm-stat">
-                      <div className="hm-stat-num">14:00</div>
-                      <div className="hm-stat-lbl">Check-in</div>
-                    </div>
-                    <div className="hm-stat">
-                      <div className="hm-stat-num">{country?.language || 'English'}</div>
-                      <div className="hm-stat-lbl">Language</div>
-                    </div>
-                  </div>
-
-                  <div className="hm-chips">
-                    {selHotel.amenities.map(a => (
-                      <div key={a} className="hm-chip">
-                        <div className="hm-chip-lbl">Featured</div>
-                        <div className="hm-chip-val">{a}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="hm-bottom">
-                <div className="hm-price-row">
-                  <div className="hm-price">${selHotel.price} <span className="hm-night">/ night</span></div>
-                </div>
-                <button 
-                  className="hm-cta" 
-                  onClick={() => { document.body.style.overflow = 'auto'; navigate('/hotel-booking', { state: { hotel: selHotel, city, country, weather } }); }}
-                >
-                  Book this hotel with Compass →
-                </button>
-              </div>
-            </div>
+        {/* INITIAL STATE */}
+        {!loading && !hasSearched && (
+          <div style={{
+            textAlign: 'center',
+            padding: '80px 20px'
+          }}>
+            <h3 style={{
+              fontFamily:
+                'Fraunces, Georgia, serif',
+              fontSize: '26px',
+              color: '#3a3a3a',
+              fontWeight: '400',
+              marginBottom: '10px'
+            }}>
+              Find Your Perfect Stay
+            </h3>
+            <p style={{
+              fontSize: '14px',
+              color: '#9e9e9e',
+              fontWeight: '300',
+              maxWidth: '320px',
+              margin: '0 auto',
+              lineHeight: '1.6'
+            }}>
+              Enter a destination above to discover
+              the world's finest hotels
+            </p>
           </div>
-        </>
-      )}
+        )}
+
+        {/* ERROR STATE */}
+        {!loading && hasSearched && 
+         filteredHotels.length === 0 && !error && (
+          <div style={{
+            textAlign: 'center',
+            padding: '80px 20px'
+          }}>
+            <h3 style={{
+              fontFamily: 'Fraunces, Georgia, serif',
+              fontSize: '24px',
+              color: '#3a3a3a',
+              fontWeight: '400',
+              marginBottom: '8px'
+            }}>
+              No hotels found
+            </h3>
+            <p style={{
+              fontSize: '14px',
+              color: '#9e9e9e',
+              fontWeight: '300',
+              marginBottom: '24px'
+            }}>
+              Try a different destination or 
+              adjust your filters
+            </p>
+            <button
+              onClick={() => {
+                setHasSearched(false);
+                setInputValue('');
+                setHotels([]);
+              }}
+              style={{
+                background: '#1a1a1a',
+                color: 'white',
+                border: 'none',
+                borderRadius: '0',
+                padding: '12px 32px',
+                fontSize: '13px',
+                cursor: 'pointer'
+              }}
+            >
+              Search Again
+            </button>
+          </div>
+        )}
+
+        {/* HOTEL CARDS */}
+        {!loading && hasSearched && 
+         filteredHotels.length > 0 && (
+          <div>
+            {filteredHotels.map((hotel, index) => (
+              <HotelCard
+                key={hotel.id || index}
+                hotel={hotel}
+                index={index}
+                checkIn={checkIn}
+                checkOut={checkOut}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default Hotels;
+
+

@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Destinations from './pages/Destinations';
 import Hotels from './pages/Hotels';
+import HotelDetail from './pages/HotelDetail';
 import LoginPage from './pages/LoginPage';
 import AIChatbot from './components/AIChatbot';
 import ScrollToTop from './components/ScrollToTop';
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/hotels" element={<Hotels />} />
+          <Route path="/hotels/:hotelId" element={<HotelDetail />} />
           <Route path="/flights" element={<Flights />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/concierge-plan" element={<ConciergePlanner />} />
