@@ -1,6 +1,6 @@
 import express from 'express';
 import authRoutes from './auth.routes.js';
-import destinationRoutes from './destinations.routes.js';
+import destinationsRouter from './destinations.routes.js';
 import bookingRoutes from './bookings.routes.js';
 import userRoutes from './users.routes.js';
 import paymentRoutes from './payments.routes.js';
@@ -15,8 +15,9 @@ import uploadRoutes from './uploads.routes.js';
 
 const router = express.Router();
 
+// Mount routes
 router.use('/auth', authRoutes);
-router.use('/destinations', destinationRoutes);
+router.use('/destinations', destinationsRouter);
 router.use('/bookings', bookingRoutes);
 router.use('/users', userRoutes);
 router.use('/payments', paymentRoutes);
@@ -29,5 +30,19 @@ router.use('/admin', adminRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/uploads', uploadRoutes);
 
-export default router;
+console.log('--- API Routes Registered ---');
+console.log('✅ /api/auth');
+console.log('✅ /api/destinations');
+console.log('✅ /api/bookings');
+console.log('✅ /api/users');
+console.log('✅ /api/payments');
+console.log('✅ /api/reviews');
+console.log('✅ /api/wishlist');
+console.log('✅ /api/notifications');
+console.log('✅ /api/search');
+console.log('✅ /api/health');
+console.log('✅ /api/admin');
+console.log('✅ /api/analytics');
+console.log('✅ /api/uploads');
 
+export default router;

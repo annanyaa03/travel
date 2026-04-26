@@ -1,55 +1,75 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import compression from 'compression';
-import morgan from 'morgan';
-import { env } from './config/env.js';
+import pino from 'pino-http';
 import routes from './routes/index.js';
-import errorHandler from './middleware/error.middleware.js';
-import loggerMiddleware from './middleware/logger.middleware.js';
-import sanitizeMiddleware from './middleware/sanitize.middleware.js';
-import { globalLimiter } from './middleware/rateLimiter.middleware.js';
 
 const app = express();
 
-// --- Security & Middleware ---
-app.use(helmet());
-app.use(cors({
-  origin: env.FRONTEND_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  maxAge: 86400,
+// 1. Logging
+app.use(pino({
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true
+    }
+  }
 }));
 
-// Body parsers
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+// 2. Security Headers
+app.use(helmet());
 
-// Sanitize request data
-app.use(...sanitizeMiddleware);
+// 3. CORS Configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'http://localhost:3000',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
-// Gzip compression
-app.use(compression());
+console.log('--- CORS Allowed Origins ---');
+console.log(allowedOrigins);
 
-// HTTP Request Logging
-if (env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-} else {
-  app.use(loggerMiddleware);
-}
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-// Rate Limiting
-app.use('/api', globalLimiter);
+// 4. Handle preflight OPTIONS requests handled by cors() middleware above
 
-// --- Routes ---
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Travel App API' });
-});
+// 5. Body Parsers
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// 6. Routes
 app.use('/api', routes);
 
-// --- Error Handling ---
-app.use(errorHandler);
+// Root route for testing
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'Compass & Co. API is running' });
+});
+
+// 7. Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('--- Global Error Handler ---');
+  console.error(err.stack);
+
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? err : {}
+  });
+});
 
 export default app;
