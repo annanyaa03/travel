@@ -1,18 +1,36 @@
 import { createClient } from '@supabase/supabase-js';
-import { env } from './env.js';
+import dotenv from 'dotenv';
 
-/**
- * Supabase client instance using Service Role Key for administrative tasks.
- * Use this for backend operations that bypass RLS.
- */
-export const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
+// Load environment variables
+dotenv.config();
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+console.log('--- Supabase Config ---');
+console.log('URL Loaded:', !!supabaseUrl);
+console.log('Service Key Loaded:', !!supabaseKey);
+console.log('Anon Key Loaded:', !!supabaseAnonKey);
+
+if (!supabaseUrl || !supabaseKey || !supabaseAnonKey) {
+  throw new Error('MISSING SUPABASE CREDENTIALS: Check your .env file for SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and SUPABASE_ANON_KEY');
+}
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey);
+
+// Test connection on startup
+const testConnection = async () => {
+  try {
+    const { error } = await supabase.from('destinations').select('id').limit(1);
+    if (error) throw error;
+    console.log('✅ Supabase connected successfully');
+  } catch (err) {
+    console.error('❌ Supabase connection failed:', err.message);
   }
-});
+};
 
-/**
- * Supabase client instance using Anon Key for client-side like operations.
- */
-export const supabaseAnon = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+testConnection();
+
+export default supabase;

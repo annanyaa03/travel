@@ -1,58 +1,98 @@
-import destinationService from '../services/destinations.service.js';
-import analyticsService from '../services/analytics.service.js';
-import ApiResponse from '../utils/apiResponse.js';
-import asyncHandler from '../utils/asyncHandler.js';
-import { getPaginationMeta } from '../utils/pagination.js';
-import { ANALYTICS_EVENTS } from '../utils/constants.js';
+import supabase from '../config/supabase.js';
 
 /**
- * Controller for Destination routes
+ * Get all destinations with filtering and pagination
  */
-export const getAllDestinations = asyncHandler(async (req, res) => {
-  const { data, total } = await destinationService.getAll(req.query);
-  const meta = getPaginationMeta(total, req.query.page, req.query.limit);
-  res.status(200).json(ApiResponse.success('Destinations fetched successfully', data, meta));
-});
+export const getAllDestinations = async (req, res) => {
+  console.log('--- getAllDestinations started ---');
+  try {
+    const limit = parseInt(req.query.limit) || 100;
+    const page = parseInt(req.query.page) || 1;
+    const category = req.query.category;
+    const offset = (page - 1) * limit;
 
-export const getDestinationById = asyncHandler(async (req, res) => {
-  const destination = await destinationService.getById(req.params.id);
-  
-  // Track view
-  analyticsService.trackEvent(ANALYTICS_EVENTS.VIEW_DESTINATION, req.user?.id, destination.id, {}, req);
+    console.log(`Params: limit=${limit}, page=${page}, category=${category}`);
 
-  res.status(200).json(ApiResponse.success('Destination details fetched', destination));
-});
+    let query = supabase
+      .from('destinations')
+      .select('*', { count: 'exact' });
 
-export const getDestinationBySlug = asyncHandler(async (req, res) => {
-  const destination = await destinationService.getBySlug(req.params.slug);
+    if (category && category !== 'All') {
+      query = query.eq('category', category);
+    }
 
-  // Track view
-  analyticsService.trackEvent(ANALYTICS_EVENTS.VIEW_DESTINATION, req.user?.id, destination.id, {}, req);
+    const { data, error, count } = await query
+      .range(offset, offset + limit - 1)
+      .order('created_at', { ascending: false });
 
-  res.status(200).json(ApiResponse.success('Destination details fetched', destination));
-});
+    if (error) {
+      console.error('Supabase Error:', error.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Error fetching destinations from database',
+        error: error.message
+      });
+    }
 
-export const createDestination = asyncHandler(async (req, res) => {
-  const destination = await destinationService.create(req.body);
-  res.status(201).json(ApiResponse.success('Destination created successfully', destination));
-});
+    console.log(`Fetched ${data.length} destinations. Total count: ${count}`);
 
-export const updateDestination = asyncHandler(async (req, res) => {
-  const destination = await destinationService.update(req.params.id, req.body);
-  res.status(200).json(ApiResponse.success('Destination updated successfully', destination));
-});
+    const totalPages = Math.ceil(count / limit);
 
-export const deleteDestination = asyncHandler(async (req, res) => {
-  await destinationService.delete(req.params.id);
-  res.status(200).json(ApiResponse.success('Destination deleted successfully'));
-});
+    return res.status(200).json({
+      success: true,
+      message: "Destinations fetched successfully",
+      data: data,
+      meta: {
+        total: count,
+        page: page,
+        limit: limit,
+        totalPages: totalPages
+      }
+    });
 
-export const getFeaturedDestinations = asyncHandler(async (req, res) => {
-  const data = await destinationService.getFeatured();
-  res.status(200).json(ApiResponse.success('Featured destinations fetched', data));
-});
+  } catch (error) {
+    console.error('Catch Error:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message
+    });
+  }
+};
 
-export const getPopularDestinations = asyncHandler(async (req, res) => {
-  const data = await destinationService.getPopular();
-  res.status(200).json(ApiResponse.success('Popular destinations fetched', data));
-});
+/**
+ * Get destination by ID
+ */
+export const getDestinationById = async (req, res) => {
+  console.log(`--- getDestinationById started for ID: ${req.params.id} ---`);
+  try {
+    const { data, error } = await supabase
+      .from('destinations')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+
+    if (error) {
+      console.error('Supabase Error:', error.message);
+      return res.status(error.code === 'PGRST116' ? 404 : 500).json({
+        success: false,
+        message: error.code === 'PGRST116' ? 'Destination not found' : 'Error fetching destination',
+        error: error.message
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Destination fetched successfully",
+      data: data
+    });
+
+  } catch (error) {
+    console.error('Catch Error:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message
+    });
+  }
+};

@@ -1,56 +1,34 @@
-import http from 'http';
+import dotenv from 'dotenv';
+// Load environment variables as the very first thing
+dotenv.config();
+
 import app from './app.js';
-import { env } from './config/env.js';
-import { winstonLogger } from './config/logger.js';
-import { initSocket } from './socket.js';
-import { initCronJobs } from './services/cron.service.js';
-import { verifyEmailConnection } from './config/nodemailer.js';
 
-const PORT = env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
-/**
- * Start the server
- */
-async function startServer() {
-  try {
-    const server = http.createServer(app);
+const server = app.listen(PORT, () => {
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ Environment: ${NODE_ENV}`);
+  console.log(`✅ CORS allowed origin: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+});
 
-    // Initialize Socket.io
-    const io = initSocket(server);
-    app.set('io', io); // Make io accessible in controllers via req.app.get('io')
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.error(err.name, err.message);
+  process.exit(1);
+});
 
-    // Initialize Cron Jobs
-    initCronJobs();
-
-    // Verify Email Connection
-    await verifyEmailConnection();
-
-    server.listen(PORT, () => {
-      winstonLogger.info(`
-🚀 Server is running in ${env.NODE_ENV} mode
-🔊 Port: ${PORT)
-🔗 URL: http://localhost:${PORT}
-      `);
-    });
-
-    // Handle Unhandled Rejections
-    process.on('unhandledRejection', (err) => {
-      winstonLogger.error('UNHANDLED REJECTION! 💥 Shutting down...', err);
-      server.close(() => {
-        process.exit(1);
-      });
-    });
-
-    // Handle Uncaught Exceptions
-    process.on('uncaughtException', (err) => {
-      winstonLogger.error('UNCAUGHT EXCEPTION! 💥 Shutting down...', err);
-      process.exit(1);
-    });
-
-  } catch (error) {
-    winstonLogger.error('Failed to start server:', error);
+// Handle unhandled rejections
+process.on('unhandledRejection', (err) => {
+  console.error('UNHANDLED REJECTION! 💥 Shutting down...');
+  console.error(err.name, err.message);
+  server.close(() => {
     process.exit(1);
-  }
-}
+  });
+});
 
-startServer();
+export default server;
