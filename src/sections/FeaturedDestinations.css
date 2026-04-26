@@ -111,6 +111,13 @@
   left: 0;
   right: 0;
   padding: 20px 20px 22px;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 2;
+}
+
+.fd-card:hover .fd-card-info {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .fd-card-name {
@@ -170,6 +177,7 @@
   transform: translateY(12px);
   transition: opacity 0.35s ease, transform 0.35s ease;
   pointer-events: none;
+  z-index: 10;
 }
 .fd-card:hover .fd-card-details {
   opacity: 1;
