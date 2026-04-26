@@ -8,121 +8,9 @@ import './Hotels.css';
 const DEFAULT_CITY = 'Paris';
 
 // --- Helper Functions (Preserved) ---
-const mapWeatherEmoji = (code) => {
-  if (code === 0) return '☀️';
-  if (code >= 1 && code <= 3) return '⛅';
-  if (code >= 45 && code <= 48) return '🌫️';
-  if (code >= 51 && code <= 67) return '🌧️';
-  if (code >= 71 && code <= 77) return '❄️';
-  if (code >= 80 && code <= 82) return '🌦️';
-  if (code === 95) return '⛈️';
-  return '⛅';
-};
-
-const cityImages = {
-  paris: [
-    'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=520&h=360&fit=crop&q=85',
-  ],
-  tokyo: [
-    'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=520&h=360&fit=crop&q=85',
-  ],
-  bali: [
-    'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=520&h=360&fit=crop&q=85',
-  ],
-  default: [
-    'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=520&h=360&fit=crop&q=85',
-    'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=520&h=360&fit=crop&q=85',
-  ]
-};
-
-function getHotelImage(city, index) {
-  const key = city.toLowerCase().trim();
-  const list = cityImages[key] || cityImages.default;
-  return list[index % list.length];
-}
-
-function seedPrice(hotelName, stars) {
-  let seed = 0;
-  for (let i = 0; i < hotelName.length; i++) {
-    seed += hotelName.charCodeAt(i) * (i + 1);
-  }
-  seed = seed % 1000;
-  const ranges = { 5: { min: 320, max: 680 }, 4: { min: 160, max: 320 }, 3: { min: 85, max: 180 }, 2: { min: 50, max: 95 }, 1: { min: 30, max: 60 } };
-  const { min, max } = ranges[stars] || ranges[3];
-  return min + (seed % (max - min));
-}
-
-const descTemplates = [
-  (name, city, stars) => `${name} offers ${stars === 5 ? 'unrivalled luxury' : 'exceptional comfort'} in the heart of ${city}. A favourite among travellers.`,
-  (name, city, stars) => `Nestled in ${city}, ${name} combines ${stars >= 4 ? 'elegant design with world-class service' : 'comfort with convenient city access'}.`,
-];
-
-function getHotelDesc(hotelName, city, stars, index) {
-  return descTemplates[index % descTemplates.length](hotelName, city, stars || 3);
-}
-
-const G_AMENITIES = ["WiFi", "Pool", "Spa", "Gym", "Parking", "Bar", "Restaurant", "Pet Friendly"];
-
+// --- Helper Functions (Preserved) ---
 const cleanName = (name) => name ? name.replace(/\s*-\s*\d+\s*\*+/g, '').replace(/\s*\d+\s*stars?/gi, '').replace(/\[.*\]/g, '').trim() : "";
 
-function fetchWithTimeout(url, options = {}, ms = 5000) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), ms);
-  return fetch(url, { ...options, signal: controller.signal }).then(res => { clearTimeout(timer); return res; });
-}
-
-async function fetchOverpass(lat, lon, city) {
-  const d = 0.25;
-  const bbox = `${lat-d},${lon-d},${lat+d},${lon+d}`;
-  const query = `[out:json][timeout:12];(node["tourism"="hotel"](${bbox});node["tourism"="hostel"](${bbox});node["tourism"="guest_house"](${bbox});way["tourism"="hotel"](${bbox}););out body center 40;`;
-  const res = await fetchWithTimeout('https://overpass-api.de/api/interpreter', { method: 'POST', body: query }, 4000);
-  const data = await res.json();
-  return (data.elements || []).filter(el => el.tags?.name).map((el, i) => {
-    const name = cleanName(el.tags.name);
-    const stars = el.tags.stars ? parseInt(el.tags.stars) : 4;
-    return {
-      id: `osm_${el.id}`,
-      name,
-      address: [el.tags['addr:housenumber'], el.tags['addr:street']].filter(Boolean).join(' ') || el.tags['addr:city'] || '',
-      stars,
-      price: seedPrice(name, stars),
-      desc: getHotelDesc(name, city, stars, i),
-      img: getHotelImage(city, i),
-      rating: 8.0 + (Math.random() * 1.8),
-      amenities: G_AMENITIES.slice(0, 4),
-      badge: ["Popular", "Great Deal", "New", "Editor's Choice", "Trending"][i % 5],
-      point: { lat: el.lat || el.center?.lat || lat, lon: el.lon || el.center?.lon || lon }
-    };
-  });
-}
-
-const fallbackHotels = {
-  paris: [
-    { name:'Hôtel Bourg Tibourg', address:'19 Rue du Bourg Tibourg, Paris', stars:4, price:220 },
-    { name:'Four Seasons George V', address:'31 Avenue George V, 75008 Paris', stars:5, price:980 },
-    { name:'Hôtel de Crillon', address:'10 Place de la Concorde, 75008 Paris', stars:5, price:850 },
-    { name:'Le Bristol Paris', address:'112 Rue du Faubourg Saint-Honoré', stars:5, price:920 }
-  ]
-};
-
-function getStaticFallback(city) {
-  const key = city.toLowerCase().trim();
-  const list = fallbackHotels[key] || [];
-  return list.map((h, i) => ({
-    ...h,
-    id: `fb-${key}-${i}`,
-    desc: getHotelDesc(h.name, city, h.stars, i),
-    img: getHotelImage(key, i),
-    rating: 9.0 + (Math.random() * 0.8),
-    amenities: G_AMENITIES.slice(0, 4),
-    badge: i === 0 ? "Popular" : "Great Deal"
-  }));
-}
 
 const Hotels = () => {
   const location = useLocation();
@@ -139,41 +27,28 @@ const Hotels = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState(null);
 
-  const performSearch = useCallback(async (searchCity) => {
-    if (!searchCity) return;
-    setCity(searchCity);
+  const [searchCity, setSearchCity] = useState(DEFAULT_CITY);
+  const [cityInfo, setCityInfo] = useState(null);
+
+  const performSearch = useCallback(async (targetCity) => {
+    if (!targetCity) return;
+    
+    // Show skeletons IMMEDIATELY
     setLoading(true);
     setHasSearched(true);
     setError(null);
-    setHotels([]);
-
-    // Curated fallback
-    const curatedFb = getStaticFallback(searchCity);
-    if (curatedFb.length > 0) setHotels(curatedFb);
-
+    setHotels([]); // Clear old results instantly
+    
     try {
-      const geoRes = await fetchWithTimeout(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchCity)}&format=json&limit=1`, { headers: { 'Accept-Language': 'en' } }, 1500);
-      const geoData = await geoRes.json();
-      if (!geoData.length) throw new Error('City not found');
+      const res = await fetch(`/api/hotels/search?city=${encodeURIComponent(targetCity)}`);
+      const data = await res.json();
       
-      const { lat, lon, display_name } = geoData[0];
-      const countryParts = display_name.split(', ');
-      const countryName = countryParts[countryParts.length - 1];
-
-      const [osm, weatherRes, countryRes] = await Promise.allSettled([
-        fetchOverpass(parseFloat(lat), parseFloat(lon), searchCity),
-        fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`, {}, 2500),
-        fetchWithTimeout(`https://restcountries.com/v3.1/name/${countryName}?fields=name,currencies,languages,flags`, {}, 2500)
-      ]);
-
-      if (osm.status === 'fulfilled' && osm.value.length > 0) setHotels(osm.value);
-      if (weatherRes.status === 'fulfilled') {
-        const wData = await weatherRes.value.json();
-        setWeather({ temp: wData.current_weather.temperature, emoji: mapWeatherEmoji(wData.current_weather.weathercode) });
-      }
-      if (countryRes.status === 'fulfilled') {
-        const cData = (await countryRes.value.json())[0];
-        setCountry({ name: cData.name.common, flag: cData.flags.png, currency: Object.values(cData.currencies)[0].name, symbol: Object.values(cData.currencies)[0].symbol, language: Object.values(cData.languages)[0] });
+      if (data.success) {
+        setHotels(data.data.hotels || []);
+        setCityInfo(data.data.cityInfo);
+        setSearchCity(targetCity);
+      } else {
+        throw new Error(data.message || 'Failed to fetch hotels');
       }
     } catch (err) {
       console.error("Search error:", err);
@@ -197,16 +72,31 @@ const Hotels = () => {
       if (activeFilter.includes('Stars')) {
         const s = parseInt(activeFilter[0]);
         res = res.filter(h => h.stars === s);
+      } else if (activeFilter === 'Pool') {
+        res = res.filter(h => h.hasPool);
+      } else if (activeFilter === 'Spa') {
+        res = res.filter(h => h.hasSpa);
+      } else if (activeFilter === 'Pet Friendly') {
+        res = res.filter(h => h.petFriendly);
+      } else if (activeFilter === 'Free Cancellation') {
+        res = res.filter(h => h.freeCancellation);
+      } else if (activeFilter === 'Breakfast Included') {
+        res = res.filter(h => h.breakfastIncluded);
+      } else {
+        // Filter by type (Boutique, Resort, etc)
+        res = res.filter(h => h.type === activeFilter);
       }
     }
-    res = res.filter(h => h.price >= priceRange[0] && h.price <= priceRange[1]);
+    res = res.filter(h => h.pricePerNight >= priceRange[0] && h.pricePerNight <= priceRange[1]);
+    
     if (sortBy === 'rating') res.sort((a,b) => b.rating - a.rating);
-    else if (sortBy === 'price_low') res.sort((a,b) => a.price - b.price);
-    else if (sortBy === 'price_high') res.sort((a,b) => b.price - a.price);
+    else if (sortBy === 'price_low') res.sort((a,b) => a.pricePerNight - b.pricePerNight);
+    else if (sortBy === 'price_high') res.sort((a,b) => b.pricePerNight - a.pricePerNight);
     return res;
   }, [hotels, activeFilter, priceRange, sortBy]);
 
   const handleSearch = () => performSearch(inputValue);
+
 
   // Mock dates for snippet requirements
   const checkIn = '2024-05-10';
@@ -383,11 +273,11 @@ const Hotels = () => {
               fontSize: '15px',
               color: '#1a1a1a'
             }}>
-              {city}
+              {searchCity}
             </span>
 
             {/* Weather pill */}
-            {weather?.temp && (
+            {cityInfo?.temperature && (
               <span style={{
                 background: '#f7f5f0',
                 borderRadius: '0',
@@ -398,12 +288,12 @@ const Hotels = () => {
                 alignItems: 'center',
                 gap: '4px'
               }}>
-                {weather.temp}°C
+                {cityInfo.temperature}
               </span>
             )}
 
             {/* Currency pill */}
-            {country?.currency && (
+            {cityInfo?.currency && (
               <span style={{
                 background: '#f7f5f0',
                 borderRadius: '0',
@@ -414,12 +304,12 @@ const Hotels = () => {
                 alignItems: 'center',
                 gap: '4px'
               }}>
-                {country.symbol} {country.currency}
+                {cityInfo.currency}
               </span>
             )}
 
             {/* Country pill */}
-            {country?.name && (
+            {cityInfo?.country && (
               <span style={{
                 fontSize: '12px',
                 color: '#6b6b6b',
@@ -428,9 +318,10 @@ const Hotels = () => {
                 alignItems: 'center',
                 gap: '4px'
               }}>
-                {country.flag && <img src={country.flag} alt="" style={{ width: '16px', height: '12px', borderRadius: '2px' }} />} {country.name}
+                {cityInfo.flag && <span>{cityInfo.flag}</span>} {cityInfo.country}
               </span>
             )}
+
           </div>
 
           {/* Right: sort + show map */}

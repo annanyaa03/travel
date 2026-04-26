@@ -15,6 +15,7 @@ const POSTS = [
     readTime: '6 min',
     img: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&q=80',
     excerpt: 'Discovering hidden lochs, ancient castles, and the profound peace of moving at nature\'s pace.',
+    link: 'https://www.visitscotland.com/places-to-go/highlands'
   },
   {
     id: 'b2',
@@ -26,6 +27,7 @@ const POSTS = [
     readTime: '4 min',
     img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2000&q=100',
     excerpt: 'Where avant-garde architecture meets the untamed wilderness of the end of the Earth.',
+    link: 'https://www.travelandleisure.com/trip-ideas/nature-travel/patagonia-travel-guide'
   },
   {
     id: 'b3',
@@ -37,6 +39,7 @@ const POSTS = [
     readTime: '5 min',
     img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=100',
     excerpt: 'The capsule wardrobe for seamlessly transitioning from a superyacht deck to a Michelin-starred dining room.',
+    link: 'https://www.vogue.com/article/what-to-pack-french-riviera'
   },
   {
     id: 'b4',
@@ -48,6 +51,7 @@ const POSTS = [
     readTime: '8 min',
     img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=2000&q=100',
     excerpt: 'An insider\'s guide to eight-seat omakase counters and multi-generational izakayas only locals know.',
+    link: 'https://www.timeout.com/tokyo/restaurants/best-restaurants-tokyo'
   },
   {
     id: 'b5',
@@ -59,6 +63,7 @@ const POSTS = [
     readTime: '7 min',
     img: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=2000&q=100',
     excerpt: 'Escape the summer crowds by taking to the sea. The ultimate itinerary for a week on the Italian Riviera.',
+    link: 'https://www.lonelyplanet.com/italy/amalfi-coast'
   },
   {
     id: 'b6',
@@ -70,6 +75,7 @@ const POSTS = [
     readTime: '5 min',
     img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2000&q=100',
     excerpt: 'From digital detoxes in the Himalayas to Ayurvedic immersions in Kerala, retreats that transform.',
+    link: 'https://www.keralatourism.org/ayurveda/'
   },
 ];
 
@@ -89,7 +95,11 @@ export default function Blog() {
 
       {/* ── FEATURED HERO ── */}
       <section className="blog-featured">
-        <div className="blog-featured-img">
+        <div 
+          className="blog-featured-img"
+          onClick={() => window.open(featuredPost.link, '_blank')}
+          style={{ cursor: 'pointer' }}
+        >
           <img src={featuredPost.img} alt={featuredPost.title} />
           <div className="blog-featured-badge">
             <span>Featured</span>
@@ -111,7 +121,12 @@ export default function Blog() {
             <span className="blog-tag">{featuredPost.date}</span>
             <span className="blog-tag">{featuredPost.readTime}</span>
           </div>
-          <button className="blog-read-btn">READ ARTICLE →</button>
+          <button 
+            className="blog-read-btn"
+            onClick={() => window.open(featuredPost.link, '_blank')}
+          >
+            READ ARTICLE →
+          </button>
         </div>
       </section>
 
@@ -142,6 +157,8 @@ export default function Blog() {
               className={`blog-strip-item ${hoveredStrip === i ? 'expanded' : ''}`}
               onMouseEnter={() => setHoveredStrip(i)}
               onMouseLeave={() => setHoveredStrip(null)}
+              onClick={() => window.open(post.link, '_blank')}
+              style={{ cursor: 'pointer' }}
             >
               <img src={post.img} alt={post.title} />
               <div className="blog-strip-overlay">
@@ -175,7 +192,12 @@ export default function Blog() {
         </div>
         <div className="blog-index-list">
           {filteredPosts.map((post, i) => (
-            <div key={post.id} className="blog-index-row">
+            <div 
+              key={post.id} 
+              className="blog-index-row"
+              onClick={() => window.open(post.link, '_blank')}
+              style={{ cursor: 'pointer' }}
+            >
               <span className="blog-index-num">{post.numeral}</span>
               <h3 className="blog-index-name">{post.shortTitle}</h3>
               <span className="blog-index-cat">{post.category} →</span>

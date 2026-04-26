@@ -11,7 +11,8 @@ const articlesData = [
     readTime: '4 min',
     views: '1.2k',
     excerpt: 'Discover secluded lagoons in Palawan and ancient misty temples in Northern Laos away from the crowds.',
-    image: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800' // SE Asia Temple
+    image: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800', // SE Asia Temple
+    link: 'https://www.lonelyplanet.com/articles/hidden-gems-southeast-asia'
   },
   {
     category: 'TIPS',
@@ -21,7 +22,8 @@ const articlesData = [
     readTime: '6 min',
     views: '2.4k',
     excerpt: 'From breathable linens to essential reef-safe sunscreen, we break down your tropical essentials.',
-    image: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&q=80&w=800' // Packing/Luggage
+    image: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&q=80&w=800', // Packing/Luggage
+    link: 'https://www.vogue.com/article/what-to-pack-for-bali'
   },
   {
     category: 'FOOD',
@@ -31,7 +33,8 @@ const articlesData = [
     readTime: '5 min',
     views: '3.1k',
     excerpt: 'A culinary journey through Tsukijis freshest sashimi and the smoky tagines of Jemaa el-Fnaa.',
-    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800' // Street Food
+    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800', // Street Food
+    link: 'https://www.travelandleisure.com/trip-ideas/food-drink-travel/best-street-food-cities'
   },
   {
     category: 'CULTURE',
@@ -41,7 +44,8 @@ const articlesData = [
     readTime: '7 min',
     views: '4.8k',
     excerpt: 'Understanding the deep spiritual significance behind Gion Matsuri and ancient fire festivals.',
-    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800' // Japanese Festival
+    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800', // Japanese Festival
+    link: 'https://www.japan-guide.com/e/e2063.html'
   }
 ];
 
@@ -86,7 +90,12 @@ export default function TravelInspiration() {
         {/* Article Table/List */}
         <div className="ti-articles-list">
           {filteredArticles.map((article, index) => (
-            <div key={article.title} className="ti-article-row animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div 
+              key={article.title} 
+              className="ti-article-row animate-slide-up" 
+              style={{ animationDelay: `${index * 0.1}s`, cursor: 'pointer' }}
+              onClick={() => window.open(article.link, '_blank')}
+            >
               {/* Number Column */}
               <div className="ti-number-col">
                 {(index + 1).toString().padStart(2, '0')}

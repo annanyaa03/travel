@@ -12,6 +12,8 @@ import healthRoutes from './health.routes.js';
 import adminRoutes from './admin.routes.js';
 import analyticsRoutes from './analytics.routes.js';
 import uploadRoutes from './uploads.routes.js';
+import hotelRoutes from './hotels.routes.js';
+
 
 const router = express.Router();
 
@@ -29,6 +31,8 @@ router.use('/health', healthRoutes);
 router.use('/admin', adminRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/uploads', uploadRoutes);
+router.use('/hotels', hotelRoutes);
+
 
 console.log('--- API Routes Registered ---');
 console.log('✅ /api/auth');

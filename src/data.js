@@ -402,7 +402,8 @@ export const articles = [
     image: 'https://images.pexels.com/photos/1007657/pexels-photo-1007657.jpeg?auto=compress&cs=tinysrgb&w=800',
     author: 'Sarah Jenkins',
     authorAvatar: 'https://i.pravatar.cc/150?u=sarah',
-    date: 'Mar 12, 2026'
+    date: 'Mar 12, 2026',
+    link: 'https://www.lonelyplanet.com/articles/hidden-gems-southeast-asia'
   },
   {
     id: 2,
@@ -412,7 +413,8 @@ export const articles = [
     image: 'https://images.pexels.com/photos/164333/pexels-photo-164333.jpeg?auto=compress&cs=tinysrgb&w=800',
     author: 'Marcus Chen',
     authorAvatar: 'https://i.pravatar.cc/150?u=marcus',
-    date: 'Mar 10, 2026'
+    date: 'Mar 10, 2026',
+    link: 'https://www.vogue.com/article/what-to-pack-for-bali'
   },
   {
     id: 3,
@@ -422,7 +424,8 @@ export const articles = [
     image: 'https://images.pexels.com/photos/92330/pexels-photo-92330.jpeg?auto=compress&cs=tinysrgb&w=800',
     author: 'Aria Thorne',
     authorAvatar: 'https://i.pravatar.cc/150?u=aria',
-    date: 'Mar 08, 2026'
+    date: 'Mar 08, 2026',
+    link: 'https://www.travelandleisure.com/trip-ideas/food-drink-travel/best-street-food-cities'
   }
 ];
 

@@ -72,9 +72,11 @@ const HotelCard = ({ hotel, index, checkIn, checkOut }) => {
             position: 'relative'
           }}>
             <img
-              src={hotel.img || hotel.images?.[0] || 
+              src={hotel.images?.[0] || hotel.img || 
                 'https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg'}
               alt={hotel.name}
+              loading="lazy"
+              decoding="async"
               style={{
                 width: '100%',
                 height: '100%',
@@ -89,6 +91,7 @@ const HotelCard = ({ hotel, index, checkIn, checkOut }) => {
                   'https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg';
               }}
             />
+
           </div>
 
           {/* Badge */}
