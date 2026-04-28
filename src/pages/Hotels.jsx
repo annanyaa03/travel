@@ -30,18 +30,22 @@ const Hotels = () => {
   const [searchCity, setSearchCity] = useState(DEFAULT_CITY);
   const [cityInfo, setCityInfo] = useState(null);
 
+  const [checkIn, setCheckIn] = useState('2024-12-01');
+  const [checkOut, setCheckOut] = useState('2024-12-05');
+  const [guests, setGuests] = useState(2);
+
   const performSearch = useCallback(async (targetCity) => {
     if (!targetCity) return;
     
-    // 1. Sanitize and build query parameters safely
-    const sanitizedCity = targetCity.trim().replace(/:\d+$/, '');
+    // 1. Sanitize user inputs before sending to backend
+    const sanitizedCity = targetCity.trim().replace(/[^a-zA-Z\s]/g, '');
     
-    // Use URLSearchParams to compose URL safely as requested
+    // 2. Properly encode parameters with URLSearchParams
     const params = new URLSearchParams({
       city: sanitizedCity,
-      checkIn: '2024-12-01', // ISO formatted YYYY-MM-DD
-      checkOut: '2024-12-05',
-      guests: '2'           // Integer only
+      checkIn: checkIn,
+      checkOut: checkOut,
+      guests: guests.toString()
     });
 
     const url = `/api/hotels/search?${params.toString()}`;
@@ -54,10 +58,10 @@ const Hotels = () => {
     try {
       const res = await fetch(url);
       
-      // 2. Improved Error Handling: Check res.ok before parsing JSON
+      // 3. Check response.ok before parsing JSON
       if (!res.ok) {
-        const errText = await res.text();
-        console.error('API error:', errText);
+        const text = await res.text();
+        console.error('API error:', text);
         setError('Failed to load hotels. Please try again.');
         setLoading(false);
         return;
@@ -65,19 +69,22 @@ const Hotels = () => {
 
       const data = await res.json();
       
-      // Handle data structure (support both data.data and data)
-      const hotelsData = data.data?.hotels || data.data || [];
-      setHotels(hotelsData);
-      setCityInfo(data.data?.cityInfo || null);
-      setSearchCity(sanitizedCity);
+      if (data.success) {
+        const hotelsData = data.data?.hotels || data.data || [];
+        setHotels(hotelsData);
+        setCityInfo(data.data?.cityInfo || null);
+        setSearchCity(sanitizedCity);
+      } else {
+        setError(data.message || 'Failed to load hotels.');
+      }
       
     } catch (err) {
-      console.error("Search error:", err);
-      setError("Failed to load hotels. Please try again.");
+      console.error("Fetch failed:", err);
+      setError("An error occurred while fetching hotels. Please try again later.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [checkIn, checkOut, guests]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -192,7 +199,7 @@ const Hotels = () => {
           background: 'rgba(255,255,255,0.95)',
           backdropFilter: 'blur(10px)',
           borderRadius: '0',
-          maxWidth: '450px',
+          maxWidth: '800px',
           width: '100%',
           display: 'flex',
           overflow: 'hidden',
@@ -234,6 +241,104 @@ const Hotels = () => {
             />
           </div>
 
+          {/* Check-in input section */}
+          <div style={{
+            flex: 0.6,
+            padding: '4px 14px',
+            borderRight: '1px solid rgba(0,0,0,0.05)'
+          }}>
+            <p style={{
+              fontSize: '8px',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#9e9e9e',
+              marginBottom: '1px',
+              fontWeight: '400'
+            }}>
+              Check-in
+            </p>
+            <input
+              type="date"
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              style={{
+                fontSize: '12px',
+                color: '#1a1a1a',
+                fontWeight: '300',
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+                width: '100%'
+              }}
+            />
+          </div>
+
+          {/* Check-out input section */}
+          <div style={{
+            flex: 0.6,
+            padding: '4px 14px',
+            borderRight: '1px solid rgba(0,0,0,0.05)'
+          }}>
+            <p style={{
+              fontSize: '8px',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#9e9e9e',
+              marginBottom: '1px',
+              fontWeight: '400'
+            }}>
+              Check-out
+            </p>
+            <input
+              type="date"
+              value={checkOut}
+              onChange={(e) => setCheckOut(e.target.value)}
+              style={{
+                fontSize: '12px',
+                color: '#1a1a1a',
+                fontWeight: '300',
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+                width: '100%'
+              }}
+            />
+          </div>
+
+          {/* Guests input section */}
+          <div style={{
+            flex: 0.4,
+            padding: '4px 14px',
+            borderRight: '1px solid rgba(0,0,0,0.05)'
+          }}>
+            <p style={{
+              fontSize: '8px',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#9e9e9e',
+              marginBottom: '1px',
+              fontWeight: '400'
+            }}>
+              Guests
+            </p>
+            <input
+              type="number"
+              min="1"
+              max="10"
+              value={guests}
+              onChange={(e) => setGuests(parseInt(e.target.value) || 1)}
+              style={{
+                fontSize: '12px',
+                color: '#1a1a1a',
+                fontWeight: '300',
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+                width: '100%'
+              }}
+            />
+          </div>
+
           {/* Search button */}
           <button
             onClick={handleSearch}
@@ -241,7 +346,7 @@ const Hotels = () => {
               background: '#C9A84C',
               color: 'white',
               border: 'none',
-              padding: '0 16px',
+              padding: '0 24px',
               fontSize: '11px',
               letterSpacing: '0.08em',
               fontWeight: '400',
@@ -256,7 +361,7 @@ const Hotels = () => {
               e.target.style.background = '#C9A84C'
             }
           >
-            Search Hotels →
+            Search Stay →
           </button>
         </div>
       </div>

@@ -15,32 +15,28 @@ const searchSchema = z.object({
 
 export const searchHotels = async (req, res) => {
   try {
-    // 1. Sanitize and validate query parameters
-    const city = (req.query.city || '').trim().replace(/:\d+$/, '');
-    if (!city) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'City required' 
-      });
-    }
-
+    // 1. Sanitize and validate inputs
+    let city = (req.query.city || '').trim();
     const checkIn = req.query.checkIn;
     const checkOut = req.query.checkOut;
-    const guests = parseInt(req.query.guests, 10) || 2;
+    let guests = parseInt(req.query.guests, 10);
 
-    // 2. Additional sanitization for city to prevent malformed queries
-    const sanitizedCity = city.replace(/[^\w\s-]/gi, '').trim();
-    if (!sanitizedCity) {
+    // 2. Fix malformed parts: only allow letters and spaces in city
+    city = city.replace(/[^a-zA-Z\s]/g, '').trim();
+    guests = isNaN(guests) ? 2 : guests;
+
+    // 3. Return 400 if required parameters are missing
+    if (!city || !checkIn || !checkOut) {
       return res.status(400).json({ 
-        success: false, 
-        error: 'City parameter contains invalid characters' 
+        success: false,
+        message: 'Missing required search parameters. Please provide city, checkIn, and checkOut.' 
       });
     }
 
-    // 3. Fetch hotels from service with all params
-    const hotels = await hotelService.getCachedHotels(sanitizedCity);
+    // 4. Fetch hotels from service
+    const hotels = await hotelService.getCachedHotels(city);
 
-    // 4. Apply additional filters if present
+    // 5. Apply additional filters if present
     let filteredHotels = [...hotels];
     
     if (req.query.stars) {
@@ -56,23 +52,23 @@ export const searchHotels = async (req, res) => {
       filteredHotels = filteredHotels.filter(h => h.pricePerNight <= parseFloat(req.query.maxPrice));
     }
 
-    const cityInfo = getCityInfo(sanitizedCity);
+    const cityInfo = getCityInfo(city);
 
     return res.status(200).json({
       success: true,
       data: {
         hotels: filteredHotels,
         total: filteredHotels.length,
-        city: sanitizedCity,
+        city: city,
         cityInfo: cityInfo
       }
     });
 
   } catch (error) {
-    console.error('Hotels search error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Internal server error' 
+    console.error('Hotels search failed:', error);
+    return res.status(500).json({ 
+      success: false,
+      message: 'Internal Server Error' 
     });
   }
 };
