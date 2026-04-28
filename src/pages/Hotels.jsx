@@ -33,36 +33,38 @@ const Hotels = () => {
   const performSearch = useCallback(async (targetCity) => {
     if (!targetCity) return;
     
-    // Sanitize targetCity: remove trailing junk like :1
-    const sanitizedCity = targetCity.replace(/[:\d]+$/, '').trim();
+    const checkIn = '2024-12-01';
+    const checkOut = '2024-12-05';
+    const guests = 2;
+
+    const sanitizedCity = targetCity.trim().replace(/:\d+$/, '');
+    const url = `/api/hotels/search?city=${encodeURIComponent(sanitizedCity)}&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`;
     
-    // Show skeletons IMMEDIATELY
     setLoading(true);
     setHasSearched(true);
     setError(null);
-    setHotels([]); // Clear old results instantly
+    setHotels([]); 
     
     try {
-      const res = await fetch(`/api/hotels/search?city=${encodeURIComponent(sanitizedCity)}`);
+      const res = await fetch(url);
       
       if (!res.ok) {
-        const errorText = await res.text();
-        console.error('API Error Response:', errorText);
-        throw new Error(`Server error: ${res.status}`);
+        const text = await res.text();
+        console.error('API error response:', text);
+        setError('Failed to load hotels');
+        setLoading(false);
+        return;
       }
 
       const data = await res.json();
       
-      if (data.success) {
-        setHotels(data.data.hotels || []);
-        setCityInfo(data.data.cityInfo);
-        setSearchCity(sanitizedCity);
-      } else {
-        throw new Error(data.message || 'Failed to fetch hotels');
-      }
+      setHotels(data.data?.hotels || data.data || []);
+      setCityInfo(data.data?.cityInfo || null);
+      setSearchCity(sanitizedCity);
+      
     } catch (err) {
       console.error("Search error:", err);
-      setError(err.message || "Something went wrong while searching for hotels.");
+      setError("Failed to load hotels");
     } finally {
       setLoading(false);
     }

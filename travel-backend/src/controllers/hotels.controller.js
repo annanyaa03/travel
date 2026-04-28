@@ -7,11 +7,20 @@ const searchSchema = z.object({
   stars: z.string().optional(),
   type: z.string().optional(),
   minPrice: z.string().optional().default('0'),
-  maxPrice: z.string().optional().default('10000')
+  maxPrice: z.string().optional().default('10000'),
+  checkIn: z.string().optional(),
+  checkOut: z.string().optional(),
+  guests: z.string().optional()
 });
 
 export const searchHotels = async (req, res) => {
   try {
+    // Manually sanitize city param before parsing
+    let rawCity = (req.query.city || '').trim().replace(/:\d+$/, '');
+    if (req.query.city) {
+      req.query.city = rawCity;
+    }
+
     const parsed = searchSchema.safeParse(req.query);
     
     if (!parsed.success) {
@@ -27,18 +36,24 @@ export const searchHotels = async (req, res) => {
       stars,
       type,
       minPrice,
-      maxPrice
+      maxPrice,
+      checkIn,
+      checkOut,
+      guests
     } = parsed.data;
 
-    // Sanitize city: remove trailing junk like :1, emojis, or symbols
-    // Keep only letters, spaces, and hyphens
-    city = city.replace(/[:\d]+$/, '').replace(/[^\w\s-]/gi, '').trim();
-    if (!city) city = 'Paris'; // Fallback if sanitization empties it
+    if (!city) {
+      return res.status(400).json({ success: false, message: 'City is required' });
+    }
 
-    // Use the cached service logic instead of inline query for better performance and consistency
+    // Sanitize further
+    city = city.replace(/[^\w\s-]/gi, '').trim();
+    if (!city) {
+      return res.status(400).json({ success: false, message: 'City parameter contains invalid characters' });
+    }
+
     const hotels = await hotelService.getCachedHotels(city);
 
-    // Filter by other params if needed (since cache is only by city)
     let filteredHotels = [...hotels];
     
     if (stars) {
@@ -54,7 +69,6 @@ export const searchHotels = async (req, res) => {
       filteredHotels = filteredHotels.filter(h => h.pricePerNight <= parseFloat(maxPrice));
     }
 
-    // Hardcode city info - NO external API calls
     const cityInfo = getCityInfo(city);
 
     return res.status(200).json({
@@ -68,10 +82,10 @@ export const searchHotels = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Hotel search error:', error);
+    console.error('Error fetching hotels:', error);
     return res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message || 'Server error'
     });
   }
 };
